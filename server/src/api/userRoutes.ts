@@ -12,8 +12,8 @@ router.get('/', (req, res) => {
     User.find({}).then((users: any[]) => {
       res.json(users);
     });
-  } catch (e) {
-    res.status(500).json({ error: e });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
