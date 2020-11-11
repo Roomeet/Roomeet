@@ -1,15 +1,21 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
+// Valid email address
+const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+// Minimum eight characters, at least one letter and one number:
+const passwordRegexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
 export interface User extends Document {
   _id: string;
-  user_name: string;
+  name: string;
+  lastName: string;
   password: string;
   email: string;
-  creation_time: Date;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
 }
 
 const userSchema = new Schema({
@@ -17,21 +23,27 @@ const userSchema = new Schema({
     type: ObjectId,
     required: true,
   },
-  user_name: {
+  name: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
   password: {
     type: String,
     required: true,
+    match: passwordRegexp,
   },
   email: {
     type: String,
     required: true,
+    match: emailRegexp,
   },
-  created_at: Date,
-  updated_at: Date,
-  deleted_at: Date,
+  createdAt: Date,
+  updatedAt: Date,
+  deletedAt: Date,
 });
 
 // ???
