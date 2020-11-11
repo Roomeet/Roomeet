@@ -3,7 +3,6 @@ import { ObjectID } from 'mongodb';
 
 const User = require('../../models/User');
 const UserData = require('../../models/userData');
-
 const router = Router();
 
 // Routes
