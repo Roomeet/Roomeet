@@ -1,5 +1,5 @@
 import { Schema, Document, model } from 'mongoose';
-import { ObjectId } from 'mongodb';
+import { ObjectID } from 'mongodb';
 
 // Valid email address
 const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -7,20 +7,20 @@ const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))
 // Minimum eight characters, at least one letter and one number:
 const passwordRegexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-export interface User extends Document {
+export interface UserInterface extends Document {
   _id: string;
   name: string;
   lastName: string;
   password: string;
   email: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | null;
   deletedAt: Date | null;
 }
 
 const userSchema = new Schema({
   _id: {
-    type: ObjectId,
+    type: ObjectID,
     required: true,
   },
   name: {
@@ -55,4 +55,4 @@ userSchema.set('toJSON', {
   },
 });
 
-module.exports = model<User>('User', userSchema);
+module.exports = model<UserInterface>('User', userSchema);

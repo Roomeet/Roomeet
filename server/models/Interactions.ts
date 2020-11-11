@@ -3,7 +3,8 @@ import { ObjectId } from 'mongodb';
 
 export type UserConnection = {
   userId: string;
-  email: string;
+  name: string;
+  lastName: string;
   matchScore: number;
 };
 
