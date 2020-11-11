@@ -8,34 +8,35 @@ const router = Router();
 // Routes
 // Get all users
 router.get('/', (req, res) => {
-  User.find({}).then((users: any[]) => {
-    res.json(users);
-  });
+  try {
+    User.find({}).then((users: any[]) => {
+      res.json(users);
+    });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
 });
 
 // Registers new user
 router.post('/', (req: Request, res: Response) => {
-  const { name, lastName, password, email } = req.body;
-  const date = new Date();
+  try {
+    const { name, lastName, password, email } = req.body;
 
-  const user = new User({
-    _id: new ObjectID(),
-    name,
-    lastName,
-    password,
-    email,
-    createdAt: new Date(),
-    updatedAt: null,
-    deletedAt: null,
-  });
+    const user = new User({
+      _id: new ObjectID(),
+      name,
+      lastName,
+      password,
+      email,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    });
 
-  user.save(user).then(() => res.status(201).json(user));
+    user.save(user).then(() => res.status(201).json(user));
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
 });
 
 export default router;
-
-//   User.findOne({ $or: [{ userName }, { email }] }).then((result) =>
-//     result
-//       ? res.status(400).json({ error: 'Email or username already in use' })
-//       : user.save(user).then(() => res.status(201).json('Registered!'))
-//   );
