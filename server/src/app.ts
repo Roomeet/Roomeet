@@ -16,7 +16,7 @@ app.use(express.json());
 mongoose
   .connect(URI!, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log('connected to MongoDB, Users');
+    console.log('connected to MongoDB!');
   })
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message);
@@ -32,8 +32,6 @@ function logger(req: Request, res: Response, next: NextFunction) {
 }
 
 app.use('/api/users', userRoutes);
-
 // app.use(express.static(path.join(__dirname, '../public')));
 
-// app.listen(3001);
 export default app;
