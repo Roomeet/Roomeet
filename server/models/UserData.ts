@@ -27,7 +27,7 @@ const UserDataSchema = new Schema({
     required: true,
   },
   userId: {
-    type: String,
+    type: ObjectId,
     required: true,
   },
   age: { type: Number, required: true },
