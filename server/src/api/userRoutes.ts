@@ -34,8 +34,8 @@ router.post('/', (req: Request, res: Response) => {
     });
 
     user.save(user).then(() => res.status(201).json(user));
-  } catch (e) {
-    res.status(500).json({ error: e });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
