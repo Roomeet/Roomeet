@@ -6,6 +6,13 @@ const UserData = require('../../models/userData');
 const router = Router();
 
 // Routes
+// Get all users
+router.get('/', (req, res) => {
+  User.find({}).then((users: any[]) => {
+    res.json(users);
+  });
+});
+
 // Registers new user
 router.post('/', (req: Request, res: Response) => {
   const { name, lastName, password, email } = req.body;
