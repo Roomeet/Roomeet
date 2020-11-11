@@ -47,7 +47,6 @@ const UserDataSchema = new Schema({
   deletedAt: Date,
 });
 
-// ???
 UserDataSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
