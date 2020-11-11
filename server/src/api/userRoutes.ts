@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 const User = require('../../models/User');
 const UserData = require('../../models/userData');
@@ -20,20 +20,37 @@ router.get('/', (req, res) => {
 // Registers new user
 router.post('/', (req: Request, res: Response) => {
   try {
-    const { name, lastName, password, email } = req.body;
+    const { body: userRegisterationData } = req;
 
     const user = new User({
-      _id: new ObjectID(),
-      name,
-      lastName,
-      password,
-      email,
+      _id: new ObjectId(),
+      ...userRegisterationData,
       createdAt: new Date(),
       updatedAt: null,
       deletedAt: null,
     });
 
-    user.save(user).then(() => res.status(201).json(user));
+    user.save(user).then(() => res.status(201).send('Registerd!'));
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+// Post user data
+router.post('/user-data', (req: Request, res: Response) => {
+  try {
+    const { body: rawUserData } = req;
+
+    const userData = new UserData({
+      ...rawUserData,
+      _id: new ObjectId(),
+      userId: new ObjectId(rawUserData.userId),
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
+    });
+
+    userData.save(userData).then(() => res.status(201).json('Updated info!'));
   } catch (error) {
     res.status(500).json({ error });
   }

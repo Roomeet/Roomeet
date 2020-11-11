@@ -8,16 +8,16 @@ export interface UserData extends Document {
   gender: string;
   smoke: boolean;
   pet: boolean;
-  relationship: boolean;
-  employed: boolean;
+  relationship?: boolean;
+  employed?: boolean;
   interests: string[];
   languages: string[];
   music: string[];
-  lookingFor: { roomate: boolean; friend: boolean };
-  numOfRoomates: number;
-  religion: string;
+  lookingFor?: { roomate: boolean; friend: boolean };
+  numOfRoomates?: number;
+  religion?: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | null;
   deletedAt: Date | null;
 }
 
@@ -27,15 +27,15 @@ const UserDataSchema = new Schema({
     required: true,
   },
   userId: {
-    type: String,
+    type: ObjectId,
     required: true,
   },
-  ages: { type: Schema.Types.Mixed },
-  gender: { type: Schema.Types.Mixed },
-  smoke: Boolean,
-  pet: Boolean,
-  relationship: Boolean,
-  employed: Boolean,
+  age: { type: Number, required: true },
+  gender: { type: String, required: true },
+  smoke: { type: Boolean, required: true },
+  pet: { type: Boolean, required: true },
+  relationship: { type: Boolean },
+  employed: { type: Boolean },
   interests: [String],
   languages: [String],
   music: [String],
