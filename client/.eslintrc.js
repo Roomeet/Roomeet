@@ -64,6 +64,7 @@ module.exports = {
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "react/no-unescaped-entities": "off"
    },
 };

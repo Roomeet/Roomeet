@@ -9,7 +9,7 @@ function PrivateRoute({ loggedIn, children, ...rest }: IPrivateRouteProps) {
   return (
     <Route
       {...rest}
-      render={({ location }) => loggedIn
+      render={({ location }) => (loggedIn
         ? (
           children
         ) : (
@@ -19,7 +19,7 @@ function PrivateRoute({ loggedIn, children, ...rest }: IPrivateRouteProps) {
               state: { from: location },
             }}
           />
-        )}
+        ))}
     />
   );
 }

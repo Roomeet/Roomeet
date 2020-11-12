@@ -6,7 +6,8 @@ const bcrypt = require('bcrypt');
 import { authenticateToken } from "../helpers/authenticate";
 
 const router = Router();
-const {UserConnection, UserInterface ,User, UserData, RefreshToken} = require('../../models');
+const {UserConnection, UserInterface, UserData, RefreshToken} = require('../../models');
+const { User } = require('../../models/User');
 
 type InfoForCookie =  {
   userId: string,
@@ -29,8 +30,10 @@ router.get('/', authenticateToken, async (req: Request, res: Response) => {
 router.post('/register', async (req: Request, res: Response) => {
   try {
     let { body: userRegisterationData } = req;
-    userRegisterationData.password = await bcrypt.hash(userRegisterationData.password, 10);
+    console.log(userRegisterationData);
     
+    userRegisterationData.password = await bcrypt.hash(userRegisterationData.password, 10);
+    console.log(userRegisterationData.password)
     const user = new User({
       _id: new ObjectId(),
       ...userRegisterationData,
@@ -38,9 +41,11 @@ router.post('/register', async (req: Request, res: Response) => {
       updatedAt: null,
       deletedAt: null,
     });
-
-    User.save(user).then(() => res.status(201).send('Registerd!'));
+    console.log('USER -------' + user);
+    
+    User.save(user).then((res : any) => res.status(201).send('Registerd!'));
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error });
   }
 });

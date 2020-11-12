@@ -23,11 +23,12 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "typescript": "^4.0.5",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "yup": "^0.29.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "lint": "eslint ./src --ext .tsx",
+    "start": "eslint ./src --ext .tsx,.ts --fix && react-scripts start",
+    "lint": "eslint ./src --ext .tsx,.ts --fix",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,7 +52,6 @@
     ]
   },
   "devDependencies": {
-    "@types/yup": "^0.29.9",
-    "yup": "^0.29.3"
+    "@types/yup": "^0.29.9"
   }
 }

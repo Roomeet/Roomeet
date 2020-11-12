@@ -1,44 +1,46 @@
-import React from "react";
-import network from "./auth/network";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Formik, Form, Field, FieldProps } from "formik";
-import { string, object, ref } from "yup";
-import { SignUpUserData } from '../../../server/models'
-import { ReactComponent as RWALogo } from "../svgs/rwa-logo.svg";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import {
+  Formik, Form, Field, FieldProps,
+} from 'formik';
+import { string, object, ref } from 'yup';
+import network from './auth/network';
+import { SignUpUserData } from '../../../server/models';
+import { ReactComponent as RWALogo } from '../svgs/rwa-logo.svg';
 
 const validationSchema = object({
-  firstName: string().required("First Name is required"),
-  lastName: string().required("Last Name is required"),
+  name: string().required('First Name is required'),
+  lastName: string().required('Last Name is required'),
   password: string()
-    .min(4, "Password must contain at least 4 characters")
-    .required("Enter your password"),
+    .min(4, 'Password must contain at least 4 characters')
+    .required('Enter your password'),
   confirmPassword: string()
-    .required("Confirm your password")
-    .oneOf([ref("password")], "Password does not match"),
-    email: string().email(),
+    .required('Confirm your password')
+    .oneOf([ref('password')], 'Password does not match'),
+  email: string().email().required('Enter your email'),
 
 });
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   logo: {
     color: theme.palette.primary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -46,19 +48,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface Props {}
-
-const SignUpForm: React.FC<Props> = () => {
+const SignUpForm: React.FC = () => {
   const classes = useStyles();
   const initialValues: SignUpUserData & { confirmPassword: string } = {
-    name: "",
-    lastName: "",
-    password: "",
-    confirmPassword: "",
-    email: "",
+    name: '',
+    lastName: '',
+    password: '',
+    confirmPassword: '',
+    email: '',
   };
 
-  const signUp = (values: SignUpUserData) => network.post('/api/users/register', values);
+  const signUp = (values: SignUpUserData) => {
+    delete values.confirmPassword;
+    network.post('/api/users/register', values);
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -81,7 +84,11 @@ const SignUpForm: React.FC<Props> = () => {
           {({ isValid, isSubmitting, dirty }) => (
             <Form className={classes.form}>
               <Field name="name">
-                {({ field, meta: { error, value, initialValue, touched } }: FieldProps) => (
+                {({
+                  field, meta: {
+                    error, value, initialValue, touched,
+                  },
+                }: FieldProps) => (
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -93,13 +100,17 @@ const SignUpForm: React.FC<Props> = () => {
                     autoFocus
                     data-test="signup-name"
                     error={(touched || value !== initialValue) && Boolean(error)}
-                    helperText={touched || value !== initialValue ? error : ""}
+                    helperText={touched || value !== initialValue ? error : ''}
                     {...field}
                   />
                 )}
               </Field>
               <Field name="lastName">
-                {({ field, meta: { error, value, initialValue, touched } }: FieldProps) => (
+                {({
+                  field, meta: {
+                    error, value, initialValue, touched,
+                  },
+                }: FieldProps) => (
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -110,13 +121,17 @@ const SignUpForm: React.FC<Props> = () => {
                     type="text"
                     data-test="signup-last-name"
                     error={(touched || value !== initialValue) && Boolean(error)}
-                    helperText={touched || value !== initialValue ? error : ""}
+                    helperText={touched || value !== initialValue ? error : ''}
                     {...field}
                   />
                 )}
               </Field>
               <Field name="password">
-                {({ field, meta: { error, value, initialValue, touched } }: FieldProps) => (
+                {({
+                  field, meta: {
+                    error, value, initialValue, touched,
+                  },
+                }: FieldProps) => (
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -127,13 +142,17 @@ const SignUpForm: React.FC<Props> = () => {
                     id="password"
                     data-test="signup-password"
                     error={(touched || value !== initialValue) && Boolean(error)}
-                    helperText={touched || value !== initialValue ? error : ""}
+                    helperText={touched || value !== initialValue ? error : ''}
                     {...field}
                   />
                 )}
               </Field>
               <Field name="confirmPassword">
-                {({ field, meta: { error, value, initialValue, touched } }: FieldProps) => (
+                {({
+                  field, meta: {
+                    error, value, initialValue, touched,
+                  },
+                }: FieldProps) => (
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -144,13 +163,17 @@ const SignUpForm: React.FC<Props> = () => {
                     data-test="signup-confirmPassword"
                     type="password"
                     error={(touched || value !== initialValue) && Boolean(error)}
-                    helperText={touched || value !== initialValue ? error : ""}
+                    helperText={touched || value !== initialValue ? error : ''}
                     {...field}
                   />
                 )}
               </Field>
               <Field name="email">
-                {({ field, meta: { error, value, initialValue, touched } }: FieldProps) => (
+                {({
+                  field, meta: {
+                    error, value, initialValue, touched,
+                  },
+                }: FieldProps) => (
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -161,7 +184,7 @@ const SignUpForm: React.FC<Props> = () => {
                     type="email"
                     data-test="signup-email"
                     error={(touched || value !== initialValue) && Boolean(error)}
-                    helperText={touched || value !== initialValue ? error : ""}
+                    helperText={touched || value !== initialValue ? error : ''}
                     {...field}
                   />
                 )}
@@ -179,15 +202,14 @@ const SignUpForm: React.FC<Props> = () => {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link to="/signin">{"Have an account? Sign In"}</Link>
+                  <Link to="/signin">Have an account? Sign In</Link>
                 </Grid>
               </Grid>
             </Form>
           )}
         </Formik>
       </div>
-      <Box mt={8}>
-      </Box>
+      <Box mt={8} />
     </Container>
   );
 };
