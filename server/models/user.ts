@@ -5,7 +5,7 @@ import { ObjectID } from 'mongodb';
 const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 // Minimum eight characters, at least one letter and one number:
-const passwordRegexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+// const passwordRegexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 export interface UserInterface extends Document {
   _id: string;
@@ -42,7 +42,7 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    match: passwordRegexp,
+    // match: passwordRegexp,
   },
   email: {
     type: String,

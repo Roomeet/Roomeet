@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 // import path from 'path';
-import userRoutes from './api/userRoutes';
 
 require('dotenv').config();
 
@@ -31,7 +30,13 @@ function logger(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-app.use('/api/users', userRoutes);
+app.use('/api', require('./api'));
+
 // app.use(express.static(path.join(__dirname, '../public')));
+
+app.use('*', function(req,res){
+  res.sendStatus(404)
+})
+
 
 export default app;

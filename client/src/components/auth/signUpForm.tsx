@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,9 +12,9 @@ import {
   Formik, Form, Field, FieldProps,
 } from 'formik';
 import { string, object, ref } from 'yup';
-import network from './auth/network';
-import { SignUpUserData } from '../../../server/models';
-import { ReactComponent as RWALogo } from '../svgs/rwa-logo.svg';
+import network from '../../utils/network';
+import { SignUpUserData } from '../../../../server/models/user';
+import { ReactComponent as RWALogo } from '../../svgs/rwa-logo.svg';
 
 const validationSchema = object({
   name: string().required('First Name is required'),
@@ -58,10 +58,7 @@ const SignUpForm: React.FC = () => {
     email: '',
   };
 
-  const signUp = (values: SignUpUserData) => {
-    delete values.confirmPassword;
-    network.post('/api/users/register', values);
-  };
+  const signUp = (values: SignUpUserData) => { network.post('/api/v1/auth/register', values); };
 
   return (
     <Container component="main" maxWidth="xs">

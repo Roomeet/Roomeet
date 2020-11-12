@@ -1,7 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-export interface UserData extends Document {
+export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
   age: number;
@@ -55,4 +55,4 @@ UserDataSchema.set('toJSON', {
   },
 });
 
-module.exports = model<UserData>('UserData', UserDataSchema);
+module.exports = model<UserDataInterface>('UserData', UserDataSchema);

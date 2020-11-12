@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,9 +15,9 @@ import {
 } from 'formik';
 import { string, object } from 'yup';
 import Alert from '@material-ui/lab/Alert';
-import { ReactComponent as RWALogo } from '../svgs/rwa-logo.svg';
-import { SignInUserData } from '../../../server/models';
-import network from './auth/network';
+import { ReactComponent as RWALogo } from '../../svgs/rwa-logo.svg';
+import { SignInUserData } from '../../../../server/models/user';
+import network from '../../utils/network';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -56,9 +56,11 @@ const SignInForm: React.FC = () => {
     remember: undefined,
   };
 
-  const login = (values: SignInUserData) => network.post('/api/users/login', values);
+  const login = async (values: SignInUserData) => {
+    const res = await network.post('/api/v1/auth/login', values);
+    console.log(res);
+  };
 
-  useEffect(() => { console.log('SignIn'); }, []);
   return (
     <>
       <h1>Sign In</h1>

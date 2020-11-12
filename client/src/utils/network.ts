@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { logout } from './loginLogout';
+import { logout } from './authUtils';
 
 const network = axios.create({});
 
@@ -16,6 +16,8 @@ network.interceptors.request.use(
 network.interceptors.response.use(
   (config: any) => {
     console.log('RESPONSE', config);
+    localStorage.setItem('token', config.data.accessToken);
+    localStorage.setItem('email', config.data.email);
     return config;
   },
   (error : any) => {

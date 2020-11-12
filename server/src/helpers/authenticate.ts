@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserInterface } from '../../models';
 const jwt = require('jsonwebtoken');
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction)  => {

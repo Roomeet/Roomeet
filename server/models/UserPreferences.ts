@@ -1,7 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-export interface UserPreferences extends Document {
+export interface UserPreferencesInterface extends Document {
   _id: string;
   userId: string;
   ages: { top: number; bottom: number };
@@ -55,7 +55,7 @@ UserPreferenceSchema.set('toJSON', {
   },
 });
 
-module.exports = model<UserPreferences>(
+module.exports = model<UserPreferencesInterface>(
   'UserPreferences',
   UserPreferenceSchema
 );

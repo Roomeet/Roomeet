@@ -4,24 +4,18 @@ import {
 } from 'react-router-dom';
 // import {  Router } from 'react-router';
 import './App.css';
-// import { isLoggedIn } from './components/auth/loginLogout';
-import SignUpForm from './components/signUpForm';
-import SignInForm from './components/signInForm';
+import { isLoggedIn } from './utils/authUtils';
+import SignUpForm from './components/auth/signUpForm';
+import SignInForm from './components/auth/signInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 
-const isLoggedIn = (): boolean => {
-  if (localStorage.getItem('token')) {
-    console.log('logged in');
-    return true;
-  }
-  return false;
-};
-
 function App():JSX.Element {
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>();
 
-  useEffect(() => { setLoggedIn(isLoggedIn()); }, []);
-  // useEffect(() => { console.log(isLoggedIn()); }, []);
+  useEffect(() => { 
+    setLoggedIn(isLoggedIn()); 
+  }, []);
+
   return (
     <div className="App">
       <Router>
