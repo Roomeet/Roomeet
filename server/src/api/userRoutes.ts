@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 });
 
 // Registers new user
-router.post('/', (req: Request, res: Response) => {
+router.post('/register', (req: Request, res: Response) => {
   try {
     const { body: userRegisterationData } = req;
 
@@ -35,6 +35,7 @@ router.post('/', (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 });
+
 
 // Post user data
 router.post('/user-data', (req: Request, res: Response) => {
