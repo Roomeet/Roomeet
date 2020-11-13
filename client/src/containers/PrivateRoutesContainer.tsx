@@ -3,13 +3,12 @@ import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
 
 interface Props {
-    loggedIn: boolean;
 }
 
-const PrivateRoutesContainer: React.FC<Props> = ({ loggedIn }) => (
+const PrivateRoutesContainer: React.FC<Props> = () => (
   <div>
     <Switch>
-      <PrivateRoute loggedIn={loggedIn} exact path="/home">
+      <PrivateRoute exact path="/home">
         <h1>You Have Entered Roomeet</h1>
         {/* <RoomatesContainer /> */}
       </PrivateRoute>

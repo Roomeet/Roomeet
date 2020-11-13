@@ -15,7 +15,6 @@ import {
 } from 'formik';
 import { string, object } from 'yup';
 import Alert from '@material-ui/lab/Alert';
-import { ReactComponent as RWALogo } from '../../svgs/rwa-logo.svg';
 import { SignInUserData } from '../../../../server/models/user';
 import network from '../../utils/network';
 
@@ -49,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignInForm: React.FC<Props> = ({ setLoggedIn }) => {
+const SignInForm: React.FC<Props> = ({ setLogged }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -64,7 +63,7 @@ const SignInForm: React.FC<Props> = ({ setLoggedIn }) => {
 
   const login = async (values: SignInUserData) => {
     await network.post('/api/v1/auth/login', values);
-    setLoggedIn(true);
+    setLogged(true);
     history.push('/home');
   };
 
@@ -78,8 +77,8 @@ const SignInForm: React.FC<Props> = ({ setLoggedIn }) => {
             {authState.context.message}
           </Alert>
         )} */}
-          <div>
-            <RWALogo className={classes.logo} />
+          <div className={classes.logo}>
+            Welcome To Roomeet
           </div>
           <Typography component="h1" variant="h5">
             Sign in

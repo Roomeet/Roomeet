@@ -14,7 +14,6 @@ import {
 import { string, object, ref } from 'yup';
 import network from '../../utils/network';
 import { SignUpUserData } from '../../../../server/models/user';
-import { ReactComponent as RWALogo } from '../../svgs/rwa-logo.svg';
 
 const validationSchema = object({
   name: string().required('First Name is required'),
@@ -69,8 +68,8 @@ const SignUpForm: React.FC = () => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <div>
-          <RWALogo className={classes.logo} />
+        <div className={classes.logo}>
+          Welcome To Roomeet
         </div>
         <Typography component="h1" variant="h5" data-test="signup-title">
           Sign Up

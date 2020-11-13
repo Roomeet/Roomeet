@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router, Redirect, Route, Switch, useHistory, useLocation,
 } from 'react-router-dom';
-// import {  Router } from 'react-router';
+import { Logged } from "./context/LoggedInContext";
 import './App.css';
 import Cookies from 'js-cookie';
 import SignUpForm from './pages/auth/signUpForm';
@@ -12,26 +12,26 @@ import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
 
 function App():JSX.Element {
-  const [loggedIn, setLoggedIn] = useState<boolean>();
+  const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        setLoggedIn(data);
+        setLogged(data);
         setLoading(false);
       } catch (e) {
-        setLoggedIn(false);
+        setLogged(false);
         setLoading(false);
       }
     } else {
-      setLoggedIn(false);
+      setLogged(false);
       setLoading(false);
     }
   };
 
-  // checks if a user is loggedIn
+  // checks if a user is logged
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -39,27 +39,29 @@ function App():JSX.Element {
   return (
     <Router>
       { !loading ?
-          loggedIn ? (
-            <PrivateRoutesContainer
-              loggedIn={loggedIn}
-            />
+          logged ? (
+            <Logged.Provider value={logged}>
+              <PrivateRoutesContainer/>
+            </Logged.Provider>
           )
-          : (
-            <Switch>
-              <Route exact path="/signup">
-                <SignUpForm />
-              </Route>
-              <Route exact path="/signin">
-                <SignInForm setLoggedIn={setLoggedIn}/>
-              </Route>
-              <Route path="/*">
-                <Redirect
-                  to={{
-                    pathname: '/signin',
-                  }}
-                />
-              </Route>
-            </Switch>
+            : (
+            <Logged.Provider value={logged}>
+              <Switch>
+                <Route exact path="/signup">
+                  <SignUpForm />
+                </Route>
+                <Route exact path="/signin">
+                  <SignInForm setLogged={setLogged}/>
+                </Route>
+                <Route path="/*">
+                  <Redirect
+                    to={{
+                      pathname: '/signin',
+                    }}
+                    />
+                </Route>
+              </Switch>
+            </Logged.Provider>
         )
         : <div>were loading...</div>
       }
