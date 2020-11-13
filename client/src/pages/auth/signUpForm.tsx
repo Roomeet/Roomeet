@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -50,6 +50,8 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUpForm: React.FC = () => {
   const classes = useStyles();
+  const location = useHistory();
+
   const initialValues: SignUpUserData & { confirmPassword: string } = {
     name: '',
     lastName: '',
@@ -58,7 +60,10 @@ const SignUpForm: React.FC = () => {
     email: '',
   };
 
-  const signUp = (values: SignUpUserData) => { network.post('/api/v1/auth/register', values); };
+  const signUp = (values: SignUpUserData) => {
+    network.post('/api/v1/auth/register', values);
+    location.push('/');
+  };
 
   return (
     <Container component="main" maxWidth="xs">

@@ -6,9 +6,11 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     const token = authHeader && authHeader.split(' ')[1]; // Or undefiend or the access token
     console.log(token);
     if(token == null) return res.status(401).send("Access Token Required");
-    jwt.verify(token, process.env.ACCESS_TOKKEN_SECRET,(err: string, decoded: any) => {
-        console.log(err);
-        if (err) return res.status(403).send("Invalid Access Token"); // you got a token but this is no longer valid
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(err: string, decoded: any) => {
+        if (err) {
+            console.log('error in authenticate token' ,err);
+            return res.status(403).send("Invalid Access Token"); // you got a token but this is no longer valid
+        };
         req.body.user = decoded;
         next();
     })

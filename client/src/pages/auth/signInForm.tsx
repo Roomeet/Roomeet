@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -48,8 +48,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignInForm: React.FC = () => {
+interface Props {
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+}
+
+const SignInForm: React.FC<Props> = ({ setLoggedIn }) => {
   const classes = useStyles();
+  const history = useHistory();
+
   const initialValues: SignInUserData = {
     email: '',
     password: '',
@@ -57,13 +63,13 @@ const SignInForm: React.FC = () => {
   };
 
   const login = async (values: SignInUserData) => {
-    const res = await network.post('/api/v1/auth/login', values);
-    console.log(res);
+    await network.post('/api/v1/auth/login', values);
+    setLoggedIn(true);
+    history.push('/home');
   };
 
   return (
     <>
-      <h1>Sign In</h1>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>

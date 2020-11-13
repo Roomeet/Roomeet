@@ -11,6 +11,7 @@ const RefreshToken = require('../../../models/refreshToken');
 //interfaces:
 import { UserInterface } from '../../../models/user';
 import { RefreshTokenInterface } from '../../../models/refreshToken';
+import { authenticateToken } from '../../helpers/authenticate';
 
 //types:
 type InfoForCookie =  {
@@ -27,6 +28,26 @@ const userIsExist = async (email:string):Promise<UserInterface> => {
 const generateToken = (userInfo: InfoForCookie) => 
   jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
   
+//validateToken
+router.get("/validateToken", authenticateToken, (req: Request, res: Response) => {
+  res.send(true);
+})
+
+// get new access token
+router.post("/token", async (req, res) => {
+  const refreshToken = req.body.token;
+  const validRefreshToken = await RefreshToken.findOne({token: refreshToken});
+  if (!validRefreshToken)
+    return res.status(403).json({ message: "Invalid Refresh Token" });
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: Error, decoded: any) => {
+    if (err) return res.status(403).json({ message: "Invalid Refresh Token" });
+    delete decoded.iat;
+    delete decoded.exp;
+    const updatedAccessToken = generateToken(decoded);
+    res.cookie("accessToken", updatedAccessToken);
+    res.json({ message: "token updated" });
+  });
+});
 
 // Registers new user
 router.post('/register', async (req: Request, res: Response) => {
@@ -74,7 +95,7 @@ router.post("/login", async (req: Request, res: Response) => {
       userId: user.id,
       email: user.email,
       };
-
+      
       // assigning new refresh token
       const refreshToken = jwt.sign(
       infoForCookie,
@@ -102,10 +123,14 @@ router.post("/login", async (req: Request, res: Response) => {
       }
 
       const accessToken = await generateToken(infoForCookie);
+      res.cookie('accessToken', accessToken);
+      res.cookie('refreshToken', refreshToken);
+      res.cookie('email', user.email);
       res.status(200).send({accessToken : accessToken, email: user.email});   
   } catch (error) {
       res.status(403).send();
   }
 })
+
 
 export default router;
