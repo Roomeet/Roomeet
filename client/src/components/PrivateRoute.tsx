@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-import { Logged } from '../context/LoggedInContext'
+import { Logged } from '../context/LoggedInContext';
 
-interface IPrivateRouteProps extends RouteProps {
-}
+type IPrivateRouteProps = RouteProps
 
 function PrivateRoute({ children, ...rest }: IPrivateRouteProps) {
   const logged = useContext(Logged);

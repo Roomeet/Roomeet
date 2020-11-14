@@ -2,10 +2,9 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
 
-interface Props {
-}
+// interface Props {}
 
-const PrivateRoutesContainer: React.FC<Props> = () => (
+const PrivateRoutesContainer: React.FC = () => (
   <div>
     <Switch>
       <PrivateRoute exact path="/home">
