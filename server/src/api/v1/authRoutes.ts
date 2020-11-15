@@ -4,13 +4,12 @@ const router = Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// mongoDB models:
-const User = require('../../../models/user');
-const RefreshToken = require('../../../models/refreshToken');
 
-//interfaces:
-import { UserInterface } from '../../../models/User';
-import { RefreshTokenInterface } from '../../../models/RefreshToken';
+
+
+//interfaces & mongoDB models:
+import User, { UserInterface } from '../../../models/user';
+import RefreshToken, { RefreshTokenInterface } from '../../../models/refreshToken';
 import { authenticateToken } from '../../helpers/authenticate';
 
 //types:
@@ -20,8 +19,8 @@ type InfoForCookie =  {
 }
   
 //helpers:
-const userIsExist = async (email:string):Promise<UserInterface> => {
-  const user:UserInterface = await User.findOne({email: email}).exec()
+const userIsExist = async (email:string):Promise<UserInterface | null> => {
+  const user:UserInterface | null = await User.findOne({email: email}).exec()
   return user;
 }
 
@@ -104,7 +103,7 @@ router.post("/login", async (req: Request, res: Response) => {
       )
 
       // checking if the user already have a token, and if does updates it.
-      const existingRefreshToken:RefreshTokenInterface = await RefreshToken.findOneAndUpdate(
+      const existingRefreshToken:RefreshTokenInterface | null = await RefreshToken.findOneAndUpdate(
         {email: loginData.email},
         {token: refreshToken}
       )

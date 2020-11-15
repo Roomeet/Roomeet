@@ -62,4 +62,4 @@ userSchema.set('toJSON', {
   },
 });
 
-module.exports = model<UserInterface>('User', userSchema);
+export default model<UserInterface>('User', userSchema);

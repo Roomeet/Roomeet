@@ -33,7 +33,7 @@ RefreshTokenSchema.set('toJSON', {
   },
 });
 
-module.exports = model<RefreshTokenInterface>(
+export default model<RefreshTokenInterface>(
   'RefreshToken',
   RefreshTokenSchema
 );
