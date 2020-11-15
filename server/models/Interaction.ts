@@ -8,7 +8,7 @@ export type UserConnection = {
   matchScore: number;
 };
 
-export interface Interactions extends Document {
+export interface Interaction extends Document {
   _id: string;
   userId: string;
   liked: UserConnection[];
@@ -45,4 +45,4 @@ InteractionsSchema.set('toJSON', {
   },
 });
 
-module.exports = model<Interactions>('Interactions', InteractionsSchema);
+module.exports = model<Interaction>('Interactions', InteractionsSchema);

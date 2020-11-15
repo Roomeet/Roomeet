@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
-// import path from 'path';
 
 require('dotenv').config();
 
@@ -31,8 +30,6 @@ function logger(req: Request, res: Response, next: NextFunction) {
 }
 
 app.use('/api', require('./api'));
-
-// app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('*', function(req,res){
   res.sendStatus(404)

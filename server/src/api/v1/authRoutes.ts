@@ -9,8 +9,8 @@ const User = require('../../../models/user');
 const RefreshToken = require('../../../models/refreshToken');
 
 //interfaces:
-import { UserInterface } from '../../../models/user';
-import { RefreshTokenInterface } from '../../../models/refreshToken';
+import { UserInterface } from '../../../models/User';
+import { RefreshTokenInterface } from '../../../models/RefreshToken';
 import { authenticateToken } from '../../helpers/authenticate';
 
 //types:
@@ -82,7 +82,7 @@ router.post("/login", async (req: Request, res: Response) => {
       return res.status(404).send("cannot find user")
   }
   try {
-      bcrypt.compare(loginData.password, user.password, (err: Error, result:boolean) => {
+      await bcrypt.compare(loginData.password, user.password, (err: Error, result:boolean) => {
       if(err) {
           res.status(403).send(err)
       } else if (!result) {
@@ -92,34 +92,34 @@ router.post("/login", async (req: Request, res: Response) => {
 
       const expiresIn = loginData.rememberMe ? "365 days" : "24h";
       const infoForCookie: InfoForCookie = {
-      userId: user.id,
-      email: user.email,
+        userId: user.id,
+        email: user.email,
       };
       
       // assigning new refresh token
       const refreshToken = jwt.sign(
-      infoForCookie,
-      process.env.REFRESH_TOKEN_SECRET,
-      {expiresIn: expiresIn}
+        infoForCookie,
+        process.env.REFRESH_TOKEN_SECRET,
+        {expiresIn: expiresIn}
       )
 
       // checking if the user already have a token, and if does updates it.
       const existingRefreshToken:RefreshTokenInterface = await RefreshToken.findOneAndUpdate(
-      {email: loginData.email},
-      {token: refreshToken}
+        {email: loginData.email},
+        {token: refreshToken}
       )
 
       // if user dosent have a token, creates one.
       if(!existingRefreshToken) {
-      const newRefreshToken = new RefreshToken({
+        const newRefreshToken = new RefreshToken({
           _id: new ObjectId(),
           email: user.email,
           token: refreshToken,
           createdAt: new Date(),
           updatedAt: null,
           deletedAt: null,
-      })    
-      newRefreshToken.save();
+        })    
+        newRefreshToken.save();
       }
 
       const accessToken = await generateToken(infoForCookie);
