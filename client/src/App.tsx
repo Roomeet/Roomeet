@@ -1,11 +1,11 @@
-/* eslint-disable */
+/*eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router, Redirect, Route, Switch, useHistory, useLocation,
 } from 'react-router-dom';
-import { Logged } from "./context/LoggedInContext";
-import './App.css';
 import Cookies from 'js-cookie';
+import { Logged } from './context/LoggedInContext';
+import './App.css';
 import SignUpForm from './pages/auth/signUpForm';
 import SignInForm from './pages/auth/signInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
@@ -47,13 +47,13 @@ function App():JSX.Element {
             : (
             <Logged.Provider value={logged}>
               <Switch>
-                <Route exact path="/signup">
+                <Route exact path='/signup'>
                   <SignUpForm />
                 </Route>
-                <Route exact path="/signin">
+                <Route exact path='/signin'>
                   <SignInForm setLogged={setLogged}/>
                 </Route>
-                <Route path="/*">
+                <Route path='/*'>
                   <Redirect
                     to={{
                       pathname: '/signin',

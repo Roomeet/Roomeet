@@ -18,14 +18,6 @@ export interface UserInterface extends Document {
   deletedAt: Date | null;
 }
 
-export type SignUpUserData = Pick<UserInterface, "name" | "lastName" | "password" | "email"> & {
-  confirmPassword?: string
-};
-
-export type SignInUserData = Pick<UserInterface, "email" | "password"> & {
-  remember?: Boolean;
-};
-
 const userSchema = new Schema({
   _id: {
     type: ObjectID,
