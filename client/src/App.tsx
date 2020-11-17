@@ -10,6 +10,7 @@ import SignUpForm from './pages/auth/signUpForm';
 import SignInForm from './pages/auth/signInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
+import Loading from './components/Loading';
 
 function App():JSX.Element {
   const [logged, setLogged] = useState<boolean>(false);
@@ -47,6 +48,9 @@ function App():JSX.Element {
             : (
             <Logged.Provider value={logged}>
               <Switch>
+                <Route exact path='/loading'>
+                  <Loading />
+                </Route>
                 <Route exact path='/signup'>
                   <SignUpForm />
                 </Route>

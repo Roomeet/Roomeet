@@ -19,6 +19,7 @@
     "eslint-config-airbnb": "^18.2.1",
     "formik": "^2.2.5",
     "js-cookie": "^2.2.1",
+    "node-sass": "^4.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
