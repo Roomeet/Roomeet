@@ -7,13 +7,15 @@ const router = Router();
 //mongoDB models:
 const User = require('../../../models/user');
 const UserData = require('../../../models/userData');
+const UserPreferences = require('../../../models/userPreferences');
+
 
 // Routes
 
 // Get all users
 router.get('/', /*authenticateToken ,*/ async (req: Request, res: Response) => {
   try {
-    const users: any[] = await User.find({})
+    const users: any[] = await UserPreferences.find({})
     res.json(users);    
   } catch (error) {
     res.status(500).json({ error });
