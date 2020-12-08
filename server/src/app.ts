@@ -31,9 +31,8 @@ function logger(req: Request, res: Response, next: NextFunction) {
 
 app.use('/api', require('./api'));
 
-app.use('*', function(req,res){
-  res.sendStatus(404)
-})
-
+app.use('*', function (req, res) {
+  res.sendStatus(404);
+});
 
 export default app;
