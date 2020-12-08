@@ -1,22 +1,24 @@
+/*eslint-disable */
+
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import {
+  MenuItem,
+  Container,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  CssBaseline,
+  Button,
+  Select,
+  Chip,
+} from '@material-ui/core';
 import {
   Formik, Form, Field, FieldProps,
 } from 'formik';
-import { string, object } from 'yup';
-import Alert from '@material-ui/lab/Alert';
+import { string, object, number } from 'yup';
 import { UserDataFormResponse } from '../../interfaces/userData';
-import network from '../../utils/network';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -45,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
   alertMessage: {
     marginBottom: theme.spacing(2),
   },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
 }));
 
 // interface Props {
@@ -53,23 +62,27 @@ const useStyles = makeStyles((theme) => ({
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
 
+  const validationSchema = object({
+    age: number().positive('age cannot be negative').max(120, 'max age is 120').required('must contain age')
+  });
+
   const initialValues: UserDataFormResponse = {
-    userId: '1', // todo: change to the connected userId
+    userId: '1',
     age: 18,
     gender: 'female',
-    smoke: false,
+    smoke: 'Never',
     pet: false,
     relationship: false,
     employed: false,
     interests: [],
     languages: [],
     music: [],
-    lookingFor: { roomate: false, friend: false },
+    lookingFor: [],
     numOfRoomates: 0,
-    religion: 'none',
+    religion: false,
   };
 
-  const login = async (values: UserDataFormResponse) => {
+  const submit = async (values: any) => {
     console.log(values);
   };
 
@@ -86,12 +99,12 @@ const UserDataForm: React.FC = () => {
             validationSchema={validationSchema}
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
-              login(values);
+              submit(values);
             }}
           >
             {({ isValid, isSubmitting }) => (
               <Form className={classes.form}>
-                <Field name="email">
+                <Field name="age">
                   {({
                     field, meta: {
                       error, value, initialValue, touched,
@@ -99,20 +112,20 @@ const UserDataForm: React.FC = () => {
                   }: FieldProps) => (
                     <TextField
                       variant="outlined"
-                      margin="normal"
+                      style={{margin: '5px'}}
                       fullWidth
-                      id="email"
-                      label="email"
-                      type="text"
+                      id="age"
+                      label="age"
+                      type="number"
                       autoFocus
-                      data-test="signin-email"
-                      error={(touched || value !== initialValue) && Boolean(error)}
+                      data-test="userdata-age"
+                      // error={(touched || value !== initialValue) && Boolean(error)}
                       helperText={touched || value !== initialValue ? error : ''}
                       {...field}
                     />
                   )}
                 </Field>
-                <Field name="password">
+                <Field name="gender">
                   {({
                     field, meta: {
                       error, value, initialValue, touched,
@@ -120,25 +133,194 @@ const UserDataForm: React.FC = () => {
                   }: FieldProps) => (
                     <TextField
                       variant="outlined"
-                      margin="normal"
+                      style={{margin: '5px'}}
                       fullWidth
-                      label="Password"
-                      type="password"
-                      id="password"
-                      data-test="signin-password"
-                      error={touched && value !== initialValue && Boolean(error)}
+                      label="gender"
+                      select
+                      id="gender"
+                      data-test="userdata-gender"
+                      // error={touched && value !== initialValue && Boolean(error)}
                       helperText={touched && value !== initialValue && touched ? error : ''}
                       {...field}
-                    />
+                    >
+                      <MenuItem value="female">female</MenuItem>
+                      <MenuItem value="male">male</MenuItem>
+                    </TextField>
+                  )}
+                </Field>
+                <Field name="smoke">
+                  {({
+                    field, meta: {
+                      error, value, initialValue, touched,
+                    },
+                  }: FieldProps) => (
+                    <TextField
+                      variant="outlined"
+                      style={{margin: '5px'}}
+                      fullWidth
+                      label="smoke"
+                      select
+                      id="smoke"
+                      data-test="userdata-smoke"
+                      // error={touched && value !== initialValue && Boolean(error)}
+                      helperText={touched && value !== initialValue && touched ? error : ''}
+                      {...field}
+                    >
+                      <MenuItem value="Never">Never</MenuItem>
+                      <MenuItem value="Allways">Allways</MenuItem>
+                      <MenuItem value="Sometimes">Sometimes</MenuItem>
+                    </TextField>
+                  )}
+                </Field>
+                <Field name="interests">
+                  {({
+                    field, meta: {
+                      error, value, initialValue, touched,
+                    },
+                  }: FieldProps) => (
+                    <Select
+                      variant="outlined"
+                      style={{margin: '5px'}}
+                      fullWidth
+                      label="interests"
+                      multiple
+                      id="interests"
+                      data-test="userdata-interests"
+                      // error={touched && value !== initialValue && Boolean(error)}
+                      {...field}
+                      renderValue={(selected) => (
+                        <div className={classes.chips}>
+                          {(selected as string[]).map((val) => (
+                            <Chip key={val} label={val} className={classes.chip} />
+                          ))}
+                        </div>
+                      )}
+                    >
+                      <MenuItem value="Sports">Sports</MenuItem>
+                      <MenuItem value="Dance">Dance</MenuItem>
+                      <MenuItem value="Books">Books</MenuItem>
+                    </Select>
+                  )}
+                </Field>
+                <Field name="languages">
+                  {({
+                    field, meta: {
+                      error, value, initialValue, touched,
+                    },
+                  }: FieldProps) => (
+                    <Select
+                      variant="outlined"
+                      style={{margin: '5px'}}
+                      fullWidth
+                      label="languages"
+                      multiple
+                      id="languages"
+                      data-test="userdata-languages"
+                      // error={touched && value !== initialValue && Boolean(error)}
+                      {...field}
+                      renderValue={(selected) => (
+                        <div className={classes.chips}>
+                          {(selected as string[]).map((val) => (
+                            <Chip key={val} label={val} className={classes.chip} />
+                          ))}
+                        </div>
+                      )}
+                    >
+                      <MenuItem value="Hebrew">Hebrew</MenuItem>
+                      <MenuItem value="English">English</MenuItem>
+                      <MenuItem value="Spanish">Spanish</MenuItem>
+                    </Select>
+                  )}
+                </Field>
+                <Field name="music">
+                  {({
+                    field, meta: {
+                      error, value, initialValue, touched,
+                    },
+                  }: FieldProps) => (
+                    <Select
+                      variant="outlined"
+                      style={{margin: '5px'}}
+                      fullWidth
+                      label="music"
+                      multiple
+                      id="music"
+                      data-test="userdata-music"
+                      // error={touched && value !== initialValue && Boolean(error)}
+                      {...field}
+                      renderValue={(selected) => (
+                        <div className={classes.chips}>
+                          {(selected as string[]).map((val) => (
+                            <Chip key={val} label={val} className={classes.chip} />
+                          ))}
+                        </div>
+                      )}
+                    >
+                      <MenuItem value="Rock">Rock</MenuItem>
+                      <MenuItem value="Classic">Classic</MenuItem>
+                    </Select>
+                  )}
+                </Field>
+                <Field name="lookingFor">
+                  {({
+                    field, meta: {
+                      error, value, initialValue, touched,
+                    },
+                  }: FieldProps) => (
+                    <Select
+                      variant="outlined"
+                      style={{margin: '5px'}}
+                      fullWidth
+                      label="looking for..."
+                      multiple
+                      id="lookingFor"
+                      data-test="userdata-lookingFor"
+                      // error={touched && value !== initialValue && Boolean(error)}
+                      {...field}
+                      renderValue={(selected) => (
+                        <div className={classes.chips}>
+                          {(selected as string[]).map((val) => (
+                            <Chip key={val} label={val} className={classes.chip} />
+                          ))}
+                        </div>
+                      )}
+                    >
+                      <MenuItem value="Roomate">Roomate</MenuItem>
+                      <MenuItem value="Friend">Friend</MenuItem>
+                    </Select>
                   )}
                 </Field>
                 <FormControlLabel
                   control={(
-                    <Field name="remember">
-                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="signin-remember-me" {...field} />}
+                    <Field name="pet">
+                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-pet" {...field} />}
                     </Field>
                   )}
-                  label="Remember me"
+                  label="pet"
+                />
+                <FormControlLabel
+                  control={(
+                    <Field name="relationship">
+                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-relationship" {...field} />}
+                    </Field>
+                  )}
+                  label="relationship"
+                />
+                <FormControlLabel
+                  control={(
+                    <Field name="employed">
+                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-employed" {...field} />}
+                    </Field>
+                  )}
+                  label="employed"
+                />
+                <FormControlLabel
+                  control={(
+                    <Field name="religion">
+                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-religion" {...field} />}
+                    </Field>
+                  )}
+                  label="religion"
                 />
                 <Button
                   type="submit"
@@ -146,7 +328,7 @@ const UserDataForm: React.FC = () => {
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                  data-test="signin-submit"
+                  data-test="userdata-submit"
                   disabled={!isValid || isSubmitting}
                 >
                   Submit

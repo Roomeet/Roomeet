@@ -16,6 +16,7 @@
   display: flex;
   justify-content: center;
   align-content: center;
+  overflow-y: scroll;
 }
 
 .user-data-form{
@@ -24,4 +25,5 @@
   display: flex;
   justify-content: center;
   align-content: center;
+  overflow-y: scroll;
 }

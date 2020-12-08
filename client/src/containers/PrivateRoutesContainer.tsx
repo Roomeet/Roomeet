@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
-import Roomates from '../pages/roomates';
+import Roomates from '../pages/roomates/roomates';
 import BGImage from '../images/woodBG.jpg';
 import UserDataForm from '../pages/user-data form/userDataForm';
 
