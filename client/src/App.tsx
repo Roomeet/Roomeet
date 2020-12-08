@@ -37,35 +37,37 @@ function App():JSX.Element {
   }, []);
 
   return (
-    <Router>
-      { !loading ?
-          logged ? (
-            <Logged.Provider value={logged}>
-              <PrivateRoutesContainer/>
-            </Logged.Provider>
-          )
+    <div className="App">
+      <Router>
+        { !loading ?
+            logged ? (
+              <Logged.Provider value={logged}>
+                <PrivateRoutesContainer/>
+              </Logged.Provider>
+            )
             : (
-            <Logged.Provider value={logged}>
-              <Switch>
-                <Route exact path='/signup'>
-                  <SignUpForm />
-                </Route>
-                <Route exact path='/signin'>
-                  <SignInForm setLogged={setLogged}/>
-                </Route>
-                <Route path='/*'>
-                  <Redirect
-                    to={{
-                      pathname: '/signin',
-                    }}
-                    />
-                </Route>
-              </Switch>
-            </Logged.Provider>
-        )
-        : <div>were loading...</div>
-      }
-    </Router>
+              <Logged.Provider value={logged}>
+                <Switch>
+                  <Route exact path='/signup'>
+                    <SignUpForm />
+                  </Route>
+                  <Route exact path='/signin'>
+                    <SignInForm setLogged={setLogged}/>
+                  </Route>
+                  <Route path='/*'>
+                    <Redirect
+                      to={{
+                        pathname: '/signin',
+                      }}
+                      />
+                  </Route>
+                </Switch>
+              </Logged.Provider>
+          )
+          : <div>were loading...</div>
+        }
+      </Router>
+    </div>
   );
 }
 
