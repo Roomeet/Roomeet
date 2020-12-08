@@ -1,12 +1,16 @@
+/* eslint-disable no-undef */
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
+
+
+type Smoke = 'Allways' | 'Sometime' | 'Never';
 
 export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
   age: number;
   gender: string;
-  smoke: boolean;
+  smoke: Smoke;
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
@@ -32,7 +36,7 @@ const UserDataSchema = new Schema({
   },
   age: { type: Number, required: true },
   gender: { type: String, required: true },
-  smoke: { type: Boolean, required: true },
+  smoke: { type: String, required: true },
   pet: { type: Boolean, required: true },
   relationship: { type: Boolean },
   employed: { type: Boolean },

@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
+mongoose.set('useCreateIndex', true);
+
 require('dotenv').config();
 
 const URI = process.env.MONGODB_URI;
@@ -27,7 +29,8 @@ function logger(req: Request, res: Response, next: NextFunction) {
   );
   requestID += 1;
   next();
-}
+};
+
 
 app.use('/api', require('./api'));
 
