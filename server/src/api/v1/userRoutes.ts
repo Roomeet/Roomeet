@@ -15,7 +15,7 @@ const UserPreferences = require('../../../models/userPreferences');
 // Get all users
 router.get('/', /*authenticateToken ,*/ async (req: Request, res: Response) => {
   try {
-    const users: any[] = await UserPreferences.find({})
+    const users: any[] = await User.find({})
     res.json(users);    
   } catch (error) {
     res.status(500).json({ error });
