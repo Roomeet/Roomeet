@@ -18,14 +18,14 @@ const Roomates: React.FC = () => {
           <div>All Roomates</div>
         ) : (
           <Paper className='no-preferences-card'>
-            <Typography component='div'>
-              You need to set your profile
-              <IconButton>
-                <Link to='/profile'>
+            <IconButton>
+              <Link to='/profile'>
+                <Typography component='div'>
+                  You need to set your profile
                   <PersonAddIcon />
-                </Link>
-              </IconButton>
-            </Typography>
+                </Typography>
+              </Link>
+            </IconButton>
           </Paper>
         )
       ) : (

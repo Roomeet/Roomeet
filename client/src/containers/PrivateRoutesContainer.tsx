@@ -13,7 +13,7 @@ const PrivateRoutesContainer: React.FC = () => (
       <PrivateRoute exact path="/home">
         <Roomates />
       </PrivateRoute>
-      <PrivateRoute exact path="/preferences">
+      <PrivateRoute exact path="/profile">
         <UserDataForm />
       </PrivateRoute>
       <Route path="/*">

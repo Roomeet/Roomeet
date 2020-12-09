@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    background: 'white',
+    padding: '20px',
+    borderRadius: '10px/12px'
   },
   logo: {
     color: theme.palette.primary.main,
@@ -88,7 +91,7 @@ const UserDataForm: React.FC = () => {
 
   return (
     <div className="user-data-form">
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
           <div className={classes.logo}>
