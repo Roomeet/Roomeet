@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
-const server = require('../app.ts');
+// const app = require('../app');
+import app from '../app'
 
 // mock users
 const userSignupMock = {
@@ -11,13 +12,15 @@ const userSignupMock = {
 };
 
 describe('Register and Login Tests', () => {
-  afterAll(async () => {
-    await server.close();
-  });
+  jest.setTimeout(30000)
+  // afterAll(async () => {
+  //   await app.connec();
+  // });
 
   // Register
   test('User Can Register', async (done) => {
-    const signUpResponse = await request(server)
+
+    const signUpResponse = await request(app)
       .post('/api/v1/auth/register')
       .send(userSignupMock);
 
