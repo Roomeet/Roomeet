@@ -24,11 +24,11 @@ export interface UserDataInterface extends Document {
 const UserDataSchema = new Schema({
   _id: {
     type: ObjectId,
-    required: true,
+    required: true
   },
   userId: {
     type: ObjectId,
-    required: true,
+    required: true
   },
   age: { type: Number, required: true },
   gender: { type: String, required: true },
@@ -44,7 +44,7 @@ const UserDataSchema = new Schema({
   religion: String,
   createdAt: Date,
   updatedAt: Date,
-  deletedAt: Date,
+  deletedAt: Date
 });
 
 UserDataSchema.set('toJSON', {
@@ -52,7 +52,7 @@ UserDataSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  },
+  }
 });
 
 module.exports = model<UserDataInterface>('UserData', UserDataSchema);

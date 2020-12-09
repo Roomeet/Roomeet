@@ -1,3 +1,29 @@
 .App {
   text-align: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+#private-routes {
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.cards-page{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  overflow-y: scroll;
+}
+
+.user-data-form{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  overflow-y: scroll;
 }
