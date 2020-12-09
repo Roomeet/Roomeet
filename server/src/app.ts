@@ -9,6 +9,7 @@ const app: express.Application = express();
 
 app.use(logger);
 app.use(express.urlencoded({ extended: false }));
+app.use('/', express.static('./build/'));
 app.use(express.json());
 
 mongoose
