@@ -20,8 +20,8 @@ const Roomates: React.FC = () => {
           <Paper className='no-preferences-card'>
             <IconButton>
               <Link to='/profile'>
-                <Typography component='div'>
-                  You need to set your profile
+                <Typography component='div' className='button'>
+                  <p>You need to set your profile</p>
                   <PersonAddIcon />
                 </Typography>
               </Link>
