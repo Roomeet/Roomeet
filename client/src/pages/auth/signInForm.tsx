@@ -17,6 +17,7 @@ import { string, object } from 'yup';
 import Alert from '@material-ui/lab/Alert';
 import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
+import { UserContext } from '../../context/UserContext';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -54,6 +55,7 @@ interface Props {
 const SignInForm: React.FC<Props> = ({ setLogged }) => {
   const classes = useStyles();
   const history = useHistory();
+  const context = React.useContext(UserContext);
 
   const initialValues: SignInUserData = {
     email: '',
@@ -62,8 +64,10 @@ const SignInForm: React.FC<Props> = ({ setLogged }) => {
   };
 
   const login = async (values: SignInUserData) => {
-    await network.post('/api/v1/auth/login', values);
-    setLogged(true);
+    const user = await network.post('/api/v1/auth/login', values);
+    console.log(user);
+    context.logUserIn(user);
+
     history.push('/home');
   };
 

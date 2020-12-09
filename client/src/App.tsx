@@ -9,29 +9,31 @@ import {
   useLocation,
 } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Logged } from './context/LoggedInContext';
+import { Logged } from './context/UserContext';
 import './App.css';
 import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
+import { UserContext } from './context/UserContext';
 
 function App(): JSX.Element {
-  const [logged, setLogged] = useState<boolean>(false);
+  // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const context = React.useContext(UserContext);
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        setLogged(data);
+        context.logUserIn(data);
         setLoading(false);
       } catch (e) {
-        setLogged(false);
+        context.logUserIn({ success: false });
         setLoading(false);
       }
     } else {
-      setLogged(false);
+      context.logUserIn({ success: false });
       setLoading(false);
     }
   };
