@@ -2,7 +2,7 @@
 The Roomate matching service for you
 ## find
 - [Linting](#lint)
-- [Branch naming](#Brances)
+- [Branch naming](#Branches)
 - [Code Conventions](#Conventions)  
 
 ---
