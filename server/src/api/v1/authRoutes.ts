@@ -72,7 +72,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
   
-  //login
+//login
 router.post("/login", async (req: Request, res: Response) => {
   const loginData = req.body
   const user = await userIsExist(loginData.email);

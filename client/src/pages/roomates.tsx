@@ -6,6 +6,7 @@ import network from '../utils/network';
 import { Container, IconButton, Paper, Typography } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import './roomates.css';
+import RoomateCard from '../components/roomateCard';
 
 const Roomates: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,16 +21,17 @@ const Roomates: React.FC = () => {
             </div>
           )
             : (
-            <Paper className="no-preferences-card">
-              <Typography component="div">
-                You need to set prefernces
-                <IconButton> 
-                  <Link to="/userDataForm">
-                    <PersonAddIcon/> 
-                  </Link>
-                </IconButton>
-              </Typography>
-             </Paper>
+            // <Paper className="no-preferences-card">
+            //   <Typography component="div">
+            //     You need to set prefernces
+            //     <IconButton> 
+            //       <Link to="/userDataForm">
+            //         <PersonAddIcon/> 
+            //       </Link>
+            //     </IconButton>
+            //   </Typography>
+            //  </Paper>
+            <RoomateCard/>
         )
         : <div>loading...</div>
       }
