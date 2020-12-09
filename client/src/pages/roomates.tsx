@@ -22,6 +22,19 @@ const Roomates: React.FC = () => {
   useEffect(() => {
     fetchData()
   }, [])
+
+  const useStyles = makeStyles({
+    AllCardsDiv: {
+      display: 'flex',
+      height: '100%',
+      width: '100%',
+      flexWrap: 'wrap',
+      overflowX: 'scroll'
+    },
+  });
+
+  const classes = useStyles()
+
   return (
     <div className="cards-page">
       { !loading ?
@@ -41,11 +54,11 @@ const Roomates: React.FC = () => {
             //     </IconButton>
             //   </Typography>
             //  </Paper>
-            <div>
+            <div className={classes.AllCardsDiv}>
             {allUsersInfo.map((userInfo: UserDataInterface) => 
               <RoomateCard userInfo={userInfo}/> 
               )}
-              </div>
+            </div>
         )
         : <div>loading...</div>
       }

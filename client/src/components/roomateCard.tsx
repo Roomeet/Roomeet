@@ -15,7 +15,6 @@ export type Props = {
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
     backgroundColor: '#BFB4AB',
     display: 'flex',
     flexDirection: 'column',
@@ -23,6 +22,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     border: '5px solid #2E2019',
     color: '#2E2019',
+    width: '100%',
   },
   bullet: {
     display: 'inline-block',
@@ -41,8 +41,13 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
   },
   cardDiv: {
-    height: '30vh',
-    backgroundColor: 'black',
+    height: '100%',
+    width: '30%',
+    marginTop: '3vh',
+    marginBottom: '3vh',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+
   },
   profilePic: {
     borderRadius: '50%',
@@ -51,7 +56,6 @@ const useStyles = makeStyles({
 });
 
 const RoomateCard: React.FC<Props> = ({ userInfo }) => {
-  console.log(userInfo);
   const classes = useStyles();
   return (
     <div className={classes.cardDiv}>
@@ -70,15 +74,21 @@ const RoomateCard: React.FC<Props> = ({ userInfo }) => {
             />
           </Typography>
           <Typography variant="h5" component="h2">
-            Roomate Name
+            {userInfo.userId}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
             Summary:
           </Typography>
           <Typography variant="body2" component="p">
-            Some stupid facts
+            {userInfo.age}
+            ,
+            {userInfo.gender}
             <br />
-            anothor stupid facts
+            looking for :
+            {' '}
+            {
+              userInfo.lookingFor.roomate ? 'roomate' : 'friend'
+            }
           </Typography>
         </CardContent>
         <CardActions>
