@@ -6,7 +6,7 @@ import network from '../utils/network';
 import { Container, IconButton, Paper, Typography } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import './roomates.css';
-import RoomateCard from '../components/roomateCard';
+import RoomateCard from '../components/RoomateCard'
 
 const Roomates: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
