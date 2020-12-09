@@ -7,6 +7,11 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import blueDoor from '../images/blueDoor.png';
 import brownDoor from '../images/brownDoor.png';
+import { UserDataInterface } from '../../../server/models/UserData';
+
+export type Props = {
+  [key: string]: any;
+};
 
 const useStyles = makeStyles({
   root: {
@@ -45,7 +50,8 @@ const useStyles = makeStyles({
   },
 });
 
-const RoomateCard: React.FC = () => {
+const RoomateCard: React.FC<Props> = ({ userInfo }) => {
+  console.log(userInfo);
   const classes = useStyles();
   return (
     <div className={classes.cardDiv}>

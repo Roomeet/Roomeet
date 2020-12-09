@@ -20,6 +20,16 @@ router.get('/', /*authenticateToken ,*/ async (req: Request, res: Response) => {
   }
 });
 
+// Get all users data form
+router.get('/basic-info', /*authenticateToken ,*/ async (req: Request, res: Response) => {
+  try {
+    const usersData: any[] = await UserData.find({})
+    res.json(usersData);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 // Post user data
 router.post('/user-data', (req: Request, res: Response) => {
   try {
