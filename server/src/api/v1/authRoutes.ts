@@ -127,4 +127,12 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+router.post('/logout', async (req: Request, res: Response) => {
+  const refreshToken = req.body.token;
+  if (refreshToken === null) return res.status(400).send('Refresh Token Required');
+  const tokenToDelete = await RefreshToken.deleteOne({ token: refreshToken });
+  if (tokenToDelete.deletedCount === 0) return res.status(400).send('Invalid Refresh Token');
+  res.status(200).send('User Logged Out Successfully');
+});
+
 export default router;
