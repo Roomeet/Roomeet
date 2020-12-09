@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props {
-  setLogged: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface Props {
+//   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
-const SignInForm: React.FC<Props> = ({ setLogged }) => {
+const SignInForm: React.FC<any> = () => {
   const classes = useStyles();
   const history = useHistory();
   const context = React.useContext(UserContext);
@@ -64,10 +64,8 @@ const SignInForm: React.FC<Props> = ({ setLogged }) => {
   };
 
   const login = async (values: SignInUserData) => {
-    const user = await network.post('/api/v1/auth/login', values);
-    console.log(user);
-    context.logUserIn(user);
-
+    const { data } = await network.post('/api/v1/auth/login', values);
+    context.logUserIn({ ...data, success: true });
     history.push('/home');
   };
 

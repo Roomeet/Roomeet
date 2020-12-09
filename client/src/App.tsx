@@ -26,7 +26,7 @@ function App(): JSX.Element {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        context.logUserIn(data);
+        context.logUserIn({ ...data, success: true });
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });
@@ -47,18 +47,18 @@ function App(): JSX.Element {
     <div className='App'>
       <Router>
         {!loading ? (
-          logged ? (
-            <Logged.Provider value={logged}>
+          context.success ? (
+            <Logged.Provider value={context.success}>
               <PrivateRoutesContainer />
             </Logged.Provider>
           ) : (
-            <Logged.Provider value={logged}>
+            <Logged.Provider value={context.success}>
               <Switch>
                 <Route exact path='/signup'>
                   <SignUpForm />
                 </Route>
                 <Route exact path='/signin'>
-                  <SignInForm setLogged={setLogged} />
+                  <SignInForm />
                 </Route>
                 <Route path='/*'>
                   <Redirect
