@@ -12,27 +12,25 @@ const Roomates: React.FC = () => {
   const [prefernces, setPrefernces] = useState<boolean>(false); // todo: get actuall prefernces for the user and create prefernces interface
 
   return (
-    <div className="cards-page">
-      { !loading ?
-          prefernces ? (
-            <div>
-              All Roomates
-            </div>
-          )
-            : (
-            <Paper className="no-preferences-card">
-              <Typography component="div">
-                You need to set prefernces
-                <IconButton> 
-                  <Link to="/userDataForm">
-                    <PersonAddIcon/> 
-                  </Link>
-                </IconButton>
-              </Typography>
-             </Paper>
+    <div className='cards-page'>
+      {!loading ? (
+        prefernces ? (
+          <div>All Roomates</div>
+        ) : (
+          <Paper className='no-preferences-card'>
+            <Typography component='div'>
+              You need to set your profile
+              <IconButton>
+                <Link to='/profile'>
+                  <PersonAddIcon />
+                </Link>
+              </IconButton>
+            </Typography>
+          </Paper>
         )
-        : <div>loading...</div>
-      }
+      ) : (
+        <div>loading...</div>
+      )}
     </div>
   );
 };
