@@ -5,3 +5,20 @@
   justify-self: center;
   align-self: center;
 }
+
+.button {
+  display: flex;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+.no-preferences-card:hover {
+  background: rgb(212, 212, 212);
+}

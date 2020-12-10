@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
-import Roomates from '../pages/roomates/roomates';
+import Roomates from '../pages/roomates/Roomates';
 import BGImage from '../images/woodBG.jpg';
-import UserDataForm from '../pages/user-data form/userDataForm';
+import UserDataForm from '../pages/preferences-form/UserDataForm';
 
 // interface Props {}
 
@@ -13,7 +13,7 @@ const PrivateRoutesContainer: React.FC = () => (
       <PrivateRoute exact path="/home">
         <Roomates />
       </PrivateRoute>
-      <PrivateRoute exact path="/userDataForm">
+      <PrivateRoute exact path="/profile">
         <UserDataForm />
       </PrivateRoute>
       <Route path="/*">

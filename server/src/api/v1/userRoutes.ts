@@ -13,41 +13,50 @@ const UserData = require('../../../models/userData');
 // Routes
 
 // Get all users
-router.get('/', /* authenticateToken , */ async (req: Request, res: Response) => {
-  try {
-    const users = await User.find({});
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error });
+router.get(
+  '/',
+  /* authenticateToken , */ async (req: Request, res: Response) => {
+    try {
+      const users = await User.find({});
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error });
+    }
   }
-});
+);
 
 // Get all users data form
-router.get('/basic-info', /* authenticateToken , */ async (req: Request, res: Response) => {
-  try {
-    const usersData: any[] = await UserData.find({});
-    res.json(usersData);
-  } catch (error) {
-    res.status(500).json({ error });
+router.get(
+  '/basic-info',
+  /* authenticateToken , */ async (req: Request, res: Response) => {
+    try {
+      const usersData: any[] = await UserData.find({});
+      res.json(usersData);
+    } catch (error) {
+      res.status(500).json({ error });
+    }
   }
-});
+);
 
 // Get single user for client context
-router.get('/email/:email', /* authenticateToken , */ async (req: Request, res: Response) => {
-  const { email } = req.params;
+router.get(
+  '/email/:email',
+  /* authenticateToken , */ async (req: Request, res: Response) => {
+    const { email } = req.params;
 
-  try {
-    const user = await User.find({ email });
-    res.json({
-      id: user[0].id,
-      name: user[0].name,
-      lastName: user[0].lastName,
-      email: user[0].email
-    });
-  } catch (error) {
-    res.status(500).json({ error });
+    try {
+      const user = await User.find({ email });
+      res.json({
+        id: user[0].id,
+        name: user[0].name,
+        lastName: user[0].lastName,
+        email: user[0].email
+      });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
   }
-});
+);
 
 // Post user data
 router.post('/user-data', (req: Request, res: Response) => {

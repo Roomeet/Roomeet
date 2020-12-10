@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-import { Logged } from '../context/LoggedInContext';
+import { Logged } from '../context/UserContext';
 
 type IPrivateRouteProps = RouteProps
 

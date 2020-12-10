@@ -30,7 +30,7 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start": "eslint ./src --ext .tsx,.ts --fix && react-scripts start",
+    "start": "react-scripts start",
     "lint": "eslint ./src --ext .tsx,.ts --fix",
     "build": "react-scripts build && rm -rf ../server/build && mv build ../server",
     "test": "react-scripts test",
