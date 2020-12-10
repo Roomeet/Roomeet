@@ -41,12 +41,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     width: '100%',
   },
-  AllCardsDiv: {
-    display: 'flex',
-    height: '100%',
+  item: {
+    display: 'block',
+    maxWidth: 400,
+    overflow: 'hidden',
     width: '100%',
-    flexWrap: 'wrap',
-    overflowX: 'scroll',
   },
 }));
 
@@ -102,7 +101,7 @@ function Roomates() {
           </div> */}
               {allUsersInfo.map(
                 (userInfo: UserDataInterface, index: number) => (
-                  <div key={userInfo._id}>
+                  <div className={classes.item} key={userInfo._id}>
                     {Math.abs(activeStep - index) <= 2 ? (
                       <RoomateCard userInfo={userInfo} key={index} />
                     ) : null}
