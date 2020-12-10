@@ -11,7 +11,7 @@ import {
 import Cookies from 'js-cookie';
 import { Logged } from './context/UserContext';
 import './App.css';
-import SignUpForm from './pages/auth/SignUpForm';
+// import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
@@ -61,7 +61,7 @@ function App(): JSX.Element {
             <Logged.Provider value={context.success}>
               <Switch>
                 <Route exact path='/signup'>
-                  <SignUpForm />
+                  {/* <SignUpForm /> */}
                 </Route>
                 <Route exact path='/signin'>
                   <SignInForm />
