@@ -5,9 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import network from '../../utils/network';
 import { Container, IconButton, Paper, Typography } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { UserDataInterface } from '../../../server/models/UserData';
+import { UserDataInterface } from '../../interfaces/userData';
+import RoomateCard from '../../components/RoomateCard'
 import './roomates.css';
-import RoomateCard from '../components/RoomateCard';
 
 const Roomates: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,8 +52,8 @@ const Roomates: React.FC = () => {
           //   </Typography>
           //  </Paper>
           <div className={classes.AllCardsDiv}>
-            {allUsersInfo.map((userInfo: UserDataInterface) => (
-              <RoomateCard userInfo={userInfo} />
+            {allUsersInfo.map((userInfo: UserDataInterface, index: number) => (
+              <RoomateCard userInfo={userInfo} key={index}/>
             ))}
           </div>
         )
