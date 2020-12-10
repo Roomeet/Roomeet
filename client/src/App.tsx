@@ -9,29 +9,31 @@ import {
   useLocation,
 } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Logged } from './context/LoggedInContext';
+import { Logged } from './context/UserContext';
 import './App.css';
 import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
+import { UserContext } from './context/UserContext';
 
 function App(): JSX.Element {
-  const [logged, setLogged] = useState<boolean>(false);
+  // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const context = React.useContext(UserContext);
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        setLogged(data);
+        context.logUserIn({ ...data, success: true });
         setLoading(false);
       } catch (e) {
-        setLogged(false);
+        context.logUserIn({ success: false });
         setLoading(false);
       }
     } else {
-      setLogged(false);
+      context.logUserIn({ success: false });
       setLoading(false);
     }
   };
@@ -45,18 +47,18 @@ function App(): JSX.Element {
     <div className='App'>
       <Router>
         {!loading ? (
-          logged ? (
-            <Logged.Provider value={logged}>
+          context.success ? (
+            <Logged.Provider value={context.success}>
               <PrivateRoutesContainer />
             </Logged.Provider>
           ) : (
-            <Logged.Provider value={logged}>
+            <Logged.Provider value={context.success}>
               <Switch>
                 <Route exact path='/signup'>
                   <SignUpForm />
                 </Route>
                 <Route exact path='/signin'>
-                  <SignInForm setLogged={setLogged} />
+                  <SignInForm />
                 </Route>
                 <Route path='/*'>
                   <Redirect

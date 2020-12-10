@@ -13,12 +13,12 @@ import {
   Button,
   Select,
   Chip,
+  InputLabel,
 } from '@material-ui/core';
-import {
-  Formik, Form, Field, FieldProps,
-} from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object, number } from 'yup';
 import { UserDataFormResponse } from '../../interfaces/userData';
+import { UserContext } from '../../context/UserContext';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     background: 'white',
     padding: '20px',
-    borderRadius: '10px/12px'
+    borderRadius: '10px/12px',
   },
   logo: {
     color: theme.palette.primary.main,
@@ -64,9 +64,13 @@ const useStyles = makeStyles((theme) => ({
 
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
+  const context = React.useContext(UserContext);
 
   const validationSchema = object({
-    age: number().positive('age cannot be negative').max(120, 'max age is 120').required('must contain age')
+    age: number()
+      .positive('age cannot be negative')
+      .max(120, 'max age is 120')
+      .required('must contain age'),
   });
 
   const initialValues: UserDataFormResponse = {
@@ -87,16 +91,15 @@ const UserDataForm: React.FC = () => {
 
   const submit = async (values: any) => {
     console.log(values);
+    console.log(context);
   };
 
   return (
-    <div className="user-data-form">
-      <Container component="main" maxWidth="sm">
+    <div className='user-data-form'>
+      <Container component='main' maxWidth='sm'>
         <CssBaseline />
         <div className={classes.paper}>
-          <div className={classes.logo}>
-            Let Us Know About You More
-          </div>
+          <div className={classes.logo}>Let Us Know About You More</div>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -107,231 +110,274 @@ const UserDataForm: React.FC = () => {
           >
             {({ isValid, isSubmitting }) => (
               <Form className={classes.form}>
-                <Field name="age">
+                <Field name='age'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <TextField
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      id="age"
-                      label="age"
-                      type="number"
+                      id='age'
+                      label='age'
+                      type='number'
                       autoFocus
-                      data-test="userdata-age"
+                      data-test='userdata-age'
                       // error={(touched || value !== initialValue) && Boolean(error)}
-                      helperText={touched || value !== initialValue ? error : ''}
+                      helperText={
+                        touched || value !== initialValue ? error : ''
+                      }
                       {...field}
                     />
                   )}
                 </Field>
-                <Field name="gender">
+                <Field name='gender'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <TextField
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      label="gender"
+                      label='gender'
                       select
-                      id="gender"
-                      data-test="userdata-gender"
+                      id='gender'
+                      data-test='userdata-gender'
                       // error={touched && value !== initialValue && Boolean(error)}
-                      helperText={touched && value !== initialValue && touched ? error : ''}
+                      helperText={
+                        touched && value !== initialValue && touched
+                          ? error
+                          : ''
+                      }
                       {...field}
                     >
-                      <MenuItem value="female">female</MenuItem>
-                      <MenuItem value="male">male</MenuItem>
+                      <MenuItem value='female'>female</MenuItem>
+                      <MenuItem value='male'>male</MenuItem>
                     </TextField>
                   )}
                 </Field>
-                <Field name="smoke">
+                <Field name='smoke'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <TextField
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      label="smoke"
+                      label='smoke'
                       select
-                      id="smoke"
-                      data-test="userdata-smoke"
+                      id='smoke'
+                      data-test='userdata-smoke'
                       // error={touched && value !== initialValue && Boolean(error)}
-                      helperText={touched && value !== initialValue && touched ? error : ''}
+                      helperText={
+                        touched && value !== initialValue && touched
+                          ? error
+                          : ''
+                      }
                       {...field}
                     >
-                      <MenuItem value="Never">Never</MenuItem>
-                      <MenuItem value="Allways">Allways</MenuItem>
-                      <MenuItem value="Sometimes">Sometimes</MenuItem>
+                      <MenuItem value='Never'>Never</MenuItem>
+                      <MenuItem value='Allways'>Allways</MenuItem>
+                      <MenuItem value='Sometimes'>Sometimes</MenuItem>
                     </TextField>
                   )}
                 </Field>
-                <Field name="interests">
+                <Field name='interests'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <Select
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      label="interests"
+                      label='interests'
                       multiple
-                      id="interests"
-                      data-test="userdata-interests"
+                      id='interests'
+                      data-test='userdata-interests'
                       // error={touched && value !== initialValue && Boolean(error)}
                       {...field}
                       renderValue={(selected) => (
                         <div className={classes.chips}>
                           {(selected as string[]).map((val) => (
-                            <Chip key={val} label={val} className={classes.chip} />
+                            <Chip
+                              key={val}
+                              label={val}
+                              className={classes.chip}
+                            />
                           ))}
                         </div>
                       )}
                     >
-                      <MenuItem value="Sports">Sports</MenuItem>
-                      <MenuItem value="Dance">Dance</MenuItem>
-                      <MenuItem value="Books">Books</MenuItem>
+                      <MenuItem value='Sports'>Sports</MenuItem>
+                      <MenuItem value='Dance'>Dance</MenuItem>
+                      <MenuItem value='Books'>Books</MenuItem>
                     </Select>
                   )}
                 </Field>
-                <Field name="languages">
+                <Field name='languages'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <Select
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      label="languages"
+                      label='languages'
                       multiple
-                      id="languages"
-                      data-test="userdata-languages"
+                      id='languages'
+                      data-test='userdata-languages'
                       // error={touched && value !== initialValue && Boolean(error)}
                       {...field}
                       renderValue={(selected) => (
                         <div className={classes.chips}>
                           {(selected as string[]).map((val) => (
-                            <Chip key={val} label={val} className={classes.chip} />
+                            <Chip
+                              key={val}
+                              label={val}
+                              className={classes.chip}
+                            />
                           ))}
                         </div>
                       )}
                     >
-                      <MenuItem value="Hebrew">Hebrew</MenuItem>
-                      <MenuItem value="English">English</MenuItem>
-                      <MenuItem value="Spanish">Spanish</MenuItem>
+                      <MenuItem value='Hebrew'>Hebrew</MenuItem>
+                      <MenuItem value='English'>English</MenuItem>
+                      <MenuItem value='Spanish'>Spanish</MenuItem>
                     </Select>
                   )}
                 </Field>
-                <Field name="music">
+                <Field name='music'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <Select
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      label="music"
+                      label='music'
                       multiple
-                      id="music"
-                      data-test="userdata-music"
+                      id='music'
+                      data-test='userdata-music'
                       // error={touched && value !== initialValue && Boolean(error)}
                       {...field}
                       renderValue={(selected) => (
                         <div className={classes.chips}>
                           {(selected as string[]).map((val) => (
-                            <Chip key={val} label={val} className={classes.chip} />
+                            <Chip
+                              key={val}
+                              label={val}
+                              className={classes.chip}
+                            />
                           ))}
                         </div>
                       )}
                     >
-                      <MenuItem value="Rock">Rock</MenuItem>
-                      <MenuItem value="Classic">Classic</MenuItem>
+                      <MenuItem value='Rock'>Rock</MenuItem>
+                      <MenuItem value='Classic'>Classic</MenuItem>
                     </Select>
                   )}
                 </Field>
-                <Field name="lookingFor">
+                <Field name='lookingFor'>
                   {({
-                    field, meta: {
-                      error, value, initialValue, touched,
-                    },
+                    field,
+                    meta: { error, value, initialValue, touched },
                   }: FieldProps) => (
                     <Select
-                      variant="outlined"
-                      style={{margin: '5px'}}
+                      variant='outlined'
+                      style={{ margin: '5px' }}
                       fullWidth
-                      label="looking for..."
+                      label='looking for...'
                       multiple
-                      id="lookingFor"
-                      data-test="userdata-lookingFor"
+                      id='lookingFor'
+                      data-test='userdata-lookingFor'
                       // error={touched && value !== initialValue && Boolean(error)}
                       {...field}
                       renderValue={(selected) => (
                         <div className={classes.chips}>
                           {(selected as string[]).map((val) => (
-                            <Chip key={val} label={val} className={classes.chip} />
+                            <Chip
+                              key={val}
+                              label={val}
+                              className={classes.chip}
+                            />
                           ))}
                         </div>
                       )}
                     >
-                      <MenuItem value="Roomate">Roomate</MenuItem>
-                      <MenuItem value="Friend">Friend</MenuItem>
+                      <MenuItem value='Roomate'>Roomate</MenuItem>
+                      <MenuItem value='Friend'>Friend</MenuItem>
                     </Select>
                   )}
                 </Field>
                 <FormControlLabel
-                  control={(
-                    <Field name="pet">
-                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-pet" {...field} />}
+                  control={
+                    <Field name='pet'>
+                      {({ field }: FieldProps) => (
+                        <Checkbox
+                          color='primary'
+                          data-test='userdata-pet'
+                          {...field}
+                        />
+                      )}
                     </Field>
-                  )}
-                  label="pet"
+                  }
+                  label='pet'
                 />
                 <FormControlLabel
-                  control={(
-                    <Field name="relationship">
-                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-relationship" {...field} />}
+                  control={
+                    <Field name='relationship'>
+                      {({ field }: FieldProps) => (
+                        <Checkbox
+                          color='primary'
+                          data-test='userdata-relationship'
+                          {...field}
+                        />
+                      )}
                     </Field>
-                  )}
-                  label="relationship"
+                  }
+                  label='relationship'
                 />
                 <FormControlLabel
-                  control={(
-                    <Field name="employed">
-                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-employed" {...field} />}
+                  control={
+                    <Field name='employed'>
+                      {({ field }: FieldProps) => (
+                        <Checkbox
+                          color='primary'
+                          data-test='userdata-employed'
+                          {...field}
+                        />
+                      )}
                     </Field>
-                  )}
-                  label="employed"
+                  }
+                  label='employed'
                 />
                 <FormControlLabel
-                  control={(
-                    <Field name="religion">
-                      {({ field }: FieldProps) => <Checkbox color="primary" data-test="userdata-religion" {...field} />}
+                  control={
+                    <Field name='religion'>
+                      {({ field }: FieldProps) => (
+                        <Checkbox
+                          color='primary'
+                          data-test='userdata-religion'
+                          {...field}
+                        />
+                      )}
                     </Field>
-                  )}
-                  label="religion"
+                  }
+                  label='religion'
                 />
                 <Button
-                  type="submit"
+                  type='submit'
                   fullWidth
-                  variant="contained"
-                  color="primary"
+                  variant='contained'
+                  color='primary'
                   className={classes.submit}
-                  data-test="userdata-submit"
+                  data-test='userdata-submit'
                   disabled={!isValid || isSubmitting}
                 >
                   Submit
