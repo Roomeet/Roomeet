@@ -1,32 +1,45 @@
 /*eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter as Router, Redirect, Route, Switch, useHistory, useLocation,
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
 } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Logged } from './context/LoggedInContext';
+import { Logged } from './context/UserContext';
 import './App.css';
-import SignUpForm from './pages/auth/signUpForm';
-import SignInForm from './pages/auth/signInForm';
+import SignUpForm from './pages/auth/SignUpForm';
+import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
+import { UserContext } from './context/UserContext';
 
-function App():JSX.Element {
-  const [logged, setLogged] = useState<boolean>(false);
+function App(): JSX.Element {
+  // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const context = React.useContext(UserContext);
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        setLogged(data);
+        const dataCookie = {
+          id: Cookies.get('id'),
+          email: Cookies.get('email'),
+          accessToken: Cookies.get('accessToken'),
+        };
+
+        context.logUserIn({ ...dataCookie, ...data, success: true });
         setLoading(false);
       } catch (e) {
-        setLogged(false);
+        context.logUserIn({ success: false });
         setLoading(false);
       }
     } else {
-      setLogged(false);
+      context.logUserIn({ success: false });
       setLoading(false);
     }
   };
@@ -37,35 +50,35 @@ function App():JSX.Element {
   }, []);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Router>
-        { !loading ?
-            logged ? (
-              <Logged.Provider value={logged}>
-                <PrivateRoutesContainer/>
-              </Logged.Provider>
-            )
-            : (
-              <Logged.Provider value={logged}>
-                <Switch>
-                  <Route exact path='/signup'>
-                    <SignUpForm />
-                  </Route>
-                  <Route exact path='/signin'>
-                    <SignInForm setLogged={setLogged}/>
-                  </Route>
-                  <Route path='/*'>
-                    <Redirect
-                      to={{
-                        pathname: '/signin',
-                      }}
-                      />
-                  </Route>
-                </Switch>
-              </Logged.Provider>
+        {!loading ? (
+          context.success ? (
+            <Logged.Provider value={context.success}>
+              <PrivateRoutesContainer />
+            </Logged.Provider>
+          ) : (
+            <Logged.Provider value={context.success}>
+              <Switch>
+                <Route exact path='/signup'>
+                  <SignUpForm />
+                </Route>
+                <Route exact path='/signin'>
+                  <SignInForm />
+                </Route>
+                <Route path='/*'>
+                  <Redirect
+                    to={{
+                      pathname: '/signin',
+                    }}
+                  />
+                </Route>
+              </Switch>
+            </Logged.Provider>
           )
-          : <div>were loading...</div>
-        }
+        ) : (
+          <div>were loading...</div>
+        )}
       </Router>
     </div>
   );
