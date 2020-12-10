@@ -1,5 +1,5 @@
 /*eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import {
@@ -17,6 +17,9 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCard';
 import { Link, useHistory } from 'react-router-dom';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { UserContext } from '../../context/UserContext';
 import './roomates.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,11 +62,18 @@ function Roomates() {
   const [prefernces, setPrefernces] = useState<boolean>(false); // todo: get actuall prefernces for the user and create prefernces interface
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
   const [activeStep, setActiveStep] = useState(0);
+  const context = useContext(UserContext);
   const classes = useStyles();
   const theme = useTheme();
 
-  const handleNext = () => {
+  const handleNext = async (like: boolean) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    
+    await network.post('/api/v1/users/match', {
+      like,
+      userId: context.id,
+      passiveUserId: allUsersInfo[activeStep].userId,
+    });
   };
 
   const handleBack = () => {
@@ -123,29 +133,32 @@ function Roomates() {
               nextButton={
                 <Button
                   size='small'
-                  onClick={handleNext}
-                  disabled={activeStep === allUsersInfo.length - 1}
+                  onClick={() => handleNext(true)}
+                  // disabled={activeStep === allUsersInfo.length - 1}
+                  disabled={activeStep === allUsersInfo.length}
                 >
-                  Next
+                  Like
                   {theme.direction === 'rtl' ? (
-                    <KeyboardArrowLeft />
+                    <ThumbDownIcon />
                   ) : (
-                    <KeyboardArrowRight />
+                    <ThumbUpIcon />
                   )}
                 </Button>
               }
               backButton={
                 <Button
                   size='small'
-                  onClick={handleBack}
-                  disabled={activeStep === 0}
+                  // onClick={handleBack}
+                  onClick={() => handleNext(false)}
+                  // disabled={activeStep === 0}
+                  disabled={activeStep === allUsersInfo.length}
                 >
                   {theme.direction === 'rtl' ? (
-                    <KeyboardArrowRight />
+                    <ThumbUpIcon />
                   ) : (
-                    <KeyboardArrowLeft />
+                    <ThumbDownIcon />
                   )}
-                  Back
+                  Unlike
                 </Button>
               }
             />

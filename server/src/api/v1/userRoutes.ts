@@ -78,4 +78,17 @@ router.post('/user-data', (req: Request, res: Response) => {
   }
 });
 
+// Match users
+router.post(
+  '/match', async (req: Request, res: Response) => {
+    try {
+      const { body: data } = req;
+      console.log(data);
+      res.json(data.like ? 'Matched' : 'Didnt match');
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+);
+
 export default router;
