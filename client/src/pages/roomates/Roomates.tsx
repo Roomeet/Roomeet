@@ -12,7 +12,6 @@ import {
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
 import network from '../../utils/network';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { UserDataInterface } from '../../interfaces/userData';
@@ -20,16 +19,15 @@ import RoomateCard from '../../components/RoomateCard';
 import { Link, useHistory } from 'react-router-dom';
 import './roomates.css';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 400,
     flexGrow: 1,
+    width: '100%',
   },
   header: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     height: 50,
     paddingLeft: theme.spacing(4),
     backgroundColor: theme.palette.background.default,
@@ -42,10 +40,17 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   item: {
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     display: 'block',
-    maxWidth: 400,
+    top: '50%',
+    // maxWidth: 400,
     overflow: 'hidden',
     width: '100%',
+  },
+  footer: {
+    bottom: 0,
   },
 }));
 
@@ -86,9 +91,9 @@ function Roomates() {
         ) : (
           <div className={classes.root}>
             <Paper square elevation={0} className={classes.header}>
-              <Typography>{allUsersInfo[activeStep]._id}</Typography>
+              <Typography>Choose Your Next Roomate!</Typography>
             </Paper>
-            <AutoPlaySwipeableViews
+            <SwipeableViews
               axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
               index={activeStep}
               onChangeIndex={handleStepChange}
@@ -108,10 +113,11 @@ function Roomates() {
                   </div>
                 )
               )}
-            </AutoPlaySwipeableViews>
+            </SwipeableViews>
             <MobileStepper
               steps={allUsersInfo.length}
-              position='static'
+              className={classes.footer}
+              // position='static'
               variant='text'
               activeStep={activeStep}
               nextButton={
