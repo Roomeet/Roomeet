@@ -25,35 +25,62 @@ import './roomates.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: '100%',
+    width: "100%",
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     height: 50,
     paddingLeft: theme.spacing(4),
-    backgroundColor: theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default,
+    backgroundColor: "#8f7967",
+    fontFamily: "fantasy",
+    // fontFamily
+  },
+  headerText: {
+    fontFamily: "fantasy",
   },
   img: {
     height: 255,
-    display: 'block',
+    display: "block",
     maxWidth: 400,
-    overflow: 'hidden',
-    width: '100%',
+    overflow: "hidden",
+    width: "100%",
   },
   item: {
     // display: 'flex',
     // alignItems: 'center',
     // justifyContent: 'center',
-    display: 'block',
-    top: '50%',
+    display: "block",
+    top: "50%",
     // maxWidth: 400,
-    overflow: 'hidden',
-    width: '100%',
+    overflow: "hidden",
+    width: "100%",
   },
   footer: {
+    backgroundColor: "#8f7967",
+    // color: "white",
     bottom: 0,
+    fontFamily: "fantasy",
+  },
+  like: {
+    fill: "green",
+    // backgroundColor: "green",
+    // color: "black",
+    bottom: 0,
+    "&:hover": {
+      backgroundColor: "#BFB4AB",
+    },
+  },
+  unlike: {
+    fill: "red",
+    // backgroundColor: "red",
+    // color: "black",
+    bottom: 0,
+    "&:hover": {
+      backgroundColor: "#BFB4AB",
+    },
   },
 }));
 
@@ -94,17 +121,19 @@ function Roomates() {
   }, []);
 
   return (
-    <div className='cards-page'>
+    <div className="cards-page">
       {!loading && allUsersInfo[0] ? (
         prefernces ? (
           <div>Roomate prefernces</div>
         ) : (
           <div className={classes.root}>
             <Paper square elevation={0} className={classes.header}>
-              <Typography>Choose Your Next Roomate!</Typography>
+              <Typography className={classes.headerText}>
+                Choose Your Next Roomate!
+              </Typography>
             </Paper>
             <SwipeableViews
-              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+              axis={theme.direction === "rtl" ? "x-reverse" : "x"}
               index={activeStep}
               onChangeIndex={handleStepChange}
               enableMouseEvents
@@ -128,37 +157,40 @@ function Roomates() {
               steps={allUsersInfo.length}
               className={classes.footer}
               // position='static'
-              variant='text'
+              variant="text"
               activeStep={activeStep}
               nextButton={
                 <Button
-                  size='small'
+                  size="small"
+                  className={classes.like}
                   onClick={() => handleNext(true)}
                   // disabled={activeStep === allUsersInfo.length - 1}
                   disabled={activeStep === allUsersInfo.length}
                 >
-                  Like
-                  {theme.direction === 'rtl' ? (
-                    <ThumbDownIcon />
+                  {theme.direction === "rtl" ? (
+                    <ThumbDownIcon className={classes.unlike} />
                   ) : (
-                    <ThumbUpIcon />
+                    <ThumbUpIcon className={classes.like} />
                   )}
                 </Button>
               }
               backButton={
                 <Button
-                  size='small'
+                  size="small"
+                  className={classes.unlike}
                   // onClick={handleBack}
                   onClick={() => handleNext(false)}
                   // disabled={activeStep === 0}
                   disabled={activeStep === allUsersInfo.length}
                 >
-                  {theme.direction === 'rtl' ? (
-                    <ThumbUpIcon />
+                  {theme.direction === "rtl" ? (
+                    <ThumbUpIcon className={classes.like} style={{}} />
                   ) : (
-                    <ThumbDownIcon />
+                    <ThumbDownIcon
+                      className={classes.unlike}
+                      style={{ fill: "red" }}
+                    />
                   )}
-                  Unlike
                 </Button>
               }
             />
