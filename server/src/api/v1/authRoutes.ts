@@ -121,7 +121,7 @@ router.post('/login', async (req: Request, res: Response) => {
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
     res.cookie('email', user.email);
-    res.status(200).send({ accessToken, email: user.email });
+    res.status(200).send({ accessToken, email: user.email, id: user.id });
   } catch (error) {
     res.status(403).send();
   }
