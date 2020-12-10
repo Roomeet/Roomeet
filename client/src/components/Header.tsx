@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import * as Scroll from 'react-scroll';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -99,7 +100,10 @@ const Header: React.FC = () => {
             </span>
           </h1>
           <IconButton>
-            <ExpandMoreIcon className={classes.goDown} />
+            <ExpandMoreIcon
+              className={classes.goDown}
+              onClick={() => { Scroll.animateScroll.scrollTo(550); }}
+            />
           </IconButton>
         </div>
       </Collapse>
