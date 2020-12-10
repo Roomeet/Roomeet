@@ -13,7 +13,7 @@ import {
 } from 'formik';
 import { string, object, ref } from 'yup';
 import network from '../../utils/network';
-import { SignUpUserData } from '../../interfaces/authenticationForm';
+import { SignUpUserData } from '../../interfaces/authentication';
 
 const validationSchema = object({
   name: string().required('First Name is required'),

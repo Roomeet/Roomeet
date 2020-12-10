@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import network from '../utils/network';
+import network from '../../utils/network';
 import { Container, IconButton, Paper, Typography } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { UserDataInterface } from '../../../server/models/UserData'

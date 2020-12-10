@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 export interface RefreshTokenInterface extends Document {
   _id: string;
   email: string;
-  token: string
+  token: string;
 }
 
 const RefreshTokenSchema = new Schema({
@@ -17,8 +17,8 @@ const RefreshTokenSchema = new Schema({
     required: true,
   },
   token: {
-  type: String,
-  required: true,
+    type: String,
+    required: true,
   },
   createdAt: Date,
   updatedAt: Date,
@@ -26,14 +26,11 @@ const RefreshTokenSchema = new Schema({
 });
 
 RefreshTokenSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
+  transform: (document: any, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
   },
 });
 
-export default model<RefreshTokenInterface>(
-  'RefreshToken',
-  RefreshTokenSchema
-);
+export default model<RefreshTokenInterface>('RefreshToken', RefreshTokenSchema);

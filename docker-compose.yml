@@ -1,0 +1,33 @@
+version: '2.2'
+
+services:
+  roomeet-server:
+    build:
+      context: './server'
+      dockerfile: Dockerfile
+    container_name: roomeet-server
+    hostname: roomeet-server
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./server:/src/app
+      - /src/app/node_modules
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - PORT=3001
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+    command: sh -c 'npm run start'
+
+    networks:
+      roomeet-network:
+        ipv4_address: 172.28.0.10
+
+networks:
+  roomeet-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16

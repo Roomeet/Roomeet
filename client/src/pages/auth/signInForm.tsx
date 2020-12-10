@@ -15,7 +15,7 @@ import {
 } from 'formik';
 import { string, object } from 'yup';
 import Alert from '@material-ui/lab/Alert';
-import { SignInUserData } from '../../interfaces/authenticationForm';
+import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
 
 const validationSchema = object({
