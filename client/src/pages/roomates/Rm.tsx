@@ -81,7 +81,7 @@ function Roomates() {
 
   return (
     <div className='cards-page'>
-      {!loading && allUsersInfo[0] ? (
+      {!loading ? (
         prefernces ? (
           <div>Roomate prefernces</div>
         ) : (
