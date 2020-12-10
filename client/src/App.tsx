@@ -26,7 +26,13 @@ function App(): JSX.Element {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        context.logUserIn({ ...data, success: true });
+        const dataCookie = {
+          id: Cookies.get('id'),
+          email: Cookies.get('email'),
+          accessToken: Cookies.get('accessToken'),
+        };
+
+        context.logUserIn({ ...dataCookie, ...data, success: true });
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });

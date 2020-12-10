@@ -90,7 +90,6 @@ const UserDataForm: React.FC = () => {
   };
 
   const submit = async (values: any) => {
-    console.log(values);
     console.log(context);
   };
 

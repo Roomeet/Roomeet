@@ -6,7 +6,10 @@ export const Logged = React.createContext(false);
 export const UserContext = React.createContext();
 
 class UserContextProvider extends Component {
-  state = { success: false };
+  constructor(props) {
+    super(props);
+    this.state = { success: false };
+  }
 
   logUserIn = (user) => {
     this.setState(user);
