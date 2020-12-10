@@ -20,7 +20,9 @@ type InfoForCookie =  {
   
 //helpers:
 const userIsExist = async (email:string):Promise<UserInterface | null> => {
-  const user:UserInterface | null = await User.findOne({email: email}).exec()
+  const user:UserInterface | null = await User.findOne({email: email}).exec();
+  console.log(email);
+  
   return user;
 }
 
@@ -52,6 +54,7 @@ router.post("/token", async (req, res) => {
 router.post('/register', async (req: Request, res: Response) => {
   try {
     let { body : userRegisterationData } = req;
+    console.log(userRegisterationData);
     
     userRegisterationData.password = await bcrypt.hash(userRegisterationData.password, 10);
 
@@ -72,7 +75,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
   
-  //login
+//login
 router.post("/login", async (req: Request, res: Response) => {
   const loginData = req.body
   const user = await userIsExist(loginData.email);
