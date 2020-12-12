@@ -119,8 +119,10 @@ const NavBar: React.FC = () => {
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
+          <Badge badgeContent={5} color="secondary">
+            <Link to="/messeging">
+              <MailIcon />
+            </Link>
           </Badge>
         </IconButton>
         <p>Messages</p>
@@ -168,7 +170,9 @@ const NavBar: React.FC = () => {
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <MailIcon />
+                <Link to="/messeging">
+                  <MailIcon />
+                </Link>
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">

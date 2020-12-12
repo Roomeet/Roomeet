@@ -5,7 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
 const Footer: React.FC = () => (
-  <div style={{ maxWidth: 700, margin: 'auto', textAlign: 'center' }}>
+  <div style={{
+    maxWidth: 700, margin: 'auto', textAlign: 'center',
+  }}
+  >
     <Grid container justify="center" spacing={2}>
       <Grid item xs={12} sm={6} md={3}>
         <Typography align="center" gutterBottom color="textSecondary">
