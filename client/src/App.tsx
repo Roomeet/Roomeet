@@ -17,7 +17,6 @@ import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
 import { UserContext } from './context/UserContext';
 import Landing from './pages/landing/Landing';
-import NavBar from './components/NavBar';
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
@@ -58,7 +57,6 @@ function App(): JSX.Element {
           context.success ? (
             <div className="App">
               <Logged.Provider value={context.success}>
-                <NavBar />
                 <PrivateRoutesContainer />
               </Logged.Provider>
             </div>

@@ -5,11 +5,12 @@ import Roomates from '../pages/roomates/Roomates';
 import BGImage from '../images/woodBG.jpg';
 import UserDataForm from '../pages/preferences-form/UserDataForm';
 import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 // interface Props {}
 
 const PrivateRoutesContainer: React.FC = () => (
   <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-    {/* <NavBar /> */}
+    <NavBar />
     <Switch>
       <PrivateRoute exact path="/home">
         <Roomates />
@@ -25,6 +26,7 @@ const PrivateRoutesContainer: React.FC = () => (
         />
       </Route>
     </Switch>
+    <Footer />
   </div>
 );
 
