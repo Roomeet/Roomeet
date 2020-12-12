@@ -14,7 +14,7 @@ const Footer: React.FC = () => (
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <Typography align="center" gutterBottom color="textSecondary">
-          <Link to="/terms">Terms & Conditions</Link>
+          <Link to="/term-and-conditions">Terms & Conditions</Link>
         </Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={3}>

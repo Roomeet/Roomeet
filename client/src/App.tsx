@@ -17,6 +17,10 @@ import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
 import { UserContext } from './context/UserContext';
 import Landing from './pages/landing/Landing';
+import Footer from './components/Footer';
+import AboutPage from './pages/footers/AboutPage';
+import TermsConditionPage from './pages/footers/TermsConditionPage';
+import ContactUsPage from './pages/footers/ContactUsPage';
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
@@ -72,6 +76,15 @@ function App(): JSX.Element {
                 <Route exact path='/landing'>
                   <Landing />
                 </Route>
+                <Route exact path='/about'>
+                  <AboutPage />
+                </Route>
+                <Route exact path='/term-and-conditions'>
+                  <TermsConditionPage />
+                </Route>
+                <Route exact path='/contact-us'>
+                  <ContactUsPage />
+                </Route>
                 <Route path='/*'>
                   <Redirect
                     to={{
@@ -85,6 +98,8 @@ function App(): JSX.Element {
         ) : (
           <div>were loading...</div>
         )}
+        
+        <Footer />
       </Router>
     </div>
   );
