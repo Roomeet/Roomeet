@@ -49,7 +49,8 @@
   "scripts": {
     "start": "react-scripts start",
     "lint": "eslint ./src --ext .tsx,.ts --fix",
-    "build": "react-scripts build ",
+    "build": "react-scripts build && rmdir /s /q \"../server/build\" && move build \"../server\"",
+    "del":"rmdir /s /q \"../server/build\" && move build \"../server\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
