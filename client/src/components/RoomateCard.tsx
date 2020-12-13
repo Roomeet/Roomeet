@@ -1,12 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {
+  Card, CardActions, CardContent, Button, Typography,
+} from '@material-ui/core/';
 // import blueDoor from '../images/blueDoor.png';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import brownDoor from '../images/brownDoor.png';
+import { UserContext } from '../context/UserContext';
 // import { UserDataInterface } from '../../../server/models/UserData';
 
 export type Props = {
@@ -54,9 +55,30 @@ const useStyles = makeStyles({
     borderRadius: '50%',
     border: '7px solid black',
   },
+  like: {
+    fill: 'green',
+    // backgroundColor: "green",
+    // color: "black",
+    bottom: 0,
+    '&:hover': {
+      backgroundColor: '#BFB4AB',
+    },
+  },
+  unlike: {
+    fill: 'red',
+    // backgroundColor: "red",
+    // color: "black",
+    bottom: 0,
+    '&:hover': {
+      backgroundColor: '#BFB4AB',
+    },
+  },
 });
 
-const RoomateCard: React.FC<Props> = ({ userInfo }) => {
+const RoomateCard: React.FC<Props> = ({
+  userInfo, handleNext, activeStep, length,
+}) => {
+  const context = React.useContext(UserContext);
   const classes = useStyles();
   return (
     <div className={classes.cardDiv}>
@@ -98,6 +120,30 @@ const RoomateCard: React.FC<Props> = ({ userInfo }) => {
               className={classes.goToProfile}
               alt="blueDoor"
               src={brownDoor}
+            />
+          </Button>
+        </CardActions>
+        <CardActions>
+          <Button
+            size="small"
+            className={classes.like}
+            onClick={() => handleNext(true)}
+            // disabled={activeStep === allUsersInfo.length - 1}
+            disabled={activeStep === length}
+          >
+            <ThumbUpIcon className={classes.like} />
+          </Button>
+          <Button
+            size="small"
+            className={classes.unlike}
+            // onClick={handleBack}
+            onClick={() => handleNext(false)}
+            // disabled={activeStep === 0}
+            disabled={activeStep === length}
+          >
+            <ThumbDownIcon
+              className={classes.unlike}
+              style={{ fill: 'red' }}
             />
           </Button>
         </CardActions>
