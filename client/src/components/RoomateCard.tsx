@@ -44,11 +44,10 @@ const useStyles = makeStyles({
     height: '100%',
     width: '80%',
     maxWidth: '500px',
-    marginTop: '3vh',
+    marginTop: '10vh',
     marginBottom: '3vh',
     marginRight: 'auto',
     marginLeft: 'auto',
-
   },
   profilePic: {
     borderRadius: '50%',
