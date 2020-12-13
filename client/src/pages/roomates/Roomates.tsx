@@ -145,9 +145,9 @@ function Roomates() {
           </div> */}
               {allUsersInfo.map(
                 (userInfo: UserDataInterface, index: number) => (
-                  <div className={classes.item} key={userInfo._id}>
+                  <div className={classes.item} key={index}>
                     {Math.abs(activeStep - index) <= 2 ? (
-                      <RoomateCard userInfo={userInfo} key={index} />
+                      <RoomateCard userInfo={userInfo}/>
                     ) : null}
                   </div>
                 )
