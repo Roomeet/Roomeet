@@ -55,14 +55,25 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <div>
+    <div className="App">
       <Router>
         {!loading ? (
           context.success ? (
-            <div className="App">
-              <Logged.Provider value={context.success}>
-                <PrivateRoutesContainer />
-              </Logged.Provider>
+            <div>
+              <Switch>
+                <Route exact path='/about'>
+                  <AboutPage />
+                </Route>
+                <Route exact path='/term-and-conditions'>
+                  <TermsConditionPage />
+                </Route>
+                <Route exact path='/contact-us'>
+                  <ContactUsPage />
+                </Route>
+                <Logged.Provider value={context.success}>
+                  <PrivateRoutesContainer />
+                </Logged.Provider>
+              </Switch>
             </div>
           ) : (
             <Logged.Provider value={context.success}>
@@ -98,8 +109,7 @@ function App(): JSX.Element {
         ) : (
           <div>were loading...</div>
         )}
-        
-        <Footer />
+      <Footer />
       </Router>
     </div>
   );

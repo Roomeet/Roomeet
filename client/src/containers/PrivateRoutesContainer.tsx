@@ -11,11 +11,11 @@ import ContactUsPage from '../pages/footers/ContactUsPage';
 import ChatBox from '../pages/chat/ChatBox';
 
 const PrivateRoutesContainer: React.FC = () => (
-  <div style={{ backgroundImage: `url(${BGImage})` }}>
+  <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
     <NavBar />
     <Switch>
       <PrivateRoute exact path="/home">
-        <div id="private-routes">
+        <div>
           <Roomates />
         </div>
       </PrivateRoute>
@@ -24,19 +24,10 @@ const PrivateRoutesContainer: React.FC = () => (
           <UserDataForm />
         </div>
       </PrivateRoute>
-      <PrivateRoute exact path="/messeging">
+      <PrivateRoute exact path="/messages">
         <div id="private-routes">
           <ChatBox />
         </div>
-      </PrivateRoute>
-      <PrivateRoute exact path="/about">
-        <AboutPage />
-      </PrivateRoute>
-      <PrivateRoute exact path="/term-and-conditions">
-        <TermsConditionPage />
-      </PrivateRoute>
-      <PrivateRoute exact path="/contact-us">
-        <ContactUsPage />
       </PrivateRoute>
       <Route path="/*">
         <Redirect

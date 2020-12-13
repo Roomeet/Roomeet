@@ -156,7 +156,7 @@ function Roomates() {
             <MobileStepper
               steps={allUsersInfo.length}
               className={classes.footer}
-              // position='static'
+              position='static'
               variant="text"
               activeStep={activeStep}
               nextButton={

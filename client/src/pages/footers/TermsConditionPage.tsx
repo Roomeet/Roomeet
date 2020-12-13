@@ -1,8 +1,8 @@
 import React from 'react';
 
 const TermsConditionPage: React.FC = () => (
-  <div>
-    <h2 style={{ textAlign: 'center' }}>Terms and Conditions</h2>
+  <div className="about">
+    <h2>Terms and Conditions</h2>
     <p>
       Last updated: December 12, 2020
 

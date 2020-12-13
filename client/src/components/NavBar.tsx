@@ -61,6 +61,20 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   background: {
     background: 'none',
   },
+  colorTextRoo: {
+    color: '#5AFF3D',
+  },
+  colorTextEet: {
+    color: '#d8fd08',
+  },
+  colorTextM: {
+    color: '#ffffff',
+  },
+  appBarTitle: {
+    flexGrow: 1,
+    fontSize: '1.5rem',
+    fontFamily: 'Nunito',
+  },
 }));
 
 const NavBar: React.FC = () => {
@@ -125,7 +139,7 @@ const NavBar: React.FC = () => {
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={5} color="secondary">
-            <Link to="/messeging">
+            <Link to="/messages">
               <MailIcon />
             </Link>
           </Badge>
@@ -167,15 +181,24 @@ const NavBar: React.FC = () => {
             <MenuIcon />
           </IconButton>
           <Link to="/home">
-            <Typography className={classes.title} variant="h6" noWrap>
-              Roomeet
-            </Typography>
+            <h1 className={classes.appBarTitle}>
+              <span className={classes.colorTextRoo}>
+                Roo
+              </span>
+              <span className={classes.colorTextM}>
+                M
+              </span>
+              <span className={classes.colorTextEet}>
+                eet
+              </span>
+              .
+            </h1>
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <Link to="/messeging">
+                <Link to="/messages">
                   <MailIcon />
                 </Link>
               </Badge>

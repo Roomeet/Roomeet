@@ -33,7 +33,7 @@ const validationSchema = object({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    minHeight: '100vh',
   },
   image: {
     backgroundImage: `url(${BGImage})`,
