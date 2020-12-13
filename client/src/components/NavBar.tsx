@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
       display: 'none',
     },
   },
+  background: {
+    background: 'none',
+  },
 }));
 
 const NavBar: React.FC = () => {
@@ -153,7 +156,7 @@ const NavBar: React.FC = () => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.background}>
         <Toolbar>
           <IconButton
             edge="start"
