@@ -144,16 +144,16 @@ const NavBar: React.FC = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => handleMobileMenu('/Messages')}>
+      <MenuItem onClick={() => handleMobileMenu('/messages')}>
+        <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={5} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit" onClick={() => handleMobileMenu('/Notifications')}>
+      <MenuItem onClick={() => handleMobileMenu('/notifications')}>
+        <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
@@ -162,7 +162,7 @@ const NavBar: React.FC = () => {
       </MenuItem>
       {/* onClick={handleProfileMenuOpen} */}
       <MenuItem
-        onClick={() => handleMobileMenu('/Profile')}
+        onClick={() => handleMobileMenu('/profile')}
       >
         <IconButton
           aria-label="account of current user"
