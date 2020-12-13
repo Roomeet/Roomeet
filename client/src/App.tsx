@@ -16,6 +16,7 @@ import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
 import { UserContext } from './context/UserContext';
+import Landing from './pages/landing/Landing';
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
@@ -50,13 +51,15 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <div className='App'>
+    <div>
       <Router>
         {!loading ? (
           context.success ? (
-            <Logged.Provider value={context.success}>
-              <PrivateRoutesContainer />
-            </Logged.Provider>
+            <div className="App">
+              <Logged.Provider value={context.success}>
+                <PrivateRoutesContainer />
+              </Logged.Provider>
+            </div>
           ) : (
             <Logged.Provider value={context.success}>
               <Switch>
@@ -66,10 +69,13 @@ function App(): JSX.Element {
                 <Route exact path='/signin'>
                   <SignInForm />
                 </Route>
+                <Route exact path='/landing'>
+                  <Landing />
+                </Route>
                 <Route path='/*'>
                   <Redirect
                     to={{
-                      pathname: '/signin',
+                      pathname: '/landing',
                     }}
                   />
                 </Route>

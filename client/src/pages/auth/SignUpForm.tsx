@@ -30,7 +30,7 @@ const validationSchema = object({
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    paddingTop: theme.spacing(20),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -210,7 +210,6 @@ const SignUpForm: React.FC = () => {
           )}
         </Formik>
       </div>
-      <Box mt={8} />
     </Container>
   );
 };

@@ -88,7 +88,7 @@ const RoomateCard: React.FC<Props> = ({ userInfo, key }) => {
             looking for :
             {' '}
             {
-              userInfo.lookingFor.roomate ? 'roomate' : 'friend'
+              userInfo.lookingFor?.roomate ? 'roomate' : 'friend'
             }
           </Typography>
         </CardContent>
