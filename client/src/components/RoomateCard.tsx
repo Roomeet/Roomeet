@@ -5,9 +5,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import blueDoor from '../images/blueDoor.png';
+// import blueDoor from '../images/blueDoor.png';
 import brownDoor from '../images/brownDoor.png';
-import { UserDataInterface } from '../../../server/models/UserData';
+// import { UserDataInterface } from '../../../server/models/UserData';
 
 export type Props = {
   [key: string]: any;
@@ -42,7 +42,8 @@ const useStyles = makeStyles({
   },
   cardDiv: {
     height: '100%',
-    width: '30%',
+    width: '80%',
+    maxWidth: '500px',
     marginTop: '3vh',
     marginBottom: '3vh',
     marginRight: 'auto',
@@ -55,10 +56,10 @@ const useStyles = makeStyles({
   },
 });
 
-const RoomateCard: React.FC<Props> = ({ userInfo, key }) => {
+const RoomateCard: React.FC<Props> = ({ userInfo }) => {
   const classes = useStyles();
   return (
-    <div className={classes.cardDiv} key={key}>
+    <div className={classes.cardDiv}>
       <Card className={classes.root}>
         <CardContent>
           <Typography
@@ -87,7 +88,7 @@ const RoomateCard: React.FC<Props> = ({ userInfo, key }) => {
             looking for :
             {' '}
             {
-              userInfo.lookingFor.roomate ? 'roomate' : 'friend'
+              userInfo.lookingFor?.roomate ? 'roomate' : 'friend'
             }
           </Typography>
         </CardContent>

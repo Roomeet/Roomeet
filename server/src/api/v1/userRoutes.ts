@@ -5,9 +5,11 @@ import { ObjectId } from 'mongodb';
 
 // mongoDB models:
 import User from '../../../models/user';
+import Match from '../../../models/match';
 
 const router = Router();
 
+const crypto = require('crypto');
 const UserData = require('../../../models/userData');
 
 // Routes
@@ -77,5 +79,46 @@ router.post('/user-data', (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 });
+
+// Match users
+router.post(
+  '/match', async (req: Request, res: Response) => {
+    try {
+      const { body: rawMatch } = req;
+      const _id = crypto
+        .createHash('md5')
+        .update(rawMatch.userId + rawMatch.passiveUserId)
+        .digest('hex').slice(0, 24);
+
+      // @ts-ignore
+      Match.findOneAndUpdate({ _id }, rawMatch, { new: true }, (error : any, result : any) => {
+        if (!error) {
+          // If the document doesn't exist
+          if (!result) {
+            // Create it
+            result = new Match({
+              ...rawMatch,
+              _id: new ObjectId(_id),
+              createdAt: new Date(),
+              updatedAt: null,
+              deletedAt: null
+            });
+          }
+          // Save the document
+          result.save((err:any) => {
+            if (!err) {
+              // Do something with the document
+              res.json(rawMatch.like ? 'Matched' : 'Didnt match');
+            } else {
+              res.json({ error: err });
+            }
+          });
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+);
 
 export default router;
