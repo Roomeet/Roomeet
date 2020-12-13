@@ -111,6 +111,11 @@ const NavBar: React.FC = () => {
     handleMenuClose();
   };
 
+  const handleMobileMenu = (url : string) => {
+    handleMenuClose();
+    history.push(url);
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -140,17 +145,15 @@ const NavBar: React.FC = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+        <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => handleMobileMenu('/Messages')}>
           <Badge badgeContent={5} color="secondary">
-            <Link to="/messages">
-              <MailIcon />
-            </Link>
+            <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
+        <IconButton aria-label="show 11 new notifications" color="inherit" onClick={() => handleMobileMenu('/Notifications')}>
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
@@ -158,7 +161,9 @@ const NavBar: React.FC = () => {
         <p>Notifications</p>
       </MenuItem>
       {/* onClick={handleProfileMenuOpen} */}
-      <MenuItem>
+      <MenuItem
+        onClick={() => handleMobileMenu('/Profile')}
+      >
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -167,7 +172,7 @@ const NavBar: React.FC = () => {
         >
           <AccountCircle />
         </IconButton>
-        <Link to="/profile">Profile</Link>
+        Profile
       </MenuItem>
       <MenuItem onClick={handleLogOut}>
         <IconButton
@@ -211,11 +216,9 @@ const NavBar: React.FC = () => {
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => history.push('/messages')}>
               <Badge badgeContent={4} color="secondary">
-                <Link to="/messages">
-                  <MailIcon />
-                </Link>
+                <MailIcon />
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
