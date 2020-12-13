@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -18,6 +18,7 @@ import {
 } from 'formik';
 import { string, object } from 'yup';
 // import Alert from '@material-ui/lab/Alert';
+import { Grow } from '@material-ui/core';
 import BGImage from '../../images/BGSignin.jpg';
 import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
@@ -76,6 +77,12 @@ const SignInForm: React.FC<any> = () => {
   const history = useHistory();
   const context = React.useContext(UserContext);
 
+  const [checked, setChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    setChecked(true);
+  }, []);
+
   const initialValues: SignInUserData = {
     email: '',
     password: '',
@@ -92,110 +99,118 @@ const SignInForm: React.FC<any> = () => {
     <>
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grow in={checked}>
+          <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        </Grow>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <div className={classes.paper}>
-            {/* {authState.context?.message && (
-          <Alert data-test="signin-error" severity="error" className={classes.alertMessage}>
-            {authState.context.message}
-          </Alert>
-        )} */}
-            {/* <div className={classes.logo}>
-            Welcome To Roomeet
-          </div> */}
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={async (values, { setSubmitting }) => {
-                setSubmitting(true);
-                login(values);
-              }}
-            >
-              {({ isValid, isSubmitting }) => (
-                <Form className={classes.form}>
-                  <Field name="email">
-                    {({
-                      field, meta: {
-                        error, value, initialValue, touched,
-                      },
-                    }: FieldProps) => (
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        id="email"
-                        label="email"
-                        type="text"
-                        autoFocus
-                        data-test="signin-email"
-                        error={(touched || value !== initialValue) && Boolean(error)}
-                        helperText={touched || value !== initialValue ? error : ''}
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  <Field name="password">
-                    {({
-                      field, meta: {
-                        error, value, initialValue, touched,
-                      },
-                    }: FieldProps) => (
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        label="Password"
-                        type="password"
-                        id="password"
-                        data-test="signin-password"
-                        error={touched && value !== initialValue && Boolean(error)}
-                        helperText={touched && value !== initialValue && touched ? error : ''}
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  <FormControlLabel
-                    control={(
-                      <Field name="remember">
-                        {({ field }: FieldProps) => <Checkbox color="primary" data-test="signin-remember-me" {...field} />}
-                      </Field>
-                    )}
-                    label="Remember me"
-                  />
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    data-test="signin-submit"
-                    disabled={!isValid || isSubmitting}
-                  >
-                    Sign In
-                  </Button>
-                  <Grid container>
-                    <Grid item xs>
-                      {/* <Link to="/forgotpassword">Forgot password?</Link> */}
-                      <div onClick={() => alert('need to go to the forgot password functionality')}>
-                        Forgot password?
-                      </div>
+          <Grow
+            in={checked}
+            style={{ transformOrigin: '0 0 0' }}
+            {...(checked ? { timeout: 1000 } : {})}
+          >
+            <div className={classes.paper}>
+              {/* {authState.context?.message && (
+            <Alert data-test="signin-error" severity="error" className={classes.alertMessage}>
+              {authState.context.message}
+            </Alert>
+          )} */}
+              {/* <div className={classes.logo}>
+              Welcome To Roomeet
+            </div> */}
+              <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={async (values, { setSubmitting }) => {
+                  setSubmitting(true);
+                  login(values);
+                }}
+              >
+                {({ isValid, isSubmitting }) => (
+                  <Form className={classes.form}>
+                    <Field name="email">
+                      {({
+                        field, meta: {
+                          error, value, initialValue, touched,
+                        },
+                      }: FieldProps) => (
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          id="email"
+                          label="email"
+                          type="text"
+                          autoFocus
+                          data-test="signin-email"
+                          error={(touched || value !== initialValue) && Boolean(error)}
+                          helperText={touched || value !== initialValue ? error : ''}
+                          {...field}
+                        />
+                      )}
+                    </Field>
+                    <Field name="password">
+                      {({
+                        field, meta: {
+                          error, value, initialValue, touched,
+                        },
+                      }: FieldProps) => (
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Password"
+                          type="password"
+                          id="password"
+                          data-test="signin-password"
+                          error={touched && value !== initialValue && Boolean(error)}
+                          helperText={touched && value !== initialValue && touched ? error : ''}
+                          {...field}
+                        />
+                      )}
+                    </Field>
+                    <FormControlLabel
+                      control={(
+                        <Field name="remember">
+                          {({ field }: FieldProps) => <Checkbox color="primary" data-test="signin-remember-me" {...field} />}
+                        </Field>
+                      )}
+                      label="Remember me"
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                      data-test="signin-submit"
+                      disabled={!isValid || isSubmitting}
+                    >
+                      Sign In
+                    </Button>
+                    <Grid container>
+                      <Grid item xs>
+                        {/* <Link to="/forgotpassword">Forgot password?</Link> */}
+                        <div onClick={() => alert('need to go to the forgot password functionality')}>
+                          Forgot password?
+                        </div>
+                      </Grid>
+                      <Grid item>
+                        <Link data-test="signup" to="/signup">
+                          Don't have an account? Sign Up
+                        </Link>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Link data-test="signup" to="/signup">
-                        Don't have an account? Sign Up
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </Form>
-              )}
-            </Formik>
-          </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </Grow>
           <Box mt={8} />
         </Grid>
       </Grid>
