@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
   },
   background: {
-    background: 'none',
+    background: 'linear-gradient(45deg, #a16254 30%, #5f413a 90%)',
   },
   colorTextRoo: {
     color: '#5AFF3D',
@@ -82,7 +82,6 @@ const NavBar: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
   const context = React.useContext(UserContext);
-  console.log(context);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

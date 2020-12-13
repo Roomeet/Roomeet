@@ -12,28 +12,28 @@ import ChatBox from '../pages/chat/ChatBox';
 const PrivateRoutesContainer: React.FC = () => (
   <div>
     {/* <NavBar /> */}
-      <PrivateRoute exact path="/home">
-        <div>
-          <Roomates />
-        </div>
-      </PrivateRoute>
-      <PrivateRoute exact path="/profile">
-        <div id="private-routes">
-          <UserDataForm />
-        </div>
-      </PrivateRoute>
-      <PrivateRoute exact path="/messages">
-        <div id="private-routes">
-          <ChatBox />
-        </div>
-      </PrivateRoute>
-      <Route path="/*">
-        <Redirect
-          to={{
-            pathname: '/home',
-          }}
-        />
-      </Route>
+    <PrivateRoute exact path="/home">
+      <div>
+        <Roomates />
+      </div>
+    </PrivateRoute>
+    <PrivateRoute exact path="/profile">
+      <div id="private-routes">
+        <UserDataForm />
+      </div>
+    </PrivateRoute>
+    <PrivateRoute exact path="/messages">
+      <div id="private-routes">
+        <ChatBox />
+      </div>
+    </PrivateRoute>
+    <Route path="/*">
+      <Redirect
+        to={{
+          pathname: '/home',
+        }}
+      />
+    </Route>
   </div>
 );
 

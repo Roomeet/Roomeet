@@ -7,7 +7,6 @@ import {
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import brownDoor from '../images/brownDoor.png';
-import { UserContext } from '../context/UserContext';
 // import { UserDataInterface } from '../../../server/models/UserData';
 
 export type Props = {
@@ -78,7 +77,6 @@ const useStyles = makeStyles({
 const RoomateCard: React.FC<Props> = ({
   userInfo, handleNext, activeStep, length,
 }) => {
-  const context = React.useContext(UserContext);
   const classes = useStyles();
   return (
     <div className={classes.cardDiv}>
