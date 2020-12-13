@@ -105,10 +105,14 @@ const RoomateCard: React.FC<Props> = ({
             ,
             {userInfo.gender}
             <br />
-            looking for :
+            looking for:
             {' '}
             {
-              userInfo.lookingFor?.roomate ? 'roomate' : 'friend'
+              userInfo.lookingFor?.roomate ? 'roomate' : ''
+            }
+            {userInfo.lookingFor?.roomate && userInfo.lookingFor?.friend ? ', ' : ' '}
+            {
+              userInfo.lookingFor?.friend ? 'friend' : ''
             }
           </Typography>
         </CardContent>
