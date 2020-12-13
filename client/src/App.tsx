@@ -113,7 +113,7 @@ function App(): JSX.Element {
             </Logged.Provider>
           )
         ) : (
-          <div>were loading...</div>
+          <div>We're Loading...</div>
         )}
       <Footer />
       </Router>

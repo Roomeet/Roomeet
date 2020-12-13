@@ -33,8 +33,10 @@
 
 .footer {
   /* max-width: 700; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
-  height: 2.5rem;
   margin: auto;
   text-align: center;
   position: absolute;
