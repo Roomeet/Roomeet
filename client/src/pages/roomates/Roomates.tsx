@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
+    // minHeight: "100vh",
   },
   header: {
     display: "flex",

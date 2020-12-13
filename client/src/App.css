@@ -8,8 +8,8 @@
 
 #private-routes {
   background-size: cover;
-  /* min-height: 100vh; */
-  /* min-width: 100vw; */
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 .cards-page{

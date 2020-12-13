@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
 import Roomates from '../pages/roomates/Roomates';
-import BGImage from '../images/woodBG.jpg';
 import UserDataForm from '../pages/preferences-form/UserDataForm';
 import NavBar from '../components/NavBar';
 import AboutPage from '../pages/footers/AboutPage';
@@ -11,9 +10,8 @@ import ContactUsPage from '../pages/footers/ContactUsPage';
 import ChatBox from '../pages/chat/ChatBox';
 
 const PrivateRoutesContainer: React.FC = () => (
-  <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-    <NavBar />
-    <Switch>
+  <div>
+    {/* <NavBar /> */}
       <PrivateRoute exact path="/home">
         <div>
           <Roomates />
@@ -36,7 +34,6 @@ const PrivateRoutesContainer: React.FC = () => (
           }}
         />
       </Route>
-    </Switch>
   </div>
 );
 

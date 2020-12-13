@@ -21,6 +21,10 @@ import Footer from './components/Footer';
 import AboutPage from './pages/footers/AboutPage';
 import TermsConditionPage from './pages/footers/TermsConditionPage';
 import ContactUsPage from './pages/footers/ContactUsPage';
+import NavBar from './components/NavBar';
+import BGImage from './images/woodBG.jpg';
+
+
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
@@ -51,6 +55,7 @@ function App(): JSX.Element {
 
   // checks if a user is logged
   useEffect(() => {
+    console.log(context.success);
     isLoggedIn();
   }, []);
 
@@ -59,7 +64,8 @@ function App(): JSX.Element {
       <Router>
         {!loading ? (
           context.success ? (
-            <div>
+            <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
+              <NavBar />
               <Switch>
                 <Route exact path='/about'>
                   <AboutPage />
