@@ -14,9 +14,10 @@ import {
   Formik, Form, Field, FieldProps,
 } from 'formik';
 import { string, object } from 'yup';
-import Alert from '@material-ui/lab/Alert';
-import { SignInUserData } from '../../interfaces/authenticationForm';
+// import Alert from '@material-ui/lab/Alert';
+import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
+import { UserContext } from '../../context/UserContext';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -27,7 +28,7 @@ const validationSchema = object({
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    paddingTop: theme.spacing(20),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -47,13 +48,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props {
-  setLogged: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface Props {
+//   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
-const SignInForm: React.FC<Props> = ({ setLogged }) => {
+const SignInForm: React.FC<any> = () => {
   const classes = useStyles();
   const history = useHistory();
+  const context = React.useContext(UserContext);
 
   const initialValues: SignInUserData = {
     email: '',
@@ -62,8 +64,8 @@ const SignInForm: React.FC<Props> = ({ setLogged }) => {
   };
 
   const login = async (values: SignInUserData) => {
-    await network.post('/api/v1/auth/login', values);
-    setLogged(true);
+    const { data } = await network.post('/api/v1/auth/login', values);
+    context.logUserIn({ ...data, success: true });
     history.push('/home');
   };
 

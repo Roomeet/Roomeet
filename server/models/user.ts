@@ -38,6 +38,7 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     match: emailRegexp,
   },
@@ -47,7 +48,7 @@ const userSchema = new Schema({
 });
 
 userSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
+  transform: (document: any, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;

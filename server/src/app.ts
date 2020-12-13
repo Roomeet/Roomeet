@@ -7,8 +7,18 @@ const URI = process.env.MONGODB_URI;
 
 const app: express.Application = express();
 
+let requestID = 0;
+function logger(req: Request, res: Response, next: NextFunction) {
+  console.log(
+    `Request #${requestID}\nRequest fired: ${req.url}\nMethod: ${req.method}`
+  );
+  requestID += 1;
+  next();
+}
+
 app.use(logger);
 app.use(express.urlencoded({ extended: false }));
+app.use('/', express.static('./build/'));
 app.use(express.json());
 
 mongoose
@@ -20,21 +30,11 @@ mongoose
     console.log('error connecting to MongoDB:', error.message);
   });
 
-let requestID = 0;
-function logger(req: Request, res: Response, next: NextFunction) {
-  console.log(
-    `Request #${requestID}\nRequest fired: ${req.url}\nMethod: ${req.method}`
-  );
-  requestID += 1;
-  next();
-}
+app.use('/api', require('./api/index.ts'));
 
-app.use('/api', require('./api'));
-
-app.use('*', function(req,res){
-  res.sendStatus(404)
-})
-
+app.use('*', (req, res) => {
+  res.sendStatus(404);
+});
 
 export default app;
 
