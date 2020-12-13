@@ -6,7 +6,7 @@ import User, { UserInterface } from '../../../models/user';
 import RefreshToken, {
   RefreshTokenInterface
 } from '../../../models/refreshToken';
-import { authenticateToken } from '../../helpers/authenticate';
+import authenticateToken from '../../helpers/authenticate';
 
 const router = Router();
 const bcrypt = require('bcrypt');

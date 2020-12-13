@@ -12,6 +12,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
+    'consistent-return': 0,
     'import/extensions': 0,
     'import/no-unresolved': 0,
     'no-underscore-dangle': 0,

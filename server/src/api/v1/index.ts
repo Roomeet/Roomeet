@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import authenticateToken from 'helpers/authenticate';
+import authenticateToken from '../../helpers/authenticate';
 
 // routes:
 import userRoutes from './userRoutes';
