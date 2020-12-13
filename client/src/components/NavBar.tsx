@@ -221,7 +221,7 @@ const NavBar: React.FC = () => {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton aria-label="show 17 new notifications" color="inherit" onClick={() => history.push('/notifications')}>
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
