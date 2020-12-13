@@ -18,6 +18,7 @@ import {
 } from 'formik';
 import { string, object } from 'yup';
 // import Alert from '@material-ui/lab/Alert';
+import BGImage from '../../images/BGSignin.jpg';
 import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
 import { UserContext } from '../../context/UserContext';
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: `url(${BGImage})`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
