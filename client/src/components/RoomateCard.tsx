@@ -42,7 +42,8 @@ const useStyles = makeStyles({
   },
   cardDiv: {
     height: '100%',
-    width: '30%',
+    width: '80%',
+    maxWidth: '500px',
     marginTop: '3vh',
     marginBottom: '3vh',
     marginRight: 'auto',
