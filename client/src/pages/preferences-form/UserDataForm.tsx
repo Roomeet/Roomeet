@@ -98,7 +98,7 @@ const UserDataForm: React.FC = () => {
       <Container component='main' maxWidth='sm'>
         <CssBaseline />
         <div className={classes.paper}>
-          <div className={classes.logo}>Let Us Know About You More</div>
+          <div className={classes.logo}>Let Us Know More About You</div>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
