@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import path from 'path';
 
 require('dotenv').config();
 
@@ -18,7 +19,9 @@ function logger(req: Request, res: Response, next: NextFunction) {
 
 app.use(logger);
 app.use(express.urlencoded({ extended: false }));
-app.use('/', express.static('./build/'));
+// app.use('/', express.static('./build/'));
+app.use(express.static('./build'));
+
 app.use(express.json());
 
 mongoose
@@ -32,8 +35,12 @@ mongoose
 
 app.use('/api', require('./api/index.ts'));
 
-app.use('*', (req, res) => {
-  res.sendStatus(404);
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
 });
+
+// app.use('*', (req, res) => {
+//   res.sendStatus(404);
+// });
 
 export default app;
