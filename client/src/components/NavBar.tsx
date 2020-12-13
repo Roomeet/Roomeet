@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   fade, makeStyles, Theme, createStyles,
 } from '@material-ui/core/styles';
@@ -15,6 +15,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const NavBar: React.FC = () => {
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -104,6 +106,7 @@ const NavBar: React.FC = () => {
   };
 
   const handleLogOut = () => {
+    context.logUserOut();
     logout();
     handleMenuClose();
   };
@@ -120,7 +123,8 @@ const NavBar: React.FC = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
-      <MenuItem onClick={() => context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem>
+      {/* <MenuItem onClick={() =>
+        context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem> */}
     </Menu>
   );
 
@@ -153,7 +157,8 @@ const NavBar: React.FC = () => {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      {/* onClick={handleProfileMenuOpen} */}
+      <MenuItem>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -163,6 +168,17 @@ const NavBar: React.FC = () => {
           <AccountCircle />
         </IconButton>
         <Link to="/profile">Profile</Link>
+      </MenuItem>
+      <MenuItem onClick={handleLogOut}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <ExitToAppIcon />
+        </IconButton>
+        Logout
       </MenuItem>
     </Menu>
   );
@@ -212,10 +228,19 @@ const NavBar: React.FC = () => {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={() => history.push('/profile')}
               color="inherit"
             >
               <AccountCircle />
+            </IconButton>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={handleLogOut}
+            >
+              <ExitToAppIcon />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
