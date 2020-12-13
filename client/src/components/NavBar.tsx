@@ -234,7 +234,9 @@ const NavBar: React.FC = () => {
               onClick={() => history.push('/profile')}
               color="inherit"
             >
-              <AccountCircle />
+              <Badge>
+                <AccountCircle />
+              </Badge>
             </IconButton>
             <IconButton
               aria-label="account of current user"
@@ -243,7 +245,9 @@ const NavBar: React.FC = () => {
               color="inherit"
               onClick={handleLogOut}
             >
-              <ExitToAppIcon />
+              <Badge>
+                <ExitToAppIcon />
+              </Badge>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
