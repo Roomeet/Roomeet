@@ -75,7 +75,10 @@ router.post('/user-data', (req: Request, res: Response) => {
       deletedAt: null
     });
 
-    userData.save(userData).then(() => res.status(201).json('Updated info!'));
+    userData.save().then(() => res.status(201).json('Updated info!')).catch((error : any) => {
+      console.log(error);
+      res.status(501).json({ error });
+    });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -109,7 +112,7 @@ router.post(
           result.save((err:any) => {
             if (!err) {
               // Do something with the document
-              res.json(rawMatch.like ? 'Matched' : 'Didnt match');
+              res.json(rawMatch.like ? 'Matched' : 'Unmatched');
             } else {
               res.json({ error: err });
             }

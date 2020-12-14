@@ -19,6 +19,7 @@ import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object, number } from 'yup';
 import { UserDataFormResponse } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -74,7 +75,7 @@ const UserDataForm: React.FC = () => {
   });
 
   const initialValues: UserDataFormResponse = {
-    userId: '1',
+    userId: context.id,
     age: 18,
     gender: 'female',
     smoke: 'Never',
@@ -90,7 +91,7 @@ const UserDataForm: React.FC = () => {
   };
 
   const submit = async (values: any) => {
-    console.log(context);
+    await axios.post('/api/v1/users/user-data', values);
   };
 
   return (

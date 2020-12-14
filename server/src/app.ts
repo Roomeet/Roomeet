@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
+const cors = require('cors');
+
 require('dotenv').config();
 
 const URI = process.env.MONGODB_URI;
@@ -17,6 +19,7 @@ function logger(req: Request, res: Response, next: NextFunction) {
 }
 
 app.use(logger);
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use('/', express.static('./build/'));
 app.use(express.json());
