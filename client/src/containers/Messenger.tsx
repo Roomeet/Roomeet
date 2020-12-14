@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { UserContext } from '../context/UserContext';
+import makeToast from '../utils/Toaster';
 
 const Messenger: React.FC = () => {
   const [socket, setSocket] = useState<any>(null);
@@ -18,11 +19,12 @@ const Messenger: React.FC = () => {
         newSocket.on('disconnect', () => {
           setSocket(null);
           setTimeout(setupSocket, 3000);
-          console.log('client-socket disconnected');
+          makeToast('error', 'Socket Disconnected!');
         });
 
         newSocket.on('connect', () => {
           console.log('client-socket connected');
+          makeToast('success', 'Socket Connected!');
         });
 
         setSocket(newSocket);
