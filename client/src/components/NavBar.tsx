@@ -140,11 +140,11 @@ const NavBar: React.FC<NavBarProps> = ({ setMessengerOpen }: NavBarProps) => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={5} color="secondary">
-            <Link to="/messages">
-              <MailIcon />
-            </Link>
+        <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+          <Badge badgeContent={4} color="secondary">
+            {/* <Link to="/messages"> */}
+            <MailIcon />
+            {/* </Link> */}
           </Badge>
         </IconButton>
         <p>Messages</p>

@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 export interface ChatRoom extends Document {
   _id: string;
   name: string;
-  participants: ObjectId[];
+  participants: [ObjectId];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

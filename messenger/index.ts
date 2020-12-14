@@ -21,7 +21,7 @@ mongoose.connection.once("open", () => {
 
 //Bring in the models
 require("./models/User");
-require("./models/Chatroom");
+// require("./models/Chatroom");
 require("./models/Message");
 
 const port = process.env.PORT || 3002;

@@ -1,36 +1,36 @@
-import { Router, Request, Response, NextFunction } from 'express';  
+import { Router, Request, Response, NextFunction } from 'express';
 import { authenticateToken } from 'helpers/authenticate';
 import { ObjectId } from 'mongodb';
 
 // interfaces:
 
 // mongoDB models:
-import ChatRoom from '../../../models/ChatRoom';
+// import ChatRoom from '../../../models/ChatRoom';
 import Message from '../../../models/Message';
 
 const router = Router();
 
-// helpers:
+helpers:
 const createChatroom = async (req: Request, res: Response) => {
   try{
     const name: string = req.body.name;
     const participants: string[] = req.body.participants;
-    
+
     const nameRegex = /^[A-Za-z\s]+$/;
-    
+
     if (!nameRegex.test(name)) throw "Chatroom name can contain only alphabets.";
-    
+
     const chatRoomExists = await ChatRoom.findOne({ name });
-    
+
     if (chatRoomExists) throw "Chatroom with that name already exists!";
-    
+
     const chatRoom = new ChatRoom({
       name,
       participants
     });
-    
+
     await chatRoom.save();
-    
+
     res.json({
       message: "Chatroom created!",
     });
@@ -39,12 +39,12 @@ const createChatroom = async (req: Request, res: Response) => {
   }
 };
 
-// Routes
+Routes
 
-// Create new chatroom
+Create new chatroom
 router.post('/', createChatroom);
 
-// Get all users
+Get all users
 router.get(
   '/',
   /* authenticateToken , */ async (req: Request, res: Response) => {
@@ -72,4 +72,4 @@ router.get(
 
 module.exports = function(io: any) {
   return router;
-} 
+}
