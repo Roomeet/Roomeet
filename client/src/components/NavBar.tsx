@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   fade, makeStyles, Theme, createStyles,
@@ -77,7 +77,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const NavBar: React.FC = () => {
+type NavBarProps = {
+  setMessengerOpen: Dispatch<SetStateAction<boolean>>
+}
+
+const NavBar: React.FC<NavBarProps> = ({ setMessengerOpen }: NavBarProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -195,11 +199,11 @@ const NavBar: React.FC = () => {
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
               <Badge badgeContent={4} color="secondary">
-                <Link to="/messages">
-                  <MailIcon />
-                </Link>
+                {/* <Link to="/messages"> */}
+                <MailIcon />
+                {/* </Link> */}
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
