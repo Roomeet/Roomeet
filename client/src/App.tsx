@@ -55,7 +55,6 @@ function App(): JSX.Element {
 
   // checks if a user is logged
   useEffect(() => {
-    console.log(context.success);
     isLoggedIn();
   }, []);
 

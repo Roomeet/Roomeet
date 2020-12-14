@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ConnectionCard from './ConnectionCard';
+import ConnectionCard from '../components/ConnectionCard';
 import LoginImage from '../images/BGLogin.jpg';
 import SignupImage from '../images/BGSignup.jpg';
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const LoginDescription = 'Already A user? Log In to see how many doors have been opened for you while your gone';
 const SignupDescription = 'Not A member yet? Hop In! explore with us A new better world of finding your next partner online...';
 
-const ConnectionSection: React.FC = () => {
+const LandingConnectionSection: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -30,4 +30,4 @@ const ConnectionSection: React.FC = () => {
   );
 };
 
-export default ConnectionSection;
+export default LandingConnectionSection;

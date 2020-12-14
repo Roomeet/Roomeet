@@ -5,8 +5,8 @@ import BGLanding from '../../images/BGLanding.jpg'
 import BGLogin from '../../images/BGLogin.jpg'
 import BGSignup from '../../images/BGSignup.jpg'
 import { CssBaseline } from '@material-ui/core';
-import Header from '../../components/Header';
-import ConnectionSection from '../../components/ConnectionSection';
+import LandingHeader from '../../containers/LandingHeader';
+import LandingConnectionSection from '../../containers/LandingConnectionSection';
 
 const useStyles = makeStyles((theme) => ({
   landing: {
@@ -24,8 +24,8 @@ function Landing() {
     <div>
       <div className={classes.landing}>
         <CssBaseline />
-        <Header />
-        <ConnectionSection />
+        <LandingHeader />
+        <LandingConnectionSection />
       </div>
     </div>
   );
