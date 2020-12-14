@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { UserContext } from '../context/UserContext';
 
-const Messenger: React.FC = () => {
+type messengerProps = {
+  messengerOpen: boolean
+}
+
+const Messenger: React.FC<messengerProps> = ({ messengerOpen }) => {
   const [socket, setSocket] = useState<any>(null);
   const user = useContext(UserContext);
 
@@ -38,9 +42,21 @@ const Messenger: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      This is the messenger
-    </div>
+    <>
+      {
+        messengerOpen
+          ? (
+            <div>
+              This is the messenger and its open
+            </div>
+          )
+          : (
+            <div>
+              This is the messenger and its closed
+            </div>
+          )
+      }
+    </>
   );
 };
 

@@ -23,12 +23,14 @@ import TermsConditionPage from './pages/footers/TermsConditionPage';
 import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
 import BGImage from './images/woodBG.jpg';
+import Messenger from './containers/Messenger';
 
 
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const context = React.useContext(UserContext);
 
   const isLoggedIn = async (): Promise<void> => {
@@ -64,7 +66,8 @@ function App(): JSX.Element {
         {!loading ? (
           context.success ? (
             <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-              <NavBar />
+              <NavBar setMessengerOpen={setMessengerOpen} />
+              <Messenger messengerOpen={messengerOpen} />
               <Switch>
                 <Route exact path='/about'>
                   <AboutPage />
