@@ -9,7 +9,7 @@ const Messenger: React.FC = () => {
   const setupSocket = () => {
     if (!socket) {
       try {
-        const newSocket = io('/api/v1/chatroom/');
+        const newSocket = io('http://localhost:3002');
 
         newSocket.on('disconnect', () => {
           setSocket(null);
@@ -31,7 +31,7 @@ const Messenger: React.FC = () => {
   React.useEffect(() => {
     setupSocket();
     console.log(socket);
-  }, [socket]);
+  }, []);
 
   return (
     <div>
