@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     height: '100%',
     width: '80%',
     maxWidth: '500px',
-    marginTop: '10vh',
+    marginTop: '4.5vh',
     marginBottom: '3vh',
     marginRight: 'auto',
     marginLeft: 'auto',
