@@ -19,7 +19,7 @@ router.get(
   '/',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const users = await User.find({});
+      const users = await User.find();
       res.json(users);
     } catch (error) {
       res.status(500).json({ error });
@@ -32,7 +32,8 @@ router.get(
   '/basic-info',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const usersData: any[] = await UserData.find({});
+      const { userId } = req.body;
+      const usersData: any[] = await UserData.find(userId ? { userId: new ObjectId(userId) } : {});
       res.json(usersData);
     } catch (error) {
       res.status(500).json({ error });

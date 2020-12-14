@@ -8,6 +8,7 @@ import AboutPage from '../pages/footers/AboutPage';
 import TermsConditionPage from '../pages/footers/TermsConditionPage';
 import ContactUsPage from '../pages/footers/ContactUsPage';
 import ChatBox from '../pages/chat/ChatBox';
+import Profile from '../pages/profile/Profile';
 
 const PrivateRoutesContainer: React.FC = () => (
   <div>
@@ -19,7 +20,8 @@ const PrivateRoutesContainer: React.FC = () => (
     </PrivateRoute>
     <PrivateRoute exact path="/profile">
       <div id="private-routes">
-        <UserDataForm />
+        <Profile />
+        {/* <UserDataForm /> */}
       </div>
     </PrivateRoute>
     <PrivateRoute exact path="/messages">
