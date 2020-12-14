@@ -9,7 +9,11 @@ const Messenger: React.FC = () => {
   const setupSocket = () => {
     if (!socket) {
       try {
-        const newSocket = io('http://localhost:3002');
+        const newSocket = io('http://localhost:3002', {
+          query: {
+            userId: user.id,
+          },
+        });
 
         newSocket.on('disconnect', () => {
           setSocket(null);

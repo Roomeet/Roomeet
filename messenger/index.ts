@@ -1,5 +1,8 @@
 require("dotenv").config();
 import app from './app';
+import { ObjectId } from 'mongodb';
+import Message from './models/Message';
+import User from './models/User';
 
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
@@ -31,9 +34,9 @@ const io = require("socket.io")(server);
 
 io.use(async (socket: any, next: any) => {
   try {
-    // const token = socket.handshake.query.token;
+    const userId = socket.handshake.query.userId;
     // const payload = await jwt.verify(token, process.env.SECRET);
-    socket.userId = 1;
+    socket.userId = userId;
     next();
   } catch (err) {}
 });
@@ -44,4 +47,32 @@ io.on("connection", (socket: any) => {
   socket.on("disconnect", () => {
     console.log("Disconnected: " + socket.userId);
   });
+
+  socket.on("EnteredRoom", ({ chatroomId }: any ) => {
+    socket.join(chatroomId);
+    console.log("A user joined chatroom: " + chatroomId);
+  });
+
+  socket.on("exitedRoom", ({ chatroomId }:  any) => {
+    socket.leave(chatroomId);
+    console.log("A user left chatroom: " + chatroomId);
+  });
+
+  socket.on("chatroomMessage", async ({ chatroomId, message }: any) => {
+    if (message.trim().length > 0) {
+      const user = await User.findById(socket.userId);
+      const newMessage = new Message({
+        chatroom: chatroomId,
+        user: socket.userId,
+        message,
+      });
+      io.to(chatroomId).emit("newMessage", {
+        message,
+        name: user?.name,
+        userId: socket.userId,
+      });
+      await newMessage.save();
+    }
+  });
+
 });

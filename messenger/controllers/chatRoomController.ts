@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Chatroom = mongoose.model("Chatroom");
+const ChatRoom = mongoose.model("ChatRoom");
 
-exports.createChatroom = async (req: Request | any, res: Response | any) => {
+exports.createChatRoom = async (req: Request | any, res: Response | any) => {
   try{
     const { name } = req.body;
 
@@ -9,28 +9,28 @@ exports.createChatroom = async (req: Request | any, res: Response | any) => {
   
     if (!nameRegex.test(name)) throw "Chatroom name can contain only alphabets.";
   
-    const chatroomExists = await Chatroom.findOne({ name });
+    const chatroomExists = await ChatRoom.findOne({ name });
   
-    if (chatroomExists) throw "Chatroom with that name already exists!";
+    if (chatroomExists) throw "Chat room with that name already exists!";
   
-    const chatroom = new Chatroom({
+    const chatroom = new ChatRoom({
       name,
     });
   
     await chatroom.save();
   
     res.json({
-      message: "Chatroom created!",
+      message: "ChatRoom created!",
     });
   } catch(error) {
     res.json({ error })
   }
 };
 
-exports.getAllChatrooms = async (req: Request | any, res: Response | any) => {
+exports.getAllChatRooms = async (req: Request | any, res: Response | any) => {
   try {
-    const chatrooms = await Chatroom.find({});
-    res.json(chatrooms);
+    const chatRooms = await ChatRoom.find({});
+    res.json(chatRooms);
   } catch(error) {
     res.json({ error })
   }
