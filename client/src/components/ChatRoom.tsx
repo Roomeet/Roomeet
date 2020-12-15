@@ -4,12 +4,14 @@ import {
   createStyles,
   CssBaseline,
   IconButton,
+  Input,
   List,
   makeStyles,
   Paper,
   Theme,
   Typography,
 } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 import React, {
   useContext,
   useEffect,
@@ -29,50 +31,67 @@ type chatRoomProps = {
 type messageType = {
   message: string;
   name: string;
-  id: string;
+  userId: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  messenger: {
+  paper: {
     position: 'absolute',
     maxWidth: '400px',
     top: '50px',
-    right: '100px',
+    right: '200px',
     zIndex: 10,
+    padding: '5px',
+  },
+  ownMessage: {
+    backgroundColor: 'rgb(0,132,255)',
+    position: 'relative',
+    padding: '5px',
+    margin: '5px',
+    marginLeft: 'auto',
+    width: 'fit-content',
+    maxWidth: '10rem',
+  },
+  otherMessage: {
+    backgroundColor: 'rgb(228,230,235)',
+    position: 'relative',
+    marginRight: 'auto',
+    padding: '5px',
+    margin: '5px',
+    width: 'fit-content',
+    maxWidth: '10rem',
   },
   header: {
     padding: theme.spacing(2, 2, 0),
     position: 'relative',
     top: 0,
   },
-  paper: {
-  },
   list: {
     overflowY: 'scroll',
-    maxHeight: '400px',
+    maxHeight: '200px',
+    height: '200px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   subheader: {
     backgroundColor: theme.palette.background.paper,
   },
-  appBar: {
-    position: 'relative',
-    bottom: 0,
+  input: {
+    // position: 'relative',
+    // bottom: 0,
   },
-  grow: {
+  sendButton: {
     flexGrow: 1,
   },
-  fabButton: {
-    position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
+  submit: {
+    flexGrow: 1,
   },
 }));
 
+const messages: messageType[] = [{ message: 'hey', name: 'Itay', userId: '1234' }, { message: 'Hi!', name: 'Liam', userId: '123456' }, { message: 'I wanna live with you', name: 'Itay', userId: '1234' }, { message: 'Where??', name: 'Liam', userId: '1234' }, { message: 'TLV BABY', name: 'Itay', userId: '123456' }, { message: 'You just found yourself a Roomeet!', name: 'Liam', userId: '1234' }];
+
 const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }) => {
-  const [messages, setMessages] = useState<messageType[]>([]);
+  // const [messages, setMessages] = useState<messageType[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const messageRef = useRef<any>();
@@ -81,7 +100,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
 
   const sendMessage = () => {
     if (socket) {
-      // console.log('sended');
+      console.log('in');
       socket.emit('chatroomMessage', {
         chatRoomId,
         message: messageRef.current.value,
@@ -91,24 +110,23 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
     }
   };
 
-  const getMessages = async () => {
-    try {
-      const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${chatRoomId}`);
-      setMessages(data);
-    } catch (err) {
-      setTimeout(getMessages, 3000);
-    }
-  };
+  // const getMessages = async () => {
+  //   try {
+  //     const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${chatRoomId}`);
+  //     setMessages(data);
+  //   } catch (err) {
+  //     setTimeout(getMessages, 3000);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (socket) {
-      socket.on('newMessage', (message: messageType) => {
-        const newMessages = [...messages, message];
-        setMessages(newMessages);
-      });
-    }
-    console.log('messages::::: ', messages);
-  }, [messages]);
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.on('newMessage', (message: messageType) => {
+  //       const newMessages = [...messages, message];
+  //       setMessages(newMessages);
+  //     });
+  //   }
+  // }, [messages]);
 
   useEffect(() => {
     if (socket) {
@@ -128,7 +146,33 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
 
   return (
     <div className="ChatRoom">
-      { open ? (
+      <div className="chat-avatar">
+        <IconButton
+          onMouseEnter={() => setBadgeInvisible(false)}
+          onMouseLeave={() => setBadgeInvisible(true)}
+          onClick={() => { setOpen((prev) => !prev); }}
+        >
+          <Avatar>
+            {chatRoomId[0]}
+          </Avatar>
+        </IconButton>
+        <Badge
+          badgeContent="X"
+          onMouseEnter={() => setBadgeInvisible(false)}
+          onMouseLeave={() => setBadgeInvisible(true)}
+          color="secondary"
+          style={{ marginLeft: '-15px' }}
+          onClick={() => { closeChatRoom(chatRoomId); }}
+          invisible={badgeInvisible}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <IconButton />
+        </Badge>
+      </div>
+      { open && (
         <React.Fragment>
           <CssBaseline />
           <Paper square className={classes.paper}>
@@ -142,66 +186,35 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
             </Typography>
             <List className={classes.list}>
               {messages[0] ? messages.map((message) => (
-                <div key={message.id} className="message">
-                  <span
-                    className={
-                      user.id === message.id ? 'ownMessage' : 'otherMessage'
-                    }
-                  >
-                    {message.name}
-                    :
-                  </span>
-                  {' '}
-                  {message.message}
-                </div>
+                <Paper
+                  key={message.userId}
+                  className={
+                    message.name === 'Liam' ? classes.ownMessage : classes.otherMessage
+                  }
+                >
+                  <Typography variant="body2">
+                    {message.message}
+                  </Typography>
+                </Paper>
               )) : <div>no messages</div>}
             </List>
             <div className="chatroomActions">
-              <div>
-                <input
+              <div className={classes.submit}>
+                <Input
+                  className={classes.input}
                   type="text"
                   name="message"
-                  placeholder="Say something!"
-                  ref={messageRef}
+                  placeholder="Type here..."
+                  inputRef={messageRef}
                 />
-              </div>
-              <div>
-                <button className="join" onClick={sendMessage}>
-                  Send
-                </button>
+                <IconButton className={classes.sendButton} onClick={sendMessage}>
+                  <SendIcon />
+                </IconButton>
               </div>
             </div>
           </Paper>
         </React.Fragment>
-      )
-        : (
-          <>
-            <IconButton
-              onMouseEnter={() => setBadgeInvisible(false)}
-              onMouseLeave={() => setBadgeInvisible(true)}
-              onClick={() => { setOpen((prev) => !prev); }}
-            >
-              <Avatar>
-                {chatRoomId[0]}
-              </Avatar>
-            </IconButton>
-            <Badge
-              badgeContent="X"
-              onMouseEnter={() => setBadgeInvisible(false)}
-              onMouseLeave={() => setBadgeInvisible(true)}
-              color="secondary"
-              style={{ marginLeft: '-15px' }}
-              onClick={() => { closeChatRoom(chatRoomId); }}
-              invisible={badgeInvisible}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <IconButton />
-            </Badge>
-          </>
-        )}
+      )}
     </div>
   );
 };
