@@ -30,7 +30,6 @@ import Messenger from './containers/Messenger';
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const context = React.useContext(UserContext);
 
   const isLoggedIn = async (): Promise<void> => {
@@ -66,8 +65,7 @@ function App(): JSX.Element {
         {!loading ? (
           context.success ? (
             <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-              <NavBar setMessengerOpen={setMessengerOpen} />
-              <Messenger messengerOpen={messengerOpen} />
+              <NavBar />
               <Switch>
                 <Route exact path='/about'>
                   <AboutPage />

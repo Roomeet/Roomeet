@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
 import {
   fade, makeStyles, Theme, createStyles,
@@ -17,6 +18,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
+import Messenger from '../containers/Messenger';
+import makeToast from '../utils/Toaster';
+import ChatRoom from './ChatRoom';
+import network from '../utils/network';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -77,18 +82,66 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-type NavBarProps = {
-  setMessengerOpen: Dispatch<SetStateAction<boolean>>
-}
-
-const NavBar: React.FC<NavBarProps> = ({ setMessengerOpen }: NavBarProps) => {
+const NavBar: React.FC = () => {
   const classes = useStyles();
+  const [socket, setSocket] = useState<any>(null);
+  const [openChatRooms, setOpenChatrooms] = useState<string[]>([]);
+  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-  const context = React.useContext(UserContext);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
+  const user = useContext(UserContext);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const setupSocket = () => {
+    if (!socket) {
+      try {
+        const newSocket = io('http://localhost:3002', {
+          query: {
+            userId: user.id,
+          },
+        });
+
+        newSocket.on('disconnect', () => {
+          setSocket(null);
+          setTimeout(setupSocket, 3000);
+          makeToast('error', 'Socket Disconnected!');
+        });
+
+        newSocket.on('connect', () => {
+          console.log('client-socket connected');
+          makeToast('success', 'Socket Connected!');
+        });
+
+        setSocket(newSocket);
+      } catch (error) {
+        console.log('error in socket');
+      }
+    }
+  };
+
+  const openChatRoom = (roomId: string) => {
+    setOpenChatrooms((prevOpenChatRooms: string[]) => {
+      if (!prevOpenChatRooms.includes(roomId)) {
+        console.log([...prevOpenChatRooms, roomId]);
+        return [...prevOpenChatRooms, roomId];
+      }
+      return prevOpenChatRooms;
+    });
+  };
+
+  const closeChatRoom = (roomId: string) => {
+    setOpenChatrooms((prevOpenChatRooms: string[]) => {
+      const index = prevOpenChatRooms.indexOf(roomId);
+      prevOpenChatRooms.splice(index, 1);
+      return [...prevOpenChatRooms];
+    });
+  };
+
+  useEffect(() => {
+    setupSocket();
+  }, []);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -124,7 +177,7 @@ const NavBar: React.FC<NavBarProps> = ({ setMessengerOpen }: NavBarProps) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
-      <MenuItem onClick={() => context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem>
+      <MenuItem onClick={() => user.logUserOut()}><Link to="/landing">Logout</Link></MenuItem>
     </Menu>
   );
 
@@ -199,6 +252,9 @@ const NavBar: React.FC<NavBarProps> = ({ setMessengerOpen }: NavBarProps) => {
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            {openChatRooms[0] && openChatRooms.map((chatroom) => (
+              <ChatRoom socket={socket} chatRoomId={chatroom} closeChatRoom={closeChatRoom} />
+            ))}
             <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
               <Badge badgeContent={4} color="secondary">
                 {/* <Link to="/messages"> */}
@@ -235,6 +291,11 @@ const NavBar: React.FC<NavBarProps> = ({ setMessengerOpen }: NavBarProps) => {
           </div>
         </Toolbar>
       </AppBar>
+      <Messenger
+        messengerOpen={messengerOpen}
+        socket={socket}
+        openChatRoom={openChatRoom}
+      />
       {renderMobileMenu}
       {renderMenu}
     </div>
