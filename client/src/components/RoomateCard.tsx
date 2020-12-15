@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Card, CardActions, CardContent, Button, Typography,
+  Card, CardActions, CardContent, Button, Typography, Modal,
 } from '@material-ui/core/';
 // import blueDoor from '../images/blueDoor.png';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { Link } from 'react-router-dom';
 import brownDoor from '../images/brownDoor.png';
+import ProfilePage from '../pages/roomates/ProfilePage';
 // import { UserDataInterface } from '../../../server/models/UserData';
 
 export type Props = {
@@ -23,6 +25,7 @@ const useStyles = makeStyles({
     border: '5px solid #2E2019',
     color: '#2E2019',
     width: '100%',
+    marginBottom: '15%',
   },
   bullet: {
     display: 'inline-block',
@@ -76,7 +79,15 @@ const useStyles = makeStyles({
 const RoomateCard: React.FC<Props> = ({
   userInfo, handleNext, activeStep, length,
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={classes.cardDiv}>
       <Card className={classes.root}>
@@ -106,23 +117,27 @@ const RoomateCard: React.FC<Props> = ({
             <br />
             looking for:
             {' '}
-            {
-              userInfo.lookingFor?.roomate ? 'roomate' : ''
-            }
-            {userInfo.lookingFor?.roomate && userInfo.lookingFor?.friend ? ', ' : ' '}
-            {
-              userInfo.lookingFor?.friend ? 'friend' : ''
-            }
+            {userInfo.lookingFor?.roomate ? 'roomate' : ''}
+            {userInfo.lookingFor?.roomate && userInfo.lookingFor?.friend
+              ? ', '
+              : ' '}
+            {userInfo.lookingFor?.friend ? 'friend' : ''}
           </Typography>
         </CardContent>
         <CardActions>
-          <Button className={classes.goToProfile} size="small">
+          <Button
+            onClick={handleOpen}
+            className={classes.goToProfile}
+            size="small"
+            // onClick={handleOpenProfile}
+          >
             <img
               className={classes.goToProfile}
-              alt="blueDoor"
+              alt="brownDoor"
               src={brownDoor}
             />
           </Button>
+          <ProfilePage open={open} handleClose={handleClose} userId={userInfo.userId} />
         </CardActions>
         <CardActions>
           <Button
@@ -142,10 +157,7 @@ const RoomateCard: React.FC<Props> = ({
             // disabled={activeStep === 0}
             disabled={activeStep === length}
           >
-            <ThumbDownIcon
-              className={classes.unlike}
-              style={{ fill: 'red' }}
-            />
+            <ThumbDownIcon className={classes.unlike} style={{ fill: 'red' }} />
           </Button>
         </CardActions>
       </Card>
