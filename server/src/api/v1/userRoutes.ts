@@ -32,8 +32,10 @@ router.get(
   '/basic-info',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const { userId } = req.body;
-      const usersData: any[] = await UserData.find(userId ? { userId: new ObjectId(userId) } : {});
+      const { id } = req.query;
+
+      const usersData: any[] = await UserData.find(id ? { userId: new ObjectId(String(id)) } : {});
+
       res.json(usersData);
     } catch (error) {
       res.status(500).json({ error });
@@ -75,10 +77,7 @@ router.post('/user-data', (req: Request, res: Response) => {
       deletedAt: null
     });
 
-    userData.save().then(() => res.status(201).json('Updated info!')).catch((error : any) => {
-      console.log(error);
-      res.status(501).json({ error });
-    });
+    userData.save().then(() => res.status(201).json('Updated info!')).catch((error : any) => res.status(501).json({ error }));
   } catch (error) {
     res.status(500).json({ error });
   }
