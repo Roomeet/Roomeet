@@ -17,19 +17,24 @@ export type Props = {
 };
 
 const useStyles = makeStyles({
+  mainDiv: {
+  },
   modalDiv: {
     display: 'flex',
     flexDirection: 'column',
     border: '3px solid black',
     textAlign: 'center',
     height: '70%',
-    overflowX: 'hidden',
-    overflowY: 'scroll',
-    width: '40%',
+    overflowY: 'auto',
+    // '*::-webkit-scrollbar': {
+    //   width: '1px',
+    // },
+    width: '50%',
     marginTop: '5%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    background: '#BFB4AB',
+    // background: '#BFB4AB',
+    backgroundColor: 'white',
     color: 'black',
   },
   rows: {
@@ -47,16 +52,24 @@ const useStyles = makeStyles({
     left: '0%',
   },
   profilePic: {
-    position: 'relative',
-    left: '0%',
-    top: '0%',
+    // position: 'relative',
+    // left: '0%',
+    // top: '0%',
     borderRadius: '50%',
     border: '3px solid black',
-    backgroundColor: 'green',
-    height: '25%',
-    width: '25%',
+    // backgroundColor: 'green',
+    height: '80%',
+    width: '30%',
+    marginTop: '2vh',
     marginLeft: 'auto',
     marginRight: 'auto',
+  },
+  nameTitle: {
+    // backgroundColor: 'brown',
+    height: '30vh',
+  },
+  imgDiv: {
+    backgroundColor: '#BFB4AB',
   },
 });
 
@@ -75,12 +88,18 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
   }, []);
 
   return (
-    <>
+    <div>
       {open && (
         <Modal open onClose={handleClose}>
           <div className={classes.modalDiv}>
-            <h2>{userId}</h2>
-            <div className={classes.profilePic}>PIC</div>
+            <div className={classes.imgDiv}>
+              <img
+                alt="profilePic"
+                className={classes.profilePic}
+                src="https://picsum.photos/150/150"
+              />
+            </div>
+            <h2 className={classes.nameTitle}>{userId}</h2>
             <p className={classes.rows}>
               <Typography variant="h6" className={classes.labels}>
                 Age:
@@ -258,7 +277,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
           </div>
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 
