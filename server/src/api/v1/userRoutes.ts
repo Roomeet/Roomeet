@@ -93,6 +93,20 @@ router.get(
   }
 );
 
+//update user data form 
+router.put('/user-data/:id', async (req:Request, res: Response) => {
+  const { id } = req.params;
+  try{
+    const { body: rawUserData } = req;
+    const userData = new UserData({
+      ...rawUserData
+    })
+    await UserData.findOneAndUpdate({userId: id}, userData);
+  }catch(error){
+    res.status(500).json({ error })
+  }
+})
+
 // Post user data
 router.post('/user-data', (req: Request, res: Response) => {
   try {
