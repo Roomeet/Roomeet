@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object, number } from 'yup';
-import { UserDataFormResponse } from '../../interfaces/userData';
+import { UserDataFormResponse, UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 
@@ -68,7 +68,7 @@ const UserDataForm: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
   const context = React.useContext(UserContext);
-  const [user, setUser] = React.useState<any[]>();
+  const [user, setUser] = React.useState<UserDataInterface>();
 
   const validationSchema = object({
     age: number()
@@ -125,7 +125,8 @@ const UserDataForm: React.FC = () => {
     } else {
       setUser(initialValues)
     }
-
+    console.log(user);
+    
   };
 
   React.useEffect(() => {
@@ -360,6 +361,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='pet'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user!.pet}
                             color='primary'
                             data-test='userdata-pet'
                             {...field}
@@ -374,6 +376,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='relationship'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user.relationship}
                             color='primary'
                             data-test='userdata-relationship'
                             {...field}
@@ -388,6 +391,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='employed'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user.employed}
                             color='primary'
                             data-test='userdata-employed'
                             {...field}
@@ -402,6 +406,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='religion'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user.religion}
                             color='primary'
                             data-test='userdata-religion'
                             {...field}

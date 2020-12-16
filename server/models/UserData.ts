@@ -15,7 +15,7 @@ export interface UserDataInterface extends Document {
   music: string[];
   lookingFor?: { roomate: boolean; friend: boolean };
   numOfRoomates?: number;
-  religion?: string;
+  religion?: boolean;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
@@ -41,7 +41,7 @@ const UserDataSchema = new Schema({
   music: [String],
   lookingFor: { type: Schema.Types.Mixed },
   numOfRoomates: Number,
-  religion: String,
+  religion: Boolean,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date
