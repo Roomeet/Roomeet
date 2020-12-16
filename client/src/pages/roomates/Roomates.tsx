@@ -97,7 +97,7 @@ function Roomates() {
   const handleNext = async (like: boolean) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     
-    await network.post('/api/v1/users/match', {
+    await network.post('/api/v1/users/like', {
       like,
       userId: context.id,
       passiveUserId: allUsersInfo[activeStep].userId,

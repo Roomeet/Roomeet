@@ -4,7 +4,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   fade, makeStyles, Theme, createStyles,
 } from '@material-ui/core/styles';
@@ -94,11 +94,17 @@ type navbarProps = {
   closeChatRoom: (roomId: string) => void;
 }
 
-const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket, closeChatRoom }) => {
+const NavBar: React.FC<navbarProps> = ({
+  setMessengerOpen,
+  openChatRooms,
+  socket,
+  closeChatRoom,
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const context = useContext(UserContext);
+  const history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

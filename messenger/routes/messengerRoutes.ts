@@ -4,8 +4,6 @@ import { ObjectId } from 'mongodb';
 import ChatRoom from '../models/ChatRoom';
 const chatroomController = require("../controllers/chatroomController");
 
-
-
 router.get("/chatrooms/:userId", async (req: Request, res: Response) => {
     const userId = req.body.userId;
     const allChatRooms = await ChatRoom.find({ participants: userId });    

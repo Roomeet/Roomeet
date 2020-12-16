@@ -32,10 +32,11 @@ router.get(
 router.get(
   '/basic-info',
   /* authenticateToken , */ async (req: Request, res: Response) => {
+
     try {
       const { id } = req.query;
-
-      const usersData: any[] = await UserData.find(id ? { userId: new ObjectId(String(id)) } : {});
+      
+      const usersData: any[] = await UserData.find(id ? { userId: String(id) } : {});
 
       res.json(usersData);
     } catch (error) {
