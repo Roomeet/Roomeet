@@ -21,6 +21,7 @@ import { Grow } from '@material-ui/core';
 import BGImage from '../../images/BGSignUpForm.jpg';
 import network from '../../utils/network';
 import { SignUpUserData } from '../../interfaces/authentication';
+import { UserContext } from '../../context/UserContext';
 
 const validationSchema = object({
   name: string().required('First Name is required'),
@@ -76,6 +77,7 @@ const SignUpForm: React.FC = () => {
   const classes = useStyles();
   const location = useHistory();
   const [checked, setChecked] = useState<boolean>(false);
+  const context = React.useContext(UserContext);
 
   useEffect(() => {
     setChecked(true);
@@ -91,7 +93,8 @@ const SignUpForm: React.FC = () => {
 
   const signUp = (values: SignUpUserData) => {
     network.post('/api/v1/auth/register', values);
-    location.push('/');
+    context.logUserIn({ filledDataForm: false });
+    location.push('/signin');
   };
 
   return (

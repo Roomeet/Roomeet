@@ -35,7 +35,7 @@ router.get(
     try {
       const { id } = req.query;
 
-      const usersData: any[] = await UserData.find(id ? { userId: new ObjectId(String(id)) } : {});
+      const usersData: any[] = await UserData.find(id ? { userId: String(id) } : {});
 
       res.json(usersData);
     } catch (error) {
