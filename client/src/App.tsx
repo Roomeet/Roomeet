@@ -93,7 +93,7 @@ function App(): JSX.Element {
           email: Cookies.get('email'),
           accessToken: Cookies.get('accessToken'),
         };
-
+        
         context.logUserIn({ ...dataCookie, ...data, success: true });
         setLoading(false);
       } catch (e) {

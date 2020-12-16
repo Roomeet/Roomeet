@@ -1,6 +1,7 @@
 /*eslint-disable */
 
 import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   MenuItem,
@@ -17,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object, number } from 'yup';
-import { UserDataFormResponse } from '../../interfaces/userData';
+import { UserDataFormResponse, UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 
@@ -65,8 +66,9 @@ const useStyles = makeStyles((theme) => ({
 
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
   const context = React.useContext(UserContext);
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState<UserDataInterface>();
 
   const validationSchema = object({
     age: number()
@@ -75,7 +77,7 @@ const UserDataForm: React.FC = () => {
       .required('must contain age'),
   });
   // @ts-ignore
-  const initialValues: UserDataFormResponse = user
+  const initialValues: any = user
     ? user
     : {
         userId: context.id,
@@ -94,20 +96,37 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    await axios.post('/api/v1/users/user-data', values);
+    if(context.filledDataForm){
+      await axios.put(`/api/v1/users/user-data/${context.id}`, values);
+      
+    }
+    else{
+      await axios.post("/api/v1/users/user-data", values);
+      context.logUserIn({ filledDataForm: true });
+      history.push("/home");
+    }
+    
   };
 
   const fetchUserData = async () => {
+    // console.log(context.filledDataForm);
+    
     const { data } = await axios.get(
       `/api/v1/users/basic-info?id=${context.id}`
     );
-    delete data[0].createdAt;
-    delete data[0].deletedAt;
-    delete data[0].updatedAt;
-    delete data[0].id;
     console.log(data[0]);
-
-    setUser(data[0]);
+    
+    // delete data[0].createdAt;
+    // delete data[0].deletedAt;
+    // delete data[0].updatedAt;
+    // delete data[0].id;
+    if(data[0]){
+      setUser(data[0]);
+    } else {
+      setUser(initialValues)
+    }
+    console.log(user);
+    
   };
 
   React.useEffect(() => {
@@ -342,6 +361,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='pet'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user!.pet}
                             color='primary'
                             data-test='userdata-pet'
                             {...field}
@@ -356,6 +376,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='relationship'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user.relationship}
                             color='primary'
                             data-test='userdata-relationship'
                             {...field}
@@ -370,6 +391,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='employed'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user.employed}
                             color='primary'
                             data-test='userdata-employed'
                             {...field}
@@ -384,6 +406,7 @@ const UserDataForm: React.FC = () => {
                       <Field name='religion'>
                         {({ field }: FieldProps) => (
                           <Checkbox
+                            defaultChecked={user.religion}
                             color='primary'
                             data-test='userdata-religion'
                             {...field}

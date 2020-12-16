@@ -32,10 +32,9 @@ router.get(
 router.get(
   '/basic-info',
   /* authenticateToken , */ async (req: Request, res: Response) => {
-
     try {
       const { id } = req.query;
-      
+
       const usersData: any[] = await UserData.find(id ? { userId: String(id) } : {});
 
       res.json(usersData);
@@ -94,6 +93,20 @@ router.get(
   }
 );
 
+//update user data form 
+router.put('/user-data/:id', async (req:Request, res: Response) => {
+  const { id } = req.params;
+  try{
+    const { body: rawUserData } = req;
+    const userData = new UserData({
+      ...rawUserData
+    })
+    await UserData.findOneAndUpdate({userId: id}, userData);
+  }catch(error){
+    res.status(500).json({ error })
+  }
+})
+
 // Post user data
 router.post('/user-data', (req: Request, res: Response) => {
   try {
@@ -116,7 +129,7 @@ router.post('/user-data', (req: Request, res: Response) => {
 
 // Match users
 router.post(
-  '/like', async (req: Request, res: Response) => {
+  '/match', async (req: Request, res: Response) => {
     try {
       const { body: rawMatch } = req;
       const _id = crypto
@@ -142,7 +155,7 @@ router.post(
           result.save((err:any) => {
             if (!err) {
               // Do something with the document
-              res.json(rawMatch.like ? 'liked' : 'unliked');
+              res.json(rawMatch.like ? 'Matched' : 'Unmatched');
             } else {
               res.json({ error: err });
             }

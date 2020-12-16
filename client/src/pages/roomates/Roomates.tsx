@@ -20,6 +20,7 @@ import { Link, useHistory } from 'react-router-dom';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { UserContext } from '../../context/UserContext';
+import UserDataForm from '../preferences-form/UserDataForm';
 import './roomates.css';
 import { Socket } from 'socket.io-client';
 import SocketContext from '../../context/socketContext';
@@ -135,8 +136,8 @@ const Roomates: React.FC = () => {
   return (
     <div className="cards-page">
       {!loading && allUsersInfo[0] ? (
-        prefernces ? (
-          <div>Roomate prefernces</div>
+        !context.filledDataForm ? (
+          <UserDataForm />
         ) : (
           <div className={classes.root}>
             {/* <Paper square elevation={0} className={classes.header}>
