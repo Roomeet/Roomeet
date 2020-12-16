@@ -19,7 +19,7 @@ router.get(
   '/',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const users = await User.find({});
+      const users = await User.find();
       res.json(users);
     } catch (error) {
       res.status(500).json({ error });
@@ -32,7 +32,10 @@ router.get(
   '/basic-info',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const usersData: any[] = await UserData.find({});
+      const { id } = req.query;
+
+      const usersData: any[] = await UserData.find(id ? { userId: new ObjectId(String(id)) } : {});
+
       res.json(usersData);
     } catch (error) {
       res.status(500).json({ error });
@@ -74,7 +77,7 @@ router.post('/user-data', (req: Request, res: Response) => {
       deletedAt: null
     });
 
-    userData.save(userData).then(() => res.status(201).json('Updated info!'));
+    userData.save().then(() => res.status(201).json('Updated info!')).catch((error : any) => res.status(501).json({ error }));
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -108,7 +111,7 @@ router.post(
           result.save((err:any) => {
             if (!err) {
               // Do something with the document
-              res.json(rawMatch.like ? 'Matched' : 'Didnt match');
+              res.json(rawMatch.like ? 'Matched' : 'Unmatched');
             } else {
               res.json({ error: err });
             }
@@ -120,5 +123,16 @@ router.post(
     }
   }
 );
+
+router.get('/match-all', async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.body;
+    // @ts-ignore
+    const matches = await Match.find({ userId });
+    res.status(200).json(matches);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
 
 export default router;
