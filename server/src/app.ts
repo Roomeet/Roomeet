@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import path from 'path';
 
 const cors = require('cors');
 
@@ -38,9 +39,10 @@ mongoose.set("useCreateIndex", true);
 app.use('/api', require('./api/index.ts'));
 
 app.use('*', (req, res) => {
-  res.sendStatus(404);
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
+// app.use('*', (req, res) => {
+//   res.sendStatus(404);
+// });
 
 export default app;
-
-

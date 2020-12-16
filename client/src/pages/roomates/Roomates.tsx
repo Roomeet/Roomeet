@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    // minHeight: "100vh",
   },
   header: {
     display: "flex",
@@ -128,11 +127,11 @@ function Roomates() {
           <div>Roomate prefernces</div>
         ) : (
           <div className={classes.root}>
-            {/* <Paper square elevation={0} className={classes.header}>
+            <Paper square elevation={0} className={classes.header}>
               <Typography className={classes.headerText}>
                 Choose Your Next Roomate!
               </Typography>
-            </Paper> */}
+            </Paper>
             <SwipeableViews
               axis={theme.direction === "rtl" ? "x-reverse" : "x"}
               index={activeStep}
@@ -148,16 +147,16 @@ function Roomates() {
                 (userInfo: UserDataInterface, index: number) => (
                   <div className={classes.item} key={index}>
                     {Math.abs(activeStep - index) <= 2 ? (
-                      <RoomateCard userInfo={userInfo} handleNext={handleNext} activeStep={activeStep} length={allUsersInfo.length}/>
+                      <RoomateCard userInfo={userInfo}/>
                     ) : null}
                   </div>
                 )
               )}
             </SwipeableViews>
-            {/* <MobileStepper
+            <MobileStepper
               steps={allUsersInfo.length}
               className={classes.footer}
-              position='static'
+              // position='static'
               variant="text"
               activeStep={activeStep}
               nextButton={
@@ -194,7 +193,7 @@ function Roomates() {
                   )}
                 </Button>
               }
-            /> */}
+            />
           </div>
         )
       ) : (

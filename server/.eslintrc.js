@@ -16,6 +16,8 @@ module.exports = {
     'no-param-reassign': 0,
     'linebreak-style': ['error', 'windows'],
     eqeqeq: ['error', 'always'],
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
     'comma-dangle': [
       'error',
       {

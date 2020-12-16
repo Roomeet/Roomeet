@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
-import Roomates from '../pages/roomates/Roomates';
+import RoomatesWithAnimate from '../pages/roomates/RoomatesWithAnimate';
 import UserDataForm from '../pages/preferences-form/UserDataForm';
 import NavBar from '../components/NavBar';
 import AboutPage from '../pages/footers/AboutPage';
@@ -15,7 +15,7 @@ const PrivateRoutesContainer: React.FC = () => (
     {/* <NavBar /> */}
     <PrivateRoute exact path="/home">
       <div>
-        <Roomates />
+        <RoomatesWithAnimate />
       </div>
     </PrivateRoute>
     <PrivateRoute exact path="/profile">

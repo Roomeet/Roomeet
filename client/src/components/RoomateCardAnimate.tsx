@@ -7,6 +7,7 @@ import {
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 // import { UserDataInterface } from '../../../server/models/UserData';
@@ -76,9 +77,14 @@ const useStyles = makeStyles({
   },
 });
 
-const RoomateCard: React.FC<Props> = ({
-  userInfo, handleNext, activeStep, length,
-}) => {
+const RoomateCard = ({
+  userInfo, like, unlike,
+}:{
+  userInfo:any,
+  like:(id:string)=>void,
+  unlike:(id:string)=>void,
+
+}) : JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
 
@@ -89,8 +95,27 @@ const RoomateCard: React.FC<Props> = ({
     setOpen(false);
   };
   return (
-    <div
+    <motion.div
       className={classes.cardDiv}
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.9}
+      exit={{
+        scale: 0.5,
+        opacity: 0,
+        transition: {
+          duration: 1,
+        },
+      }}
+      onDragEnd={
+        (event, info) => {
+          if (info.offset.x > 100) {
+            like(userInfo.id);
+          } else if (info.offset.x < -100) {
+            unlike(userInfo.id);
+          }
+        }
+      }
     >
       <Card className={classes.root}>
         <CardContent>
@@ -103,7 +128,7 @@ const RoomateCard: React.FC<Props> = ({
             <img
               alt="profilePic"
               className={classes.profilePic}
-              src="https://picsum.photos/150/150"
+              src={`https://picsum.photos/seed/${userInfo.id}/150/150`}
             />
           </Typography>
           <Typography variant="h5" component="h2">
@@ -145,25 +170,20 @@ const RoomateCard: React.FC<Props> = ({
           <Button
             size="small"
             className={classes.like}
-            onClick={() => handleNext(true)}
-            // disabled={activeStep === allUsersInfo.length - 1}
-            disabled={activeStep === length}
+            onClick={() => { like(userInfo.id); }}
           >
             <ThumbUpIcon className={classes.like} />
           </Button>
           <Button
             size="small"
             className={classes.unlike}
-            // onClick={handleBack}
-            onClick={() => handleNext(false)}
-            // disabled={activeStep === 0}
-            disabled={activeStep === length}
+            onClick={() => { unlike(userInfo.id); }}
           >
             <ThumbDownIcon className={classes.unlike} style={{ fill: 'red' }} />
           </Button>
         </CardActions>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
