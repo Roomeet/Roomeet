@@ -4,4 +4,5 @@ export const logout = (): void => {
   Cookies.remove('accessToken');
   Cookies.remove('refreshToken');
   Cookies.remove('email');
+  Cookies.remove('id');
 };

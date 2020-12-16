@@ -1,3 +1,54 @@
 .App {
   text-align: center;
+  min-height: 100vh;
+  max-width: 100vw;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#private-routes {
+  background-size: cover;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.cards-page{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  overflow-y: scroll;
+}
+
+.user-data-form{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  overflow-y: scroll;
+}
+
+.footer {
+  /* max-width: 700; */
+  width: 100%;
+  height: 2.5rem;
+  margin: auto;
+  text-align: center;
+  position: absolute;
+  bottom: 0;  
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.about {
+  text-align: left;
+  background-color: white;
+  color: black;
+  min-height: 100vh;
 }
