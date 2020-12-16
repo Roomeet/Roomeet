@@ -116,7 +116,7 @@ router.post('/user-data', (req: Request, res: Response) => {
 
 // Match users
 router.post(
-  '/match', async (req: Request, res: Response) => {
+  '/like', async (req: Request, res: Response) => {
     try {
       const { body: rawMatch } = req;
       const _id = crypto
@@ -142,7 +142,7 @@ router.post(
           result.save((err:any) => {
             if (!err) {
               // Do something with the document
-              res.json(rawMatch.like ? 'Matched' : 'Unmatched');
+              res.json(rawMatch.like ? 'liked' : 'unliked');
             } else {
               res.json({ error: err });
             }
