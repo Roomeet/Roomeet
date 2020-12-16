@@ -12,7 +12,7 @@
   min-width: 100vw;
 }
 
-.cards-page{
+.cards-page {
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -22,7 +22,7 @@
   overflow-y: scroll;
 }
 
-.user-data-form{
+.user-data-form {
   height: 100%;
   width: 100%;
   display: flex;
@@ -33,15 +33,21 @@
 
 .footer {
   /* max-width: 700; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
-  height: 2.5rem;
   margin: auto;
   text-align: center;
   position: absolute;
-  bottom: 0;  
+  bottom: 0;
+  background: linear-gradient(45deg, #a16254 30%, #5f413a 90%);
 }
 
-a, a:hover, a:focus, a:active {
+a,
+a:hover,
+a:focus,
+a:active {
   text-decoration: none;
   color: inherit;
 }

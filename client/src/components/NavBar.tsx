@@ -20,6 +20,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 import Messenger from '../containers/Messenger';
@@ -68,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
   },
   background: {
-    background: 'none',
+    background: 'linear-gradient(45deg, #a16254 30%, #5f413a 90%)',
   },
   colorTextRoo: {
     color: '#5AFF3D',
@@ -120,8 +121,14 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
   };
 
   const handleLogOut = () => {
+    context.logUserOut();
     logout();
     handleMenuClose();
+  };
+
+  const handleMobileMenu = (url : string) => {
+    handleMenuClose();
+    history.push(url);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -136,7 +143,8 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
-      <MenuItem onClick={() => context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem>
+      {/* <MenuItem onClick={() =>
+        context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem> */}
     </Menu>
   );
 
@@ -161,7 +169,7 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={() => handleMobileMenu('/notifications')}>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
@@ -169,7 +177,10 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      {/* onClick={handleProfileMenuOpen} */}
+      <MenuItem
+        onClick={() => handleMobileMenu('/profile')}
+      >
         <IconButton
           aria-label="account of current context"
           aria-controls="primary-search-account-menu"
@@ -178,7 +189,18 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
         >
           <AccountCircle />
         </IconButton>
-        <Link to="/profile">Profile</Link>
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleLogOut}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <ExitToAppIcon />
+        </IconButton>
+        Logout
       </MenuItem>
     </Menu>
   );
@@ -221,7 +243,7 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
                 {/* </Link> */}
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton aria-label="show 17 new notifications" color="inherit" onClick={() => history.push('/notifications')}>
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
@@ -231,10 +253,23 @@ const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket
               aria-label="account of current context"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={() => history.push('/profile')}
               color="inherit"
             >
-              <AccountCircle />
+              <Badge>
+                <AccountCircle />
+              </Badge>
+            </IconButton>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={handleLogOut}
+            >
+              <Badge>
+                <ExitToAppIcon />
+              </Badge>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

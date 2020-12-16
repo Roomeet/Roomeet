@@ -14,7 +14,7 @@ const jwt = require('jsonwebtoken');
 
 // types:
 type InfoForCookie = {
-  userId: string;
+  userId: string | undefined;
   email: string;
 };
 
