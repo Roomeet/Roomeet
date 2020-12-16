@@ -55,6 +55,15 @@ exports.deleteAllChatrooms = async (req: Request, res: Response) => {
   }
 };
 
+exports.deleteAllMessages = async (req: Request, res: Response) => {
+  try {
+    await Message.deleteMany({});
+    res.json('delete');
+  } catch(error) {
+    res.json({ error })
+  }
+};
+
 exports.getAllMessagesforChatRoomById = async (req: Request | any, res: Response) => {
   try {
     const messages = await Message.find({chatroom: req.params.chatroomId});
