@@ -3,6 +3,11 @@ import app from './app';
 import { ObjectId } from 'mongodb';
 import Message from './models/Message';
 import User from './models/User';
+import { MatchInterface } from './models/Match';
+import { Socket } from 'socket.io';
+const matchControllers = require("./controllers/matchControllers");
+const chatroomController = require("./controllers/chatroomController");
+const notificationControllers = require("./controllers/chatroomController");
 
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
@@ -34,45 +39,66 @@ const io = require("socket.io")(server);
 
 io.use(async (socket: any, next: any) => {
   try {
-    const userId = socket.handshake.query.userId;
-    // const payload = await jwt.verify(token, process.env.SECRET);
+    // @ts-ignore
+    const userId = socket?.handshake.query.userId;
     socket.userId = userId;
     next();
-  } catch (err) {}
+  } catch (err) {
+    console.log(err)
+  }
 });
 
-io.on("connection", (socket: any) => {
-  console.log("Connected: " + socket.userId);
+io.on("connect", (socket: any) => {
+  // @ts-ignore
+  console.log("Connected: " + socket?.userId);
 
-  socket.on("disconnect", () => {
-    console.log("Disconnected: " + socket.userId);
+  socket?.on("disconnect", (userId: string) => {
+  // @ts-ignore
+    console.log("Disconnected: " + socket?.userId);
   });
 
-  socket.on("EnteredRoom", ({ chatroomId }: any ) => {
+  socket?.on("EnteredRoom", ({ chatroomId }: any ) => {
     socket.join(chatroomId);
     console.log("A user joined chatroom: " + chatroomId);
   });
 
-  socket.on("exitedRoom", ({ chatroomId }:  any) => {
+  socket?.on("exitedRoom", ({ chatroomId }:  any) => {
     socket.leave(chatroomId);
     console.log("A user left chatroom: " + chatroomId);
   });
 
-  socket.on("chatroomMessage", async ({ chatroomId, message }: any) => {
+  socket?.on("chatroomMessage", async ({ userId ,chatroomId, message }: any) => {
     if (message.trim().length > 0) {
-      const user = await User.findById(socket.userId);
+      const user = await User.findById(userId);
       const newMessage = new Message({
         chatroom: chatroomId,
-        user: socket.userId,
+        user: userId,
         message,
       });
       io.to(chatroomId).emit("newMessage", {
         message,
         name: user?.name,
-        userId: socket.userId,
+        userId: userId,
       });
       await newMessage.save();
     }
   });
+
+  socket?.on("like", async ({ activeUser, passiveUser, liked }: {activeUser: string, passiveUser: string, liked: boolean}, func: any) => {
+    try {
+      const match = await matchControllers.handleLike(activeUser, passiveUser, liked);
+      func(match)
+    } catch (err) {
+      console.log(err)
+    }
+  })
+  
+  socket?.on("match", async (match: MatchInterface) => {
+    const { users } = match
+    await chatroomController.createChatRoom(...users);
+    users.forEach(async (user) => {
+      await notificationControllers.createNotification(user, 'match', 'you have a new match with' + user)
+    })
+  })
 
 });

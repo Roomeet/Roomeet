@@ -21,6 +21,8 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { UserContext } from '../../context/UserContext';
 import './roomates.css';
+import { Socket } from 'socket.io-client';
+import SocketContext from '../../context/socketContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,24 +87,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Roomates() {
+const Roomates: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [prefernces, setPrefernces] = useState<boolean>(false); // todo: get actuall prefernces for the user and create prefernces interface
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
   const [activeStep, setActiveStep] = useState(0);
   const context = useContext(UserContext);
+  const socket = useContext(SocketContext)
   const classes = useStyles();
   const theme = useTheme();
 
   const handleNext = async (like: boolean) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    
-    await network.post('/api/v1/users/like', {
+
+    socket?.emit('like', {
       like,
-      userId: context.id,
-      passiveUserId: allUsersInfo[activeStep].userId,
+      activeUser: context.id,
+      passiveUser: allUsersInfo[activeStep].userId,
+    }, (match: any) => {
+      if (match) {
+        socket?.emit('match', {
+          match
+        })
+      }
     });
   };
+
+  
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);

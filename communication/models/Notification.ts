@@ -1,34 +1,40 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model, SchemaType } from 'mongoose';
 import { ObjectId } from 'mongodb';
+import { runInContext } from 'vm';
 
-export interface Message extends Document {
+export interface NotificationInterface extends Document {
   _id: string;
-  chatroom: ObjectId;
-  user: ObjectId;
-  message: string;
+  userId: string;
+  topic: string;
+  content: string;
+  seen: boolean;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
 }
 
-const messageSchema = new Schema({
+const notificationSchema = new Schema({
   _id: {
     type: ObjectId,
     required: true,
   },
-  chatroom: {
+  userId: {
     type: ObjectId,
     required: true,
-    ref: "ChatRoom",
+    ref: 'User',
   },
-  user: {
-    type: ObjectId,
-    required: true,
-    ref: "User"
-  },
-  message: {
+  topic: {
     type: String,
     required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  seen: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
   createdAt: Date,
   updatedAt: Date,
@@ -36,7 +42,7 @@ const messageSchema = new Schema({
 });
 
 // ???
-messageSchema.set('toJSON', {
+notificationSchema.set('toJSON', {
   transform: (document: any, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -44,4 +50,4 @@ messageSchema.set('toJSON', {
   },
 });
 
-export default model<Message>('Message', messageSchema);
+export default model<NotificationInterface>('Notification', notificationSchema);

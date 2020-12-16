@@ -88,12 +88,20 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const messages: messageType[] = [{ message: 'hey', name: 'Itay', userId: '1234' }, { message: 'Hi!', name: 'Liam', userId: '123456' }, { message: 'I wanna live with you', name: 'Itay', userId: '1234' }, { message: 'Where??', name: 'Liam', userId: '1234' }, { message: 'TLV BABY', name: 'Itay', userId: '123456' }, { message: 'You just found yourself a Roomeet!', name: 'Liam', userId: '1234' }];
+// const messages: messageType[] = [
+//   {message: 'hey', name: 'Itay', userId: '1234' },
+//   { message: 'Hi!', name: 'Liam', userId: '123456' },
+//   { message: 'I wanna live with you', name: 'Itay', userId: '1234' },
+//   { message: 'Where??', name: 'Liam', userId: '1234' },
+//   { message: 'TLV BABY', name: 'Itay', userId: '123456' },
+//   { message: 'You just found yourself a Roomeet!', name: 'Liam', userId: '1234' }
+// ];
 
 const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }) => {
   // const [messages, setMessages] = useState<messageType[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
+  const [messages, setMessages] = useState<messageType[]>([]);
   const messageRef = useRef<any>();
   const user = useContext(UserContext);
   const classes = useStyles();
@@ -110,23 +118,23 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
     }
   };
 
-  // const getMessages = async () => {
-  //   try {
-  //     const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${chatRoomId}`);
-  //     setMessages(data);
-  //   } catch (err) {
-  //     setTimeout(getMessages, 3000);
-  //   }
-  // };
+  const getMessages = async () => {
+    try {
+      const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${chatRoomId}`);
+      setMessages(data);
+    } catch (err) {
+      setTimeout(getMessages, 3000);
+    }
+  };
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.on('newMessage', (message: messageType) => {
-  //       const newMessages = [...messages, message];
-  //       setMessages(newMessages);
-  //     });
-  //   }
-  // }, [messages]);
+  useEffect(() => {
+    if (socket) {
+      socket.on('newMessage', (message: messageType) => {
+        const newMessages = [...messages, message];
+        setMessages(newMessages);
+      });
+    }
+  }, [messages]);
 
   useEffect(() => {
     if (socket) {

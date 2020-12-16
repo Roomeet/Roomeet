@@ -26,13 +26,14 @@ import NavBar from './components/NavBar';
 import BGImage from './images/woodBG.jpg';
 import Messenger from './containers/Messenger';
 import makeToast from './utils/Toaster';
+import SocketContext from './context/socketContext';
 
 
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [socket, setSocket] = useState<any>(null);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
   const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const [openChatRooms, setOpenChatrooms] = useState<string[]>([]);
   const context = React.useContext(UserContext);
@@ -47,12 +48,13 @@ function App(): JSX.Element {
         });
 
         newSocket.on('disconnect', () => {
-          setSocket(null);
+          setSocket(undefined);
+          console.log('=====================disconnected')
           setTimeout(setupSocket, 3000);
           makeToast('error', 'Socket Disconnected!');
         });
 
-        newSocket.on('connect', () => {
+        newSocket.on('connect',  () => {
           console.log('client-socket connected');
           makeToast('success', 'Socket Connected!');
         });
@@ -136,14 +138,16 @@ function App(): JSX.Element {
                 <Route exact path='/contact-us'>
                   <ContactUsPage />
                 </Route>
-                <Logged.Provider value={context.success}>
-                <Messenger
-                  messengerOpen={messengerOpen}
-                  socket={socket}
-                  openChatRoom={openChatRoom}
-                />
-                  <PrivateRoutesContainer />
-                </Logged.Provider>
+                <SocketContext.Provider value={socket}>
+                  <Logged.Provider value={context.success}>
+                    <Messenger
+                      messengerOpen={messengerOpen}
+                      socket={socket}
+                      openChatRoom={openChatRoom}
+                      />
+                    <PrivateRoutesContainer />
+                  </Logged.Provider>
+                </SocketContext.Provider>
               </Switch>
             </div>
           ) : (

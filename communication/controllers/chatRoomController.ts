@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const ChatRoom = mongoose.model("ChatRoom");
+import ChatRoom from '../models/ChatRoom';
 
 exports.createChatRoom = async (req: Request | any, res: Response | any) => {
   try{
-    const body = req.body;
-    const participants: string[] = req.body.participants;
-    const name: string = participants.length === 2 ? `${participants[0]}&${participants[1]}` : req.body.name
+    const { body } = req;
+    const participants: string[] = body.participants;
+    const name: string = participants.length === 2 ? `${participants[0]}&${participants[1]}` : body.name
 
     const nameRegex = /^[A-Za-z\s]+$/;
   
