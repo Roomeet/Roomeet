@@ -2,28 +2,38 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
 import Roomates from '../pages/roomates/Roomates';
-import BGImage from '../images/woodBG.jpg';
 import UserDataForm from '../pages/preferences-form/UserDataForm';
-
-// interface Props {}
+import NavBar from '../components/NavBar';
+import AboutPage from '../pages/footers/AboutPage';
+import TermsConditionPage from '../pages/footers/TermsConditionPage';
+import ContactUsPage from '../pages/footers/ContactUsPage';
+import ChatBox from '../pages/chat/ChatBox';
 
 const PrivateRoutesContainer: React.FC = () => (
-  <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-    <Switch>
-      <PrivateRoute exact path="/home">
+  <div>
+    {/* <NavBar /> */}
+    <PrivateRoute exact path="/home">
+      <div>
         <Roomates />
-      </PrivateRoute>
-      <PrivateRoute exact path="/profile">
+      </div>
+    </PrivateRoute>
+    <PrivateRoute exact path="/profile">
+      <div id="private-routes">
         <UserDataForm />
-      </PrivateRoute>
-      <Route path="/*">
-        <Redirect
-          to={{
-            pathname: '/home',
-          }}
-        />
-      </Route>
-    </Switch>
+      </div>
+    </PrivateRoute>
+    <PrivateRoute exact path="/messages">
+      <div id="private-routes">
+        <ChatBox />
+      </div>
+    </PrivateRoute>
+    <Route path="/*">
+      <Redirect
+        to={{
+          pathname: '/home',
+        }}
+      />
+    </Route>
   </div>
 );
 
