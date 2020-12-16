@@ -84,9 +84,10 @@ io.on("connect", (socket: any) => {
     }
   });
 
-  socket?.on("like", async ({ activeUser, passiveUser, liked }: {activeUser: string, passiveUser: string, liked: boolean}, func: any) => {
+  socket?.on("like", async ({ passiveUserId, activeUserId, liked }: {passiveUserId: string, activeUserId: string, liked: boolean}, func: any) => {
     try {
-      const match = await matchControllers.handleLike(activeUser, passiveUser, liked);
+      console.log(passiveUserId, activeUserId, liked)
+      const match = await matchControllers.handleLike(activeUserId, passiveUserId, liked);
       func(match)
     } catch (err) {
       console.log(err)

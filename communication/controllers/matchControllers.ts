@@ -29,17 +29,18 @@ const createMatch = async (users: string[]) => {
   }
 };
 
-exports.handleLike = async (activeUser: string, passiveUser: string, liked: boolean): Promise<MatchInterface | undefined> => {
+exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: boolean): Promise<MatchInterface | undefined> => {
   try{
     // if like exist - changes it
-    await Like.findOneAndUpdate({ activeUser, passiveUser }, {liked: liked}, { new: true }, (error : any, result : any) => {
+    await Like.findOneAndUpdate({ passiveUserId, activeUserId }, {liked: liked}, { new: true }, (error : any, result : any) => {
       if (!error) {
         // If like doesn't exist
         if (!result) {
           // Create it
           result = new Like({
-            activeUser,
-            passiveUser,
+            _id: new ObjectId,
+            activeUserId,
+            passiveUserId,
             liked,
             createdAt: new Date(),
             updatedAt: null,
@@ -54,9 +55,9 @@ exports.handleLike = async (activeUser: string, passiveUser: string, liked: bool
     let match: MatchInterface | undefined;
 
     if(liked) {
-      const matchingLikeExist = await checkMatchingLike(activeUser, passiveUser);
+      const matchingLikeExist = await checkMatchingLike(activeUserId, passiveUserId);
       if (matchingLikeExist) {
-        match = await createMatch([activeUser, passiveUser])
+        match = await createMatch([activeUserId, passiveUserId])
       }
     }
     return match
@@ -82,8 +83,8 @@ exports.cancelMatch = async (req: Request | any, res: Response | any) => {
 
 exports.getAllMatches = async (req: Request | any, res: Response | any) => {
   try {
-    const chatRooms = await Match.find({});
-    res.json(chatRooms);
+    const matches = await Match.find({});
+    res.json(matches);
   } catch(error) {
     res.json({ error })
   }

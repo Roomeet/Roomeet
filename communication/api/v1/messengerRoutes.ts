@@ -1,8 +1,8 @@
 const router = require("express").Router();
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import ChatRoom from '../models/ChatRoom';
-const chatroomController = require("../controllers/chatroomController");
+import ChatRoom from '../../models/ChatRoom';
+const chatroomController = require("../../controllers/chatroomController");
 
 router.get("/chatrooms/:userId", async (req: Request, res: Response) => {
     const { userId } = req.body;

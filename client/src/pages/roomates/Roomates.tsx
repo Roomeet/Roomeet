@@ -98,13 +98,13 @@ const Roomates: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const handleNext = async (like: boolean) => {
+  const handleNext = async (liked: boolean) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     socket?.emit('like', {
-      like,
-      activeUser: context.id,
-      passiveUser: allUsersInfo[activeStep].userId,
+      liked,
+      activeUserId: context.id,
+      passiveUserId: allUsersInfo[activeStep].userId,
     }, (match: any) => {
       if (match) {
         socket?.emit('match', {

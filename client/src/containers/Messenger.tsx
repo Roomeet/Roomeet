@@ -83,12 +83,8 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,sock
     try {
       const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${user.id}`);
       if (!data[0]) {
-        const response = await network.get('/api/v1/users/basic-info');
-        const matches = response.data;
-        setAllMatches(matches);
-        return;
+        setChatrooms(data);
       }
-      setChatrooms(data);
     } catch (error) {
       console.log('Not Happend');
       setTimeout(getChatrooms, 3000);
@@ -112,7 +108,7 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,sock
                     Inbox
                   </Typography>
                   <List className={classes.list}>
-                    {allMatches[0] ? allMatches.map((match) => (
+                    {chatrooms[0] ? chatrooms.map((match) => (
                       <InlineChatRoom 
                         socket={socket}
                         chatRoomId={match.userId}

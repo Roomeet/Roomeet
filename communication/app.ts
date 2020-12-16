@@ -6,7 +6,11 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/messenger', require('./routes/messengerRoutes'))
+app.use('/api', require('./api/index.ts'));
+
+app.use('*', (req, res) => {
+  res.sendStatus(404);
+});
 
 
 export default app;
