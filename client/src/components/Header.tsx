@@ -102,7 +102,7 @@ const Header: React.FC = () => {
           <IconButton>
             <ExpandMoreIcon
               className={classes.goDown}
-              onClick={() => { Scroll.animateScroll.scrollTo(550); }}
+              onClick={() => { Scroll.animateScroll.scrollToBottom(); }}
             />
           </IconButton>
         </div>

@@ -18,6 +18,14 @@ import network from './utils/network';
 import Loading from './components/Loading';
 import { UserContext } from './context/UserContext';
 import Landing from './pages/landing/Landing';
+import Footer from './components/Footer';
+import AboutPage from './pages/footers/AboutPage';
+import TermsConditionPage from './pages/footers/TermsConditionPage';
+import ContactUsPage from './pages/footers/ContactUsPage';
+import NavBar from './components/NavBar';
+import BGImage from './images/woodBG.jpg';
+
+
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
@@ -48,18 +56,31 @@ function App(): JSX.Element {
 
   // checks if a user is logged
   useEffect(() => {
+    console.log(context.success);
     isLoggedIn();
   }, []);
 
   return (
-    <div>
+    <div className="App">
       <Router>
         {!loading ? (
           context.success ? (
-            <div className="App">
-              <Logged.Provider value={context.success}>
-                <PrivateRoutesContainer />
-              </Logged.Provider>
+            <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
+              <NavBar />
+              <Switch>
+                <Route exact path='/about'>
+                  <AboutPage />
+                </Route>
+                <Route exact path='/term-and-conditions'>
+                  <TermsConditionPage />
+                </Route>
+                <Route exact path='/contact-us'>
+                  <ContactUsPage />
+                </Route>
+                <Logged.Provider value={context.success}>
+                  <PrivateRoutesContainer />
+                </Logged.Provider>
+              </Switch>
             </div>
           ) : (
             <Logged.Provider value={context.success}>
@@ -76,6 +97,15 @@ function App(): JSX.Element {
                 <Route exact path='/landing'>
                   <Landing />
                 </Route>
+                <Route exact path='/about'>
+                  <AboutPage />
+                </Route>
+                <Route exact path='/term-and-conditions'>
+                  <TermsConditionPage />
+                </Route>
+                <Route exact path='/contact-us'>
+                  <ContactUsPage />
+                </Route>
                 <Route path='/*'>
                   <Redirect
                     to={{
@@ -87,8 +117,9 @@ function App(): JSX.Element {
             </Logged.Provider>
           )
         ) : (
-          <div>were loading...</div>
+          <div>We're Loading...</div>
         )}
+      <Footer />
       </Router>
     </div>
   );

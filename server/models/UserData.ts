@@ -6,7 +6,7 @@ export interface UserDataInterface extends Document {
   userId: string;
   age: number;
   gender: string;
-  smoke: boolean;
+  smoke: string;
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
@@ -32,7 +32,7 @@ const UserDataSchema = new Schema({
   },
   age: { type: Number, required: true },
   gender: { type: String, required: true },
-  smoke: { type: Boolean, required: true },
+  smoke: { type: String, required: true },
   pet: { type: Boolean, required: true },
   relationship: { type: Boolean },
   employed: { type: Boolean },
@@ -55,4 +55,4 @@ UserDataSchema.set('toJSON', {
   }
 });
 
-module.exports = model<UserDataInterface>('UserData', UserDataSchema);
+export default model<UserDataInterface>('UserData', UserDataSchema);
