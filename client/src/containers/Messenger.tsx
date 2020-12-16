@@ -26,9 +26,15 @@ import MoreIcon from '@material-ui/icons/More';
 import { AddIcCallOutlined } from '@material-ui/icons';
 import InlineChatRoom from '../components/InlineChatRoom';
 
+type chatroomType = {
+  id: string;
+  name: string;
+  participants: string[]
+}
+
 type messengerProps = {
   messengerOpen: boolean;
-  openChatRoom: (roomId: string) => void
+  openChatRoom: (roomId: chatroomType) => void
   socket: any;
 }
 
@@ -74,19 +80,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,socket }) => {
-  const [chatrooms, setChatrooms] = useState<any[]>([]);
+  const [chatrooms, setChatrooms] = useState<chatroomType[]>([]);
   const [allMatches, setAllMatches] = useState<any[]>([]);
-  const user = useContext(UserContext);
+  const context = useContext(UserContext);
   const classes = useStyles();
 
   const getChatrooms = async () => {
     try {
-      const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${user.id}`);
-      if (!data[0]) {
+      const { data } = await network.get(`http://localhost:3002/api/v1/messenger/chatrooms/user/${context.id}`);
+      if (data[0]) {
         setChatrooms(data);
       }
     } catch (error) {
-      console.log('Not Happend');
       setTimeout(getChatrooms, 3000);
     }
   };
@@ -108,10 +113,10 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,sock
                     Inbox
                   </Typography>
                   <List className={classes.list}>
-                    {chatrooms[0] ? chatrooms.map((match) => (
+                    {chatrooms ? chatrooms.map((chatroom) => (
                       <InlineChatRoom 
                         socket={socket}
-                        chatRoomId={match.userId}
+                        chatroom={chatroom}
                         openChatRoom={openChatRoom}
                       />
                       )) : <div>No chat rooms for you buddy</div>}

@@ -71,8 +71,9 @@ io.on("connect", (socket: any) => {
     if (message.trim().length > 0) {
       const user = await User.findById(userId);
       const newMessage = new Message({
+        _id: new ObjectId,
         chatroom: chatroomId,
-        user: userId,
+        userId: userId,
         message,
       });
       io.to(chatroomId).emit("newMessage", {
@@ -84,22 +85,25 @@ io.on("connect", (socket: any) => {
     }
   });
 
-  socket?.on("like", async ({ passiveUserId, activeUserId, liked }: {passiveUserId: string, activeUserId: string, liked: boolean}, func: any) => {
+  socket?.on("like", async ({ passiveUserId, activeUserId, liked }: {passiveUserId: string, activeUserId: string, liked: boolean}, matchEmitter: (match: MatchInterface) => void) => {
     try {
-      console.log(passiveUserId, activeUserId, liked)
-      const match = await matchControllers.handleLike(activeUserId, passiveUserId, liked);
-      func(match)
+      const match: MatchInterface = await matchControllers.handleLike(activeUserId, passiveUserId, liked);
+      matchEmitter(match)
     } catch (err) {
       console.log(err)
     }
   })
   
-  socket?.on("match", async (match: MatchInterface) => {
-    const { users } = match
-    await chatroomController.createChatRoom(...users);
-    users.forEach(async (user) => {
-      await notificationControllers.createNotification(user, 'match', 'you have a new match with' + user)
-    })
+  socket?.on("match", async ({ match }: {match: MatchInterface}) => {
+    try {
+      const { users } = match
+      await chatroomController.createChatRoom(users, 'chatroomName');
+      users.forEach(async (user) => {
+        await notificationControllers.createNotification(user, 'match', 'you have a new match with' + user);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   })
 
 });

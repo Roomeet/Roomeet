@@ -1,27 +1,24 @@
 const router = require("express").Router();
-import { Router, Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
+import { Request, Response } from 'express';
 import ChatRoom from '../../models/ChatRoom';
 const chatroomController = require("../../controllers/chatroomController");
 
-router.get("/chatrooms/:userId", async (req: Request, res: Response) => {
-    const { userId } = req.body;
-    const allChatRooms = await ChatRoom.find({ participants: userId });    
-    res.status(200).send(allChatRooms);
-});
 
-router.get("/chatroom/:chatRoomId", async (req: Request, res: Response) => {
-    const chatRoomId = req.params.chatRoomId;
-    const chatroom = await ChatRoom.findById(chatRoomId);
-    res.status(200).send(chatroom);
-});
+// Chatroom routes
 
-router.get("/chatroom/participants/:participants", async (req: Request, res: Response) => {
-    const participants = req.params.participants.split('and')   
-    const chatroom = await ChatRoom.find({participants: {$all: [...participants]}});
-    res.status(200).send(chatroom);
-});
+// GET All Chatrooms
+router.get("/chatrooms", async (req: Request, res: Response) => {chatroomController.getAllChatRooms(req,res)});
 
-router.post("/chatroom", (req :Request, res: Response) => {chatroomController.createChatroom});
+// GET all chatrooms for user
+router.get("/chatrooms/user/:userId", async (req: Request, res: Response) => {chatroomController.getAllchatRoomsByUserId(req,res)});
+
+// DELETE all chatrooms
+router.get("/chatrooms/delete", async (req: Request, res: Response) => {chatroomController.deleteAllChatrooms(req,res)});
+
+
+// Messages Routes:
+router.get("/messages/chatroom/:chatroomId",async (req: Request, res: Response) => {chatroomController.getAllMessagesforChatRoomById(req,res)})
+
+
 
 module.exports = router;

@@ -87,11 +87,17 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
+type chatroomType = {
+  id: string;
+  name: string;
+  participants: string[]
+}
+
 type navbarProps = {
   setMessengerOpen: Dispatch<SetStateAction<boolean>>;
-  openChatRooms: string[];
+  openChatRooms: chatroomType[];
   socket: any;
-  closeChatRoom: (roomId: string) => void;
+  closeChatRoom: (roomId: chatroomType) => void;
 }
 
 const NavBar: React.FC<navbarProps> = ({
@@ -240,7 +246,7 @@ const NavBar: React.FC<navbarProps> = ({
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {openChatRooms[0] && openChatRooms.map((chatroom) => (
-              <ChatRoom socket={socket} chatRoomId={chatroom} closeChatRoom={closeChatRoom} />
+              <ChatRoom socket={socket} chatroom={chatroom} closeChatRoom={closeChatRoom} />
             ))}
             <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
               <Badge badgeContent={4} color="secondary">

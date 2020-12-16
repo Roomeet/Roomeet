@@ -1,40 +1,65 @@
 const mongoose = require("mongoose");
+import { Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 import ChatRoom from '../models/ChatRoom';
+import Message from '../models/Message';
 
-exports.createChatRoom = async (req: Request | any, res: Response | any) => {
+exports.createChatRoom = async (participants: string[], name: string = "") => {
   try{
-    const { body } = req;
-    const participants: string[] = body.participants;
-    const name: string = participants.length === 2 ? `${participants[0]}&${participants[1]}` : body.name
+    const chatRoomName: string = !name ? `${participants[0]}${participants[1]}` : name
 
     const nameRegex = /^[A-Za-z\s]+$/;
   
-    if (!nameRegex.test(name)) throw "Chatroom name can contain only alphabets.";
+    if (!nameRegex.test(chatRoomName)) throw "Chatroom name can contain only alphabets.";
   
     const chatroomExists = await ChatRoom.findOne({ name });
   
     if (chatroomExists) throw "Chat room with that name already exists!";
   
     const chatroom = new ChatRoom({
-      name,
+      _id: new ObjectId,
+      name: chatRoomName,
       participants
     });
   
-    await chatroom.save();
-  
-    res.json({
-      message: "ChatRoom created!",
-    });
+    return await chatroom.save();
   } catch(error) {
-    res.json({ error })
+    console.log(error)
   }
 };
 
-exports.getAllChatRooms = async (req: Request | any, res: Response | any) => {
+exports.getAllchatRoomsByUserId = async (req: Request | any, res: Response) => {
+  try {
+    const chatRooms = await ChatRoom.find({participants: req.params.userId});
+    res.json(chatRooms)
+  } catch(error) {
+    res.json(error)
+  }
+};
+
+exports.getAllChatRooms = async (req: Request | any, res: Response) => {
   try {
     const chatRooms = await ChatRoom.find({});
     res.json(chatRooms);
   } catch(error) {
     res.json({ error })
+  }
+};
+
+exports.deleteAllChatrooms = async (req: Request, res: Response) => {
+  try {
+    await ChatRoom.deleteMany({});
+    res.json('delete');
+  } catch(error) {
+    res.json({ error })
+  }
+};
+
+exports.getAllMessagesforChatRoomById = async (req: Request | any, res: Response) => {
+  try {
+    const messages = await Message.find({chatroom: req.params.chatroomId});
+    res.json(messages)
+  } catch(error) {
+    res.json(error)
   }
 };

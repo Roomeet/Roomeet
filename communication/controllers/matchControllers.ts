@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 import { ObjectId } from 'mongodb';
 import Match, { MatchInterface } from '../models/Match';
 import Like from '../models/Like';
+import { Request, Response } from 'express';
 
 const checkMatchingLike = async (activeUserId: string, passiveUserId: string) => {
   try{ 
     //checks if the equivalent user is liking you to
-    return await Like.findOne({activeUser: passiveUserId, passiveUser: activeUserId});
+    return await Like.findOne({activeUserId: passiveUserId, passiveUserId: activeUserId});
   } catch(error) {
     console.trace(error);
   }
@@ -19,7 +20,8 @@ const createMatch = async (users: string[]) => {
     if (matchExists) throw "Match for those users already exists!";
   
     const match = new Match({
-      users
+      _id: new ObjectId,
+      users,
     });
   
     return await match.save();
@@ -47,6 +49,7 @@ exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: 
             deletedAt: null
           });
         }
+        console.log(result)
         // Save the document
         result.save();
       }
@@ -56,6 +59,7 @@ exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: 
 
     if(liked) {
       const matchingLikeExist = await checkMatchingLike(activeUserId, passiveUserId);
+      console.log(matchingLikeExist)
       if (matchingLikeExist) {
         match = await createMatch([activeUserId, passiveUserId])
       }
@@ -66,7 +70,7 @@ exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: 
   }
 };
 
-exports.cancelMatch = async (req: Request | any, res: Response | any) => {
+exports.cancelMatch = async (req: Request, res: Response) => {
   try{
     const { users } = req.body;  
   
@@ -81,10 +85,28 @@ exports.cancelMatch = async (req: Request | any, res: Response | any) => {
   }
 };
 
-exports.getAllMatches = async (req: Request | any, res: Response | any) => {
+exports.getAllMatches = async (req: Request, res: Response) => {
   try {
     const matches = await Match.find({});
     res.json(matches);
+  } catch(error) {
+    res.json({ error })
+  }
+};
+
+exports.getAllMatchesByUserId = async (req: Request, res: Response) => {
+  try {
+    const matches = await Match.find({users: req.params.userId});
+    res.json({matches})
+  } catch(error) {
+    res.json(error)
+  }
+};
+
+exports.deleteAllMatches = async (req: Request, res: Response) => {
+  try {
+    await Match.deleteMany({});
+    res.json('delete');
   } catch(error) {
     res.json({ error })
   }

@@ -109,12 +109,10 @@ const UserDataForm: React.FC = () => {
   };
 
   const fetchUserData = async () => {
-    // console.log(context.filledDataForm);
     
     const { data } = await axios.get(
       `/api/v1/users/basic-info?id=${context.id}`
     );
-    console.log(data[0]);
     
     // delete data[0].createdAt;
     // delete data[0].deletedAt;
@@ -124,9 +122,7 @@ const UserDataForm: React.FC = () => {
       setUser(data[0]);
     } else {
       setUser(initialValues)
-    }
-    console.log(user);
-    
+    }    
   };
 
   React.useEffect(() => {

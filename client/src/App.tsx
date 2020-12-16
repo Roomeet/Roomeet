@@ -28,14 +28,18 @@ import Messenger from './containers/Messenger';
 import makeToast from './utils/Toaster';
 import SocketContext from './context/socketContext';
 
-
+type chatroomType = {
+  id: string;
+  name: string;
+  participants: string[]
+}
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
   const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
-  const [openChatRooms, setOpenChatrooms] = useState<string[]>([]);
+  const [openChatRooms, setOpenChatrooms] = useState<chatroomType[]>([]);
   const context = React.useContext(UserContext);
 
   const setupSocket = () => {
@@ -49,13 +53,11 @@ function App(): JSX.Element {
 
         newSocket.on('disconnect', () => {
           setSocket(undefined);
-          console.log('=====================disconnected')
           setTimeout(setupSocket, 3000);
           makeToast('error', 'Socket Disconnected!');
         });
 
         newSocket.on('connect',  () => {
-          console.log('client-socket connected');
           makeToast('success', 'Socket Connected!');
         });
 
@@ -66,19 +68,20 @@ function App(): JSX.Element {
     }
   };
 
-  const openChatRoom = (roomId: string) => {
-    setOpenChatrooms((prevOpenChatRooms: string[]) => {
-      if (!prevOpenChatRooms.includes(roomId)) {
-        console.log([...prevOpenChatRooms, roomId]);
-        return [...prevOpenChatRooms, roomId];
+  const openChatRoom = (chatroom: chatroomType) => {
+    setOpenChatrooms((prevOpenChatRooms: chatroomType[]) => {
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      if (!prevOpenChatroomsIds.includes(chatroom.id)) {
+        return [...prevOpenChatRooms, chatroom];
       }
       return prevOpenChatRooms;
     });
   };
   
-  const closeChatRoom = (roomId: string) => {
-    setOpenChatrooms((prevOpenChatRooms: string[]) => {
-      const index = prevOpenChatRooms.indexOf(roomId);
+  const closeChatRoom = (chatroom: chatroomType) => {
+    setOpenChatrooms((prevOpenChatRooms: chatroomType[]) => {
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      const index = prevOpenChatroomsIds.indexOf(chatroom.id);
       prevOpenChatRooms.splice(index, 1);
       return [...prevOpenChatRooms];
     });

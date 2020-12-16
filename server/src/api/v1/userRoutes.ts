@@ -6,7 +6,6 @@ import { ObjectId } from 'mongodb';
 // mongoDB models:
 import User from '../../../models/user';
 import UserData from '../../../models/UserData';
-import Match from '../../../models/match';
 
 const router = Router();
 
@@ -127,47 +126,6 @@ router.post('/user-data', (req: Request, res: Response) => {
   }
 });
 
-// Match users
-router.post(
-  '/match', async (req: Request, res: Response) => {
-    try {
-      const { body: rawMatch } = req;
-      const _id = crypto
-        .createHash('md5')
-        .update(rawMatch.userId + rawMatch.passiveUserId)
-        .digest('hex').slice(0, 24);
-
-      // @ts-ignore
-      Match.findOneAndUpdate({ _id }, rawMatch, { new: true }, (error : any, result : any) => {
-        if (!error) {
-          // If the document doesn't exist
-          if (!result) {
-            // Create it
-            result = new Match({
-              ...rawMatch,
-              _id: new ObjectId(_id),
-              createdAt: new Date(),
-              updatedAt: null,
-              deletedAt: null
-            });
-          }
-          // Save the document
-          result.save((err:any) => {
-            if (!err) {
-              // Do something with the document
-              res.json(rawMatch.like ? 'Matched' : 'Unmatched');
-            } else {
-              res.json({ error: err });
-            }
-          });
-        }
-      });
-    } catch (error) {
-      res.status(500).json({ error });
-    }
-  }
-);
-
 router.get('/match-all', async (req: Request, res: Response) => {
   try {
     const { userId } = req.body;
@@ -178,5 +136,27 @@ router.get('/match-all', async (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 });
+
+router.get('/delete', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    await User.deleteMany({});
+    res.status(200).json('deleted');
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/userData/delete', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    await UserData.deleteMany({});
+    res.status(200).json('deleted');
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+
 
 export default router;

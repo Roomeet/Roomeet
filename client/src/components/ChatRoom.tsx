@@ -22,10 +22,16 @@ import io from 'socket.io-client';
 import { UserContext } from '../context/UserContext';
 import network from '../utils/network';
 
+type chatroomType = {
+  id: string;
+  name: string;
+  participants: string[]
+}
+
 type chatRoomProps = {
   socket: any;
-  chatRoomId: string;
-  closeChatRoom: (roomId: string) => void
+  chatroom: chatroomType;
+  closeChatRoom: (roomId: chatroomType) => void
 }
 
 type messageType = {
@@ -97,20 +103,27 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 //   { message: 'You just found yourself a Roomeet!', name: 'Liam', userId: '1234' }
 // ];
 
-const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }) => {
+const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) => {
   // const [messages, setMessages] = useState<messageType[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageType[]>([]);
   const messageRef = useRef<any>();
-  const user = useContext(UserContext);
+  const context = useContext(UserContext);
   const classes = useStyles();
 
   const sendMessage = () => {
     if (socket) {
-      console.log('in');
+      const message = {
+        message: messageRef.current.value,
+        name: context.name,
+        userId: context.id,
+      };
+      const newMessages = [...messages, message];
+      setMessages(newMessages);
       socket.emit('chatroomMessage', {
-        chatRoomId,
+        chatroomId: chatroom.id,
+        userId: context.id,
         message: messageRef.current.value,
       });
 
@@ -120,7 +133,8 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
 
   const getMessages = async () => {
     try {
-      const { data } = await network.get(`http://localhost:3002/messenger/chatroom/${chatRoomId}`);
+      const { data } = await network.get(`http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`);
+      console.log(data);
       setMessages(data);
     } catch (err) {
       setTimeout(getMessages, 3000);
@@ -131,22 +145,24 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
     if (socket) {
       socket.on('newMessage', (message: messageType) => {
         const newMessages = [...messages, message];
+        console.log(newMessages);
         setMessages(newMessages);
       });
     }
   }, [messages]);
 
   useEffect(() => {
+    getMessages();
     if (socket) {
       socket.emit('joinRoom', {
-        chatRoomId,
+        chatRoomId: chatroom.id,
       });
     }
 
     return () => {
       if (socket) {
         socket.emit('leaveRoom', {
-          chatRoomId,
+          chatRoomId: chatroom.id,
         });
       }
     };
@@ -161,7 +177,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
           onClick={() => { setOpen((prev) => !prev); }}
         >
           <Avatar>
-            {chatRoomId[0]}
+            {chatroom.name}
           </Avatar>
         </IconButton>
         <Badge
@@ -170,7 +186,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
           onMouseLeave={() => setBadgeInvisible(true)}
           color="secondary"
           style={{ marginLeft: '-15px' }}
-          onClick={() => { closeChatRoom(chatRoomId); }}
+          onClick={() => { closeChatRoom(chatroom); }}
           invisible={badgeInvisible}
           anchorOrigin={{
             vertical: 'top',
@@ -190,7 +206,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
               variant="h5"
               gutterBottom
             >
-              chatroom name
+              {chatroom.name}
             </Typography>
             <List className={classes.list}>
               {messages[0] ? messages.map((message) => (
@@ -215,7 +231,10 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatRoomId, closeChatRoom }
                   placeholder="Type here..."
                   inputRef={messageRef}
                 />
-                <IconButton className={classes.sendButton} onClick={sendMessage}>
+                <IconButton
+                  className={classes.sendButton}
+                  onClick={() => { sendMessage(); }}
+                >
                   <SendIcon />
                 </IconButton>
               </div>

@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 export interface ChatRoom extends Document {
   _id: string;
   name: string;
-  participants: [ObjectId];
+  participants: [String];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -20,7 +20,7 @@ const ChatRoomSchema = new Schema({
     required: true,
   },
   participants: {
-    type: [ObjectId],
+    type: [String],
     required: true
   },
   createdAt: Date,

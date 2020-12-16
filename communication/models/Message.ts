@@ -21,7 +21,7 @@ const messageSchema = new Schema({
     required: true,
     ref: "ChatRoom",
   },
-  user: {
+  userId: {
     type: ObjectId,
     required: true,
     ref: "User"
