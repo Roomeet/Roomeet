@@ -5,12 +5,13 @@ import { ObjectId } from 'mongodb';
 
 // mongoDB models:
 import User from '../../../models/user';
+import UserData from '../../../models/UserData';
 import Match from '../../../models/match';
 
 const router = Router();
 
 const crypto = require('crypto');
-const UserData = require('../../../models/userData');
+// const UserData = require('../../../models/userData');
 
 // Routes
 
@@ -56,6 +57,35 @@ router.get(
         name: user[0].name,
         lastName: user[0].lastName,
         email: user[0].email
+      });
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+);
+
+router.get(
+  '/user-data/:id',
+  /* authenticateToken , */ async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+      const userData = await UserData.find({ userId: id });
+      res.json({
+        age: userData[0].age,
+        gender: userData[0].gender,
+        smoke: userData[0].smoke,
+        pet: userData[0].pet,
+        relationship: userData[0].relationship,
+        employed: userData[0].employed,
+        interests: userData[0].interests,
+        languages: userData[0].languages,
+        music: userData[0].music,
+        lookingFor: userData[0].lookingFor
+          ? { roomate: userData[0].lookingFor.roomate, friend: userData[0].lookingFor.friend }
+          : null,
+        numOfRoomates: userData[0].numOfRoomates,
+        religion: userData[0].religion
       });
     } catch (error) {
       res.status(500).json({ error });
