@@ -8,6 +8,7 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
+import io from 'socket.io-client';
 import Cookies from 'js-cookie';
 import { Logged } from './context/UserContext';
 import './App.css';
@@ -24,13 +25,62 @@ import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
 import BGImage from './images/woodBG.jpg';
 import Messenger from './containers/Messenger';
+import makeToast from './utils/Toaster';
 
 
 
 function App(): JSX.Element {
   // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [socket, setSocket] = useState<any>(null);
+  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
+  const [openChatRooms, setOpenChatrooms] = useState<string[]>([]);
   const context = React.useContext(UserContext);
+
+  const setupSocket = () => {
+    if (!socket && context.id) {
+      try {
+        const newSocket = io('http://localhost:3002', {
+          query: {
+            userId: context.id,
+          },
+        });
+
+        newSocket.on('disconnect', () => {
+          setSocket(null);
+          setTimeout(setupSocket, 3000);
+          makeToast('error', 'Socket Disconnected!');
+        });
+
+        newSocket.on('connect', () => {
+          console.log('client-socket connected');
+          makeToast('success', 'Socket Connected!');
+        });
+
+        setSocket(newSocket);
+      } catch (error) {
+        console.log('error in socket');
+      }
+    }
+  };
+
+  const openChatRoom = (roomId: string) => {
+    setOpenChatrooms((prevOpenChatRooms: string[]) => {
+      if (!prevOpenChatRooms.includes(roomId)) {
+        console.log([...prevOpenChatRooms, roomId]);
+        return [...prevOpenChatRooms, roomId];
+      }
+      return prevOpenChatRooms;
+    });
+  };
+  
+  const closeChatRoom = (roomId: string) => {
+    setOpenChatrooms((prevOpenChatRooms: string[]) => {
+      const index = prevOpenChatRooms.indexOf(roomId);
+      prevOpenChatRooms.splice(index, 1);
+      return [...prevOpenChatRooms];
+    });
+  };
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
@@ -54,6 +104,11 @@ function App(): JSX.Element {
     }
   };
 
+  // Socket connection
+  useEffect(() => {
+    setupSocket();
+  }, [context]);
+
   // checks if a user is logged
   useEffect(() => {
     isLoggedIn();
@@ -65,7 +120,12 @@ function App(): JSX.Element {
         {!loading ? (
           context.success ? (
             <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-              <NavBar />
+              <NavBar
+                setMessengerOpen={setMessengerOpen}
+                openChatRooms={openChatRooms}
+                closeChatRoom={closeChatRoom}
+                socket={socket}
+              />
               <Switch>
                 <Route exact path='/about'>
                   <AboutPage />
@@ -77,6 +137,11 @@ function App(): JSX.Element {
                   <ContactUsPage />
                 </Route>
                 <Logged.Provider value={context.success}>
+                <Messenger
+                  messengerOpen={messengerOpen}
+                  socket={socket}
+                  openChatRoom={openChatRoom}
+                />
                   <PrivateRoutesContainer />
                 </Logged.Provider>
               </Switch>

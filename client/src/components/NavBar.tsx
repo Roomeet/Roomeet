@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import io from 'socket.io-client';
+import React, {
+  useState,
+  useContext,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { Link } from 'react-router-dom';
 import {
   fade, makeStyles, Theme, createStyles,
@@ -82,66 +86,21 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const NavBar: React.FC = () => {
+type navbarProps = {
+  setMessengerOpen: Dispatch<SetStateAction<boolean>>;
+  openChatRooms: string[];
+  socket: any;
+  closeChatRoom: (roomId: string) => void;
+}
+
+const NavBar: React.FC<navbarProps> = ({ setMessengerOpen, openChatRooms, socket, closeChatRoom }) => {
   const classes = useStyles();
-  const [socket, setSocket] = useState<any>(null);
-  const [openChatRooms, setOpenChatrooms] = useState<string[]>([]);
-  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
-  const user = useContext(UserContext);
+  const context = useContext(UserContext);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const setupSocket = () => {
-    if (!socket) {
-      try {
-        const newSocket = io('http://localhost:3002', {
-          query: {
-            userId: user.id,
-          },
-        });
-
-        newSocket.on('disconnect', () => {
-          setSocket(null);
-          setTimeout(setupSocket, 3000);
-          makeToast('error', 'Socket Disconnected!');
-        });
-
-        newSocket.on('connect', () => {
-          console.log('client-socket connected');
-          makeToast('success', 'Socket Connected!');
-        });
-
-        setSocket(newSocket);
-      } catch (error) {
-        console.log('error in socket');
-      }
-    }
-  };
-
-  const openChatRoom = (roomId: string) => {
-    setOpenChatrooms((prevOpenChatRooms: string[]) => {
-      if (!prevOpenChatRooms.includes(roomId)) {
-        console.log([...prevOpenChatRooms, roomId]);
-        return [...prevOpenChatRooms, roomId];
-      }
-      return prevOpenChatRooms;
-    });
-  };
-
-  const closeChatRoom = (roomId: string) => {
-    setOpenChatrooms((prevOpenChatRooms: string[]) => {
-      const index = prevOpenChatRooms.indexOf(roomId);
-      prevOpenChatRooms.splice(index, 1);
-      return [...prevOpenChatRooms];
-    });
-  };
-
-  useEffect(() => {
-    setupSocket();
-  }, []);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -177,7 +136,7 @@ const NavBar: React.FC = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
-      <MenuItem onClick={() => user.logUserOut()}><Link to="/landing">Logout</Link></MenuItem>
+      <MenuItem onClick={() => context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem>
     </Menu>
   );
 
@@ -212,7 +171,7 @@ const NavBar: React.FC = () => {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
+          aria-label="account of current context"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
@@ -269,7 +228,7 @@ const NavBar: React.FC = () => {
             </IconButton>
             <IconButton
               edge="end"
-              aria-label="account of current user"
+              aria-label="account of current context"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
@@ -291,11 +250,6 @@ const NavBar: React.FC = () => {
           </div>
         </Toolbar>
       </AppBar>
-      <Messenger
-        messengerOpen={messengerOpen}
-        socket={socket}
-        openChatRoom={openChatRoom}
-      />
       {renderMobileMenu}
       {renderMenu}
     </div>
