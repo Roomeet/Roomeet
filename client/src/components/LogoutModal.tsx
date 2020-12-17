@@ -11,11 +11,12 @@ const useStyles = makeStyles({
   mainDiv: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-evenly',
     border: '3px solid black',
     textAlign: 'center',
-    height: '6%',
+    height: '12vh',
     overflowY: 'auto',
-    width: '20%',
+    width: '40vw',
     marginTop: '5%',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -26,6 +27,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  button: {
+    width: '25%',
   },
 });
 
@@ -41,10 +45,10 @@ const LogoutModal: React.FC<Props> = ({ openLogout, handleLogoutClose, logout })
               Are you sure you want to logout?
             </Typography>
             <div className={classes.buttonsDiv}>
-              <button onClick={logout}>
+              <button onClick={logout} className={classes.button}>
                 Yes
               </button>
-              <button onClick={handleLogoutClose}>
+              <button onClick={handleLogoutClose} className={classes.button}>
                 No
               </button>
             </div>
