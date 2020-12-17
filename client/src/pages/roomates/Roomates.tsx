@@ -120,7 +120,7 @@ function Roomates() {
     const index = data.findIndex((user: any) => user.userId === context.id);
     console.log(index);
     if(index === -1) {
-      history.push('/profile');
+      history.push('/edit');
     };
     const filteredData = data.filter((user: any) => user.userId !== context.id);
     setAllUsersInfo(filteredData);

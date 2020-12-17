@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SettingsIcon from '@material-ui/icons/Settings';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -144,7 +145,7 @@ const NavBar: React.FC = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link to="/profile">Profile</Link>
+        <Link to="/MyProfile">Profile</Link>
       </MenuItem>
       {/* <MenuItem onClick={() =>
         context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem> */}
@@ -162,6 +163,17 @@ const NavBar: React.FC = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={() => handleMobileMenu('/myProfile')}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        My profile
+      </MenuItem>
       <MenuItem onClick={() => handleMobileMenu('/messages')}>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={5} color="secondary">
@@ -179,17 +191,6 @@ const NavBar: React.FC = () => {
         <p>Notifications</p>
       </MenuItem>
       {/* onClick={handleProfileMenuOpen} */}
-      <MenuItem onClick={() => handleMobileMenu('/profile')}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        Profile
-      </MenuItem>
       <MenuItem onClick={handleLogoutOpen}>
         <IconButton
           aria-label="account of current user"
@@ -250,12 +251,12 @@ const NavBar: React.FC = () => {
               </Badge>
             </IconButton>
             <IconButton
+              aria-label="user profile"
+              color="inherit"
+              onClick={() => history.push('/myProfile')}
               edge="end"
-              aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={() => history.push('/profile')}
-              color="inherit"
             >
               <Badge>
                 <AccountCircle />
