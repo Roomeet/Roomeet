@@ -133,9 +133,6 @@ function Roomates() {
   return (
     <div className="cards-page">
       {!loading && allUsersInfo[0] ? (
-       false ? (
-          <UserDataForm />
-        ) : (
           <div className={classes.root}>
             {/* <Paper square elevation={0} className={classes.header}>
               <Typography className={classes.headerText}>
@@ -205,8 +202,8 @@ function Roomates() {
               }
             /> */}
           </div>
-        )
-      ) : (
+      )
+: (
         <div>loading...</div>
       )}
     </div>

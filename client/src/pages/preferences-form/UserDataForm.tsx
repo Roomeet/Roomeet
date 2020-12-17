@@ -21,6 +21,7 @@ import { string, object, number } from 'yup';
 import { UserDataFormResponse, UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
+import network from '../../utils/network';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -96,34 +97,18 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    if(context.filledDataForm){
-      await axios.put(`/api/v1/users/user-data/${context.id}`, values);
-    }
-    else{
-      await axios.post("/api/v1/users/user-data", values);
-      context.logUserIn({ filledDataForm: true });
-    }
+    await network.post(`/api/v1/users/user-data/${context.id}`, values);
   };
 
   const fetchUserData = async () => {
-    // console.log(context.filledDataForm);
-    
-    const { data } = await axios.get(
+    const { data } = await network.get(
       `/api/v1/users/basic-info?id=${context.id}`
     );
-    console.log(data[0]);
-    
-    // delete data[0].createdAt;
-    // delete data[0].deletedAt;
-    // delete data[0].updatedAt;
-    // delete data[0].id;
     if(data[0]){
       setUser(data[0]);
     } else {
       setUser(initialValues)
-    }
-    console.log(user);
-    
+    }    
   };
 
   React.useEffect(() => {
