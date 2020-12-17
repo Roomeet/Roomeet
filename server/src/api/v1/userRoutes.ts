@@ -184,7 +184,7 @@ router.post('/match', async (req: Request, res: Response) => {
 
 router.get('/match-all', async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query;
     // @ts-ignore
     const matches = await Match.find({ userId });
     res.status(200).json(matches);
