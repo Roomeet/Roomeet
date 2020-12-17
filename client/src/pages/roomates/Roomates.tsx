@@ -122,7 +122,7 @@ function Roomates() {
     if(index === -1) {
       history.push('/profile');
     };
-      const filteredData = data.filter((user: any) => user.userId !== context.id);
+    const filteredData = data.filter((user: any) => user.userId !== context.id);
     setAllUsersInfo(filteredData);
   };
   console.log(prefernces);

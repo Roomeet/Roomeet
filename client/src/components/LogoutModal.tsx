@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-evenly',
     border: '3px solid black',
     textAlign: 'center',
-    height: '12vh',
+    height: '15vh',
     overflowY: 'auto',
     width: '40vw',
     marginTop: '5%',
