@@ -74,21 +74,15 @@ router.get(
     try {
       const userData = await UserData.find({ userId: id });
       res.json({
+        fullName: userData[0].fullName,
+        aboutMe: userData[0].aboutMe,
+        rentLocation: userData[0].rentLocation,
         age: userData[0].age,
         gender: userData[0].gender,
         smoke: userData[0].smoke,
         pet: userData[0].pet,
         relationship: userData[0].relationship,
         employed: userData[0].employed,
-        interests: userData[0].interests,
-        languages: userData[0].languages,
-        music: userData[0].music,
-        lookingFor: userData[0].lookingFor
-          ? {
-            roomate: userData[0].lookingFor.roomate,
-            friend: userData[0].lookingFor.friend
-          }
-          : null,
         numOfRoomates: userData[0].numOfRoomates,
         religion: userData[0].religion
       });

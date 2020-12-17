@@ -105,23 +105,19 @@ const RoomateCard: React.FC<Props> = ({
             />
           </Typography>
           <Typography variant="h5" component="h2">
-            {userInfo.userId}
+            {userInfo.fullName}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            Summary:
+            About me:
           </Typography>
           <Typography variant="body2" component="p">
-            {userInfo.age}
-            ,
-            {userInfo.gender}
-            <br />
-            looking for:
-            {' '}
-            {userInfo.lookingFor?.roomate ? 'roomate' : ''}
-            {userInfo.lookingFor?.roomate && userInfo.lookingFor?.friend
-              ? ', '
-              : ' '}
-            {userInfo.lookingFor?.friend ? 'friend' : ''}
+            {userInfo.aboutMe}
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            Searching to rent in:
+          </Typography>
+          <Typography variant="body2" component="p">
+            {userInfo.rentLocation}
           </Typography>
         </CardContent>
         <CardActions>

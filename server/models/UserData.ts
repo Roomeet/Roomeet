@@ -4,16 +4,15 @@ import { ObjectId } from 'mongodb';
 export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
+  fullName: string;
+  aboutMe: string;
+  rentLocation: string;
   age: number;
   gender: string;
   smoke: string;
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
-  interests: string[];
-  languages: string[];
-  music: string[];
-  lookingFor?: { roomate: boolean; friend: boolean };
   numOfRoomates?: number;
   religion?: boolean;
   createdAt: Date;
@@ -30,16 +29,15 @@ const UserDataSchema = new Schema({
     type: ObjectId,
     required: true
   },
+  fullName: { type: String, required: true },
+  aboutMe: { type: String, required: true },
+  rentLocation: { type: String, required: true },
   age: { type: Number, required: true },
   gender: { type: String, required: true },
   smoke: { type: String, required: true },
   pet: { type: Boolean, required: true },
   relationship: { type: Boolean },
   employed: { type: Boolean },
-  interests: [String],
-  languages: [String],
-  music: [String],
-  lookingFor: { type: Schema.Types.Mixed },
   numOfRoomates: Number,
   religion: Boolean,
   createdAt: Date,

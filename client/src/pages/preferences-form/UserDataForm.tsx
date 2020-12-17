@@ -82,17 +82,16 @@ const UserDataForm: React.FC = () => {
     ? user
     : {
         userId: context.id,
+        fullName: '',
+        gender: 'other',
         age: 18,
-        gender: 'female',
-        smoke: 'Never',
+        rentLocation: '',
+        aboutMe: '',
+        smoke: '',
+        numOfRoomates: 0,
         pet: false,
         relationship: false,
         employed: false,
-        interests: [],
-        languages: [],
-        music: [],
-        lookingFor: [],
-        numOfRoomates: 0,
         religion: false,
       };
 
@@ -134,24 +133,23 @@ const UserDataForm: React.FC = () => {
             >
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
-                  <Field name='age'>
+                  <Field name="fullName">
                     {({
-                      field,
-                      meta: { error, value, initialValue, touched },
+                      field, meta: {
+                        error, value, initialValue, touched,
+                      },
                     }: FieldProps) => (
                       <TextField
-                        variant='outlined'
-                        style={{ margin: '5px' }}
+                        variant="outlined"
+                        margin="normal"
+                        required
                         fullWidth
-                        id='age'
-                        label='age'
-                        type='number'
-                        autoFocus
-                        data-test='userdata-age'
-                        // error={(touched || value !== initialValue) && Boolean(error)}
-                        helperText={
-                          touched || value !== initialValue ? error : ''
-                        }
+                        id="fullName"
+                        label="Full Name"
+                        type="text"
+                        data-test="form-full-name"
+                        error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={touched || value !== initialValue ? error : ''}
                         {...field}
                       />
                     )}
@@ -179,7 +177,72 @@ const UserDataForm: React.FC = () => {
                       >
                         <MenuItem value='female'>female</MenuItem>
                         <MenuItem value='male'>male</MenuItem>
+                        <MenuItem value='other'>other</MenuItem>
                       </TextField>
+                    )}
+                  </Field>
+                  <Field name='age'>
+                    {({
+                      field,
+                      meta: { error, value, initialValue, touched },
+                    }: FieldProps) => (
+                      <TextField
+                        variant='outlined'
+                        style={{ margin: '5px' }}
+                        fullWidth
+                        id='age'
+                        label='age'
+                        type='number'
+                        autoFocus
+                        data-test='userdata-age'
+                        // error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={
+                          touched || value !== initialValue ? error : ''
+                        }
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name="rentLocation">
+                    {({
+                      field, meta: {
+                        error, value, initialValue, touched,
+                      },
+                    }: FieldProps) => (
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="rentLocation"
+                        label="Rent Location"
+                        type="text"
+                        data-test="form-full-name"
+                        error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={touched || value !== initialValue ? error : ''}
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name="aboutMe">
+                    {({
+                      field, meta: {
+                        error, value, initialValue, touched,
+                      },
+                    }: FieldProps) => (
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="aboutMe"
+                        label="About Me"
+                        type="text"
+                        data-test="form-full-name"
+                        error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={touched || value !== initialValue ? error : ''}
+                        {...field}
+                      />
                     )}
                   </Field>
                   <Field name='smoke'>
@@ -209,134 +272,26 @@ const UserDataForm: React.FC = () => {
                       </TextField>
                     )}
                   </Field>
-                  <Field name='interests'>
+                  <Field name='numOfRoomates'>
                     {({
                       field,
                       meta: { error, value, initialValue, touched },
                     }: FieldProps) => (
-                      <Select
+                      <TextField
                         variant='outlined'
                         style={{ margin: '5px' }}
                         fullWidth
-                        label='interests'
-                        multiple
-                        id='interests'
-                        data-test='userdata-interests'
-                        // error={touched && value !== initialValue && Boolean(error)}
+                        id='numOfRoomates'
+                        label='Number Of Roomates'
+                        type='number'
+                        autoFocus
+                        data-test='userdata-age'
+                        // error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={
+                          touched || value !== initialValue ? error : ''
+                        }
                         {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Sports'>Sports</MenuItem>
-                        <MenuItem value='Dance'>Dance</MenuItem>
-                        <MenuItem value='Books'>Books</MenuItem>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='languages'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
-                        fullWidth
-                        label='languages'
-                        multiple
-                        id='languages'
-                        data-test='userdata-languages'
-                        // error={touched && value !== initialValue && Boolean(error)}
-                        {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Hebrew'>Hebrew</MenuItem>
-                        <MenuItem value='English'>English</MenuItem>
-                        <MenuItem value='Spanish'>Spanish</MenuItem>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='music'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
-                        fullWidth
-                        label='music'
-                        multiple
-                        id='music'
-                        data-test='userdata-music'
-                        // error={touched && value !== initialValue && Boolean(error)}
-                        {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Rock'>Rock</MenuItem>
-                        <MenuItem value='Classic'>Classic</MenuItem>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='lookingFor'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
-                        fullWidth
-                        label='looking for...'
-                        multiple
-                        id='lookingFor'
-                        data-test='userdata-lookingFor'
-                        // error={touched && value !== initialValue && Boolean(error)}
-                        {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Roomate'>Roomate</MenuItem>
-                        <MenuItem value='Friend'>Friend</MenuItem>
-                      </Select>
+                      />
                     )}
                   </Field>
                   <FormControlLabel

@@ -99,7 +99,23 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                 src="https://picsum.photos/150/150"
               />
             </div>
-            <h2 className={classes.nameTitle}>{userId}</h2>
+            <h2 className={classes.nameTitle}>{userInformation?.fullName}</h2>
+            <p className={classes.rows}>
+              <Typography variant="h6" className={classes.labels}>
+                About me:
+              </Typography>
+              <Typography className={classes.infoData}>
+                {userInformation?.aboutMe}
+              </Typography>
+            </p>
+            <p className={classes.rows}>
+              <Typography variant="h6" className={classes.labels}>
+                Looking to rent in:
+              </Typography>
+              <Typography className={classes.infoData}>
+                {userInformation?.rentLocation}
+              </Typography>
+            </p>
             <p className={classes.rows}>
               <Typography variant="h6" className={classes.labels}>
                 Age:
@@ -171,7 +187,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                 )}
               </Typography>
             </p>
-            <p className={classes.rows}>
+            {/* <p className={classes.rows}>
               <Typography variant="h6" className={classes.labels}>
                 Interests:
               </Typography>
@@ -218,7 +234,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   <CloseOutlinedIcon style={{ fill: 'red' }} />
                 )}
               </Typography>
-            </p>
+            </p> */}
             {/* <p className={classes.rows}>
               <Typography variant="h6" className={classes.labels}>
                 Looking For:
