@@ -98,14 +98,11 @@ const UserDataForm: React.FC = () => {
   const submit = async (values: any) => {
     if(context.filledDataForm){
       await axios.put(`/api/v1/users/user-data/${context.id}`, values);
-      
     }
     else{
       await axios.post("/api/v1/users/user-data", values);
       context.logUserIn({ filledDataForm: true });
-      history.push("/home");
     }
-    
   };
 
   const fetchUserData = async () => {
@@ -147,6 +144,7 @@ const UserDataForm: React.FC = () => {
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 submit(values);
+                history.push('/home');
               }}
             >
               {({ isValid, isSubmitting }) => (
