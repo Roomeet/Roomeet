@@ -79,6 +79,8 @@ const UserDataForm: React.FC = () => {
       .positive("age cannot be negative")
       .max(120, "max age is 120")
       .required("must contain age"),
+    aboutMe: string()
+    .max(300, 'Maximum 300 characters'),
   });
   // @ts-ignore
   const initialValues: any = user

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
+import DoneOutlineOutlinedIcon from '@material-ui/icons/DoneOutlineOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 
 export type Props = {
   [key: string]: any;
@@ -12,7 +14,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    border: '3px solid black',
+    border: '3px solid #2E2019',
     textAlign: 'center',
     height: '15vh',
     overflowY: 'auto',
@@ -20,7 +22,7 @@ const useStyles = makeStyles({
     marginTop: '5%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: 'white',
+    backgroundColor: '#BFB4AB',
     color: 'black',
   },
   buttonsDiv: {
@@ -46,10 +48,10 @@ const LogoutModal: React.FC<Props> = ({ openLogout, handleLogoutClose, logout })
             </Typography>
             <div className={classes.buttonsDiv}>
               <button onClick={logout} className={classes.button}>
-                Yes
+                <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
               </button>
               <button onClick={handleLogoutClose} className={classes.button}>
-                No
+                <CloseOutlinedIcon style={{ fill: 'red' }} />
               </button>
             </div>
           </div>
