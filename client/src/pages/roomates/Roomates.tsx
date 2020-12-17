@@ -116,16 +116,15 @@ function Roomates() {
 
   const fetchData = async () => {
     const { data } = await network.get('/api/v1/users/basic-info');
-    console.log(context.id)
+    const { data: likedData } = await network.get(`/api/v1/users/match-all?userId=${context.id}`)
     const index = data.findIndex((user: any) => user.userId === context.id);
-    console.log(index);
     if(index === -1) {
       history.push('/edit');
     };
     const filteredData = data.filter((user: any) => user.userId !== context.id);
-    setAllUsersInfo(filteredData);
+    const filteredLikedData = filteredData.filter((user: any) => !likedData.some((like: any) => user.userId === like.passiveUserId));
+    setAllUsersInfo(filteredLikedData);
   };
-  console.log(prefernces);
   useEffect(() => {
     fetchData();
   }, []);
