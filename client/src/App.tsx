@@ -61,6 +61,10 @@ function App(): JSX.Element {
           makeToast('success', 'Socket Connected!');
         });
 
+        newSocket.on('newMatch', () => {
+          makeToast('info', 'You got a new match!');
+        });
+
         setSocket(newSocket);
       } catch (error) {
         console.log('error in socket');
