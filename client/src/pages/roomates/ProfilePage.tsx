@@ -21,7 +21,8 @@ const useStyles = makeStyles({
   },
   modalDiv: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     border: '3px solid black',
     textAlign: 'center',
     height: '70%',
@@ -29,11 +30,10 @@ const useStyles = makeStyles({
     // '*::-webkit-scrollbar': {
     //   width: '1px',
     // },
-    width: '50%',
+    width: '40%',
     marginTop: '5%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    // background: '#BFB4AB',
     backgroundColor: 'white',
     color: 'black',
   },
@@ -44,12 +44,12 @@ const useStyles = makeStyles({
     width: '100%',
   },
   labels: {
-    fontWeight: 'bold',
-    left: '35%',
+    // fontWeight: 'bold',
+    // left: '35%',
   },
   infoData: {
-    fontSize: '1.4em',
-    left: '0%',
+    // fontSize: '1.4em',
+    // left: '0%',
   },
   profilePic: {
     // position: 'relative',
@@ -57,19 +57,40 @@ const useStyles = makeStyles({
     // top: '0%',
     borderRadius: '50%',
     border: '3px solid black',
-    // backgroundColor: 'green',
-    height: '80%',
-    width: '30%',
-    marginTop: '2vh',
+    // // backgroundColor: 'green',
+    height: '30%',
+    maxWidth: '50%',
+    maxHeight: '30%',
+    // width: '30%',
     marginLeft: 'auto',
     marginRight: 'auto',
+    // marginTop: '0',
   },
   nameTitle: {
-    // backgroundColor: 'brown',
-    height: '30vh',
+    fontSize: '1.3em',
   },
-  imgDiv: {
+  advancedInfoDiv: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '40%',
+    justifyContent: 'space-between',
+    marginTop: '10%',
+  },
+  basicInfoDiv: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '60%',
     backgroundColor: '#BFB4AB',
+    // marginTop: '0',
+  },
+  titleInfoDiv: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  aboutMe: {
+    maxWidth: '90%',
   },
 });
 
@@ -92,188 +113,119 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
       {open && (
         <Modal open onClose={handleClose}>
           <div className={classes.modalDiv}>
-            <div className={classes.imgDiv}>
+            <div className={classes.basicInfoDiv}>
               <img
                 alt="profilePic"
                 className={classes.profilePic}
                 src="https://picsum.photos/150/150"
               />
+              <h1>{userInformation?.fullName}</h1>
+              <div className={classes.titleInfoDiv}>
+                <Typography className={classes.nameTitle}>
+                  {' '}
+                  {userInformation?.gender === 'Female' ? (
+                    <ImWoman style={{ fill: 'red', fontSize: '3vh' }} />
+                  ) : (
+                    <ImMan style={{ fill: 'green', fontSize: '3vh' }} />
+                  )}
+                </Typography>
+                <Typography className={classes.nameTitle}>
+                  {userInformation?.age}
+                </Typography>
+              </div>
+              <p>
+                <Typography variant="h6" className={classes.labels}>
+                  Looking to rent in:
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.rentLocation}
+                </Typography>
+              </p>
+              <p>
+                <Typography variant="h6" className={classes.labels}>
+                  About me:
+                </Typography>
+                <Typography className={classes.aboutMe}>
+                  {userInformation?.aboutMe}
+                </Typography>
+              </p>
             </div>
-            <h2 className={classes.nameTitle}>{userId}</h2>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Age:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.age}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Gender:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {' '}
-                {userInformation?.gender === 'Female' ? (
-                  <ImWoman style={{ fill: 'red', fontSize: '3vh' }} />
-                ) : (
-                  <ImMan style={{ fill: 'green', fontSize: '3vh' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Smoking
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.gender ? (
-                  <SmokingRoomsOutlinedIcon style={{ fill: 'green' }} />
-                ) : (
-                  <SmokeFreeOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                <PetsOutlinedIcon />
-                {' '}
-                Pet:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.pet ? (
-                  <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Relationship:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.relationship ? (
-                  <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Employed:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.employed ? (
-                  <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Interests:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.interests ? (
-                  userInformation.interests.map((interest: string) => (
-                    <span>{interest}</span>
-                  ))
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Languages:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.languages ? (
-                  userInformation.languages.map((language: string) => (
-                    <span>
-                      {language}
-                      {' '}
-                    </span>
-                  ))
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Music:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.music ? (
-                  userInformation.music.map((musicStyle: string) => (
-                    <span>
-                      {musicStyle}
-                      {' '}
-                    </span>
-                  ))
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            {/* <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Looking For:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {
-                  userInformation?.lookingFor
-                    ? (
-                      userInformation?.lookingFor?.roomate
-                        ? (
-                          userInformation?.lookingFor.friend
-                            ? (
-                              'Roomate / friend'
-                            )
-                            : 'Roomate'
-                        )
-                        : (
-                          userInformation.lookingFor?.friend
-                            ? (
-                              'friend'
-                            )
-                            : (
-                              ''
-                            )
-                        )
-                    )
-                    : ''
-
-                }
-              </Typography>
-            </p> */}
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Number Of Roomates:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.numOfRoomates ? (
-                  userInformation.numOfRoomates
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
-            <p className={classes.rows}>
-              <Typography variant="h6" className={classes.labels}>
-                Religion:
-              </Typography>
-              <Typography className={classes.infoData}>
-                {userInformation?.religion ? (
-                  <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
-                ) : (
-                  <CloseOutlinedIcon style={{ fill: 'red' }} />
-                )}
-              </Typography>
-            </p>
+            <div className={classes.advancedInfoDiv}>
+              <p className={classes.rows}>
+                <Typography variant="h6" className={classes.labels}>
+                  Smoking
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.gender ? (
+                    <SmokingRoomsOutlinedIcon style={{ fill: 'green' }} />
+                  ) : (
+                    <SmokeFreeOutlinedIcon style={{ fill: 'red' }} />
+                  )}
+                </Typography>
+              </p>
+              <p className={classes.rows}>
+                <Typography variant="h6" className={classes.labels}>
+                  <PetsOutlinedIcon />
+                  {' '}
+                  Pet:
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.pet ? (
+                    <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
+                  ) : (
+                    <CloseOutlinedIcon style={{ fill: 'red' }} />
+                  )}
+                </Typography>
+              </p>
+              <p className={classes.rows}>
+                <Typography variant="h6" className={classes.labels}>
+                  Relationship:
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.relationship ? (
+                    <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
+                  ) : (
+                    <CloseOutlinedIcon style={{ fill: 'red' }} />
+                  )}
+                </Typography>
+              </p>
+              <p className={classes.rows}>
+                <Typography variant="h6" className={classes.labels}>
+                  Employed:
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.employed ? (
+                    <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
+                  ) : (
+                    <CloseOutlinedIcon style={{ fill: 'red' }} />
+                  )}
+                </Typography>
+              </p>
+              <p className={classes.rows}>
+                <Typography variant="h6" className={classes.labels}>
+                  Number Of Roomates:
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.numOfRoomates ? (
+                    userInformation.numOfRoomates
+                  ) : (
+                    <CloseOutlinedIcon style={{ fill: 'red' }} />
+                  )}
+                </Typography>
+              </p>
+              <p className={classes.rows}>
+                <Typography variant="h6" className={classes.labels}>
+                  Religion:
+                </Typography>
+                <Typography className={classes.infoData}>
+                  {userInformation?.religion ? (
+                    <DoneOutlineOutlinedIcon style={{ fill: 'green' }} />
+                  ) : (
+                    <CloseOutlinedIcon style={{ fill: 'red' }} />
+                  )}
+                </Typography>
+              </p>
+            </div>
           </div>
         </Modal>
       )}

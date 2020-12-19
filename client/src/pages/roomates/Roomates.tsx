@@ -95,6 +95,7 @@ const Roomates: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext)
+  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
 
@@ -126,9 +127,15 @@ const Roomates: React.FC = () => {
 
   const fetchData = async () => {
     const { data } = await network.get('/api/v1/users/basic-info');
-    setAllUsersInfo(data);
+    const { data: likedData } = await network.get(`/api/v1/users/match-all?userId=${context.id}`)
+    const index = data.findIndex((user: any) => user.userId === context.id);
+    if(index === -1) {
+      history.push('/edit');
+    };
+    const filteredData = data.filter((user: any) => user.userId !== context.id);
+    const filteredLikedData = filteredData.filter((user: any) => !likedData.some((like: any) => user.userId === like.passiveUserId));
+    setAllUsersInfo(filteredLikedData);
   };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -136,9 +143,6 @@ const Roomates: React.FC = () => {
   return (
     <div className="cards-page">
       {!loading && allUsersInfo[0] ? (
-        !context.filledDataForm ? (
-          <UserDataForm />
-        ) : (
           <div className={classes.root}>
             {/* <Paper square elevation={0} className={classes.header}>
               <Typography className={classes.headerText}>
@@ -208,8 +212,8 @@ const Roomates: React.FC = () => {
               }
             /> */}
           </div>
-        )
-      ) : (
+      )
+: (
         <div>loading...</div>
       )}
     </div>

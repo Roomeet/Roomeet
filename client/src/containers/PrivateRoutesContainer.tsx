@@ -7,6 +7,7 @@ import NavBar from '../components/NavBar';
 import AboutPage from '../pages/footers/AboutPage';
 import TermsConditionPage from '../pages/footers/TermsConditionPage';
 import ContactUsPage from '../pages/footers/ContactUsPage';
+import MyProfile from '../pages/profile/MyProfile';
 
 const PrivateRoutesContainer: React.FC = () => (
   <div>
@@ -16,7 +17,12 @@ const PrivateRoutesContainer: React.FC = () => (
         <Roomates />
       </div>
     </PrivateRoute>
-    <PrivateRoute exact path="/profile">
+    <PrivateRoute exact path="/myProfile">
+      <div id="private-routes">
+        <MyProfile />
+      </div>
+    </PrivateRoute>
+    <PrivateRoute exact path="/edit">
       <div id="private-routes">
         <UserDataForm />
       </div>

@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
+import Match from '../../../models/Match';
 
 // interfaces:
 
@@ -34,7 +35,9 @@ router.get(
     try {
       const { id } = req.query;
 
-      const usersData: any[] = await UserData.find(id ? { userId: String(id) } : {});
+      const usersData: any[] = await UserData.find(
+        id ? { userId: String(id) } : {}
+      );
 
       res.json(usersData);
     } catch (error) {
@@ -71,18 +74,15 @@ router.get(
     try {
       const userData = await UserData.find({ userId: id });
       res.json({
+        fullName: userData[0].fullName,
+        aboutMe: userData[0].aboutMe,
+        rentLocation: userData[0].rentLocation,
         age: userData[0].age,
         gender: userData[0].gender,
         smoke: userData[0].smoke,
         pet: userData[0].pet,
         relationship: userData[0].relationship,
         employed: userData[0].employed,
-        interests: userData[0].interests,
-        languages: userData[0].languages,
-        music: userData[0].music,
-        lookingFor: userData[0].lookingFor
-          ? { roomate: userData[0].lookingFor.roomate, friend: userData[0].lookingFor.friend }
-          : null,
         numOfRoomates: userData[0].numOfRoomates,
         religion: userData[0].religion
       });
@@ -92,35 +92,91 @@ router.get(
   }
 );
 
-//update user data form 
-router.put('/user-data/:id', async (req:Request, res: Response) => {
+// update user data form
+router.post('/user-data/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  try{
+  try {
     const { body: rawUserData } = req;
     const userData = new UserData({
       ...rawUserData
-    })
-    await UserData.findOneAndUpdate({userId: id}, userData);
-  }catch(error){
-    res.status(500).json({ error })
-  }
-})
-
-// Post user data
-router.post('/user-data', (req: Request, res: Response) => {
-  try {
-    const { body: rawUserData } = req;
-
-    const userData = new UserData({
-      ...rawUserData,
-      _id: new ObjectId(),
-      userId: new ObjectId(rawUserData.userId),
-      createdAt: new Date(),
-      updatedAt: null,
-      deletedAt: null
     });
+    await UserData.findOneAndUpdate(
+      { userId: id },
+      userData,
+      { new: true },
+      (error: any, result: any) => {
+        if (!error) {
+          // If the document doesn't exist
+          if (!result) {
+            // Create it
+            result = new UserData({
+              ...rawUserData,
+              _id: new ObjectId(),
+              userId: new ObjectId(rawUserData.userId),
+              createdAt: new Date(),
+              updatedAt: null,
+              deletedAt: null
+            });
+            // Save the document
+            result.save((err: any) => {
+              if (!err) {
+                // Do something with the document
+                res.status(200).send('user form created');
+              } else {
+                res.json({ error: err });
+              }
+            });
+          } else {
+            res.status(200).send('user form updated');
+          }
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
 
-    userData.save().then(() => res.status(201).json('Updated info!')).catch((error : any) => res.status(501).json({ error }));
+// Match users
+router.post('/match', async (req: Request, res: Response) => {
+  try {
+    const { body: rawMatch } = req;
+    const _id = crypto
+      .createHash('md5')
+      .update(rawMatch.userId + rawMatch.passiveUserId)
+      .digest('hex')
+      .slice(0, 24);
+
+    // @ts-ignore
+    Match.findOneAndUpdate(
+      { _id },
+      rawMatch,
+      { new: true },
+      (error: any, result: any) => {
+        if (!error) {
+          // If the document doesn't exist
+          if (!result) {
+            // Create it
+            result = new Match({
+              ...rawMatch,
+              _id: new ObjectId(_id),
+              createdAt: new Date(),
+              updatedAt: null,
+              deletedAt: null
+            });
+          }
+          // Save the document
+          result.save((err: any) => {
+            if (!err) {
+              // Do something with the document
+              res.json(rawMatch.like ? 'Matched' : 'Unmatched');
+            } else {
+              res.json({ error: err });
+            }
+          });
+        }
+      }
+    );
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -128,7 +184,7 @@ router.post('/user-data', (req: Request, res: Response) => {
 
 router.get('/match-all', async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query;
     // @ts-ignore
     const matches = await Match.find({ userId });
     res.status(200).json(matches);

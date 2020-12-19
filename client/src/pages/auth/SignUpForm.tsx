@@ -93,7 +93,6 @@ const SignUpForm: React.FC = () => {
 
   const signUp = (values: SignUpUserData) => {
     network.post('/api/v1/auth/register', values);
-    context.logUserIn({ filledDataForm: false });
     location.push('/signin');
   };
 

@@ -6,7 +6,10 @@ import React, {
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
-  fade, makeStyles, Theme, createStyles,
+  fade,
+  makeStyles,
+  Theme,
+  createStyles,
 } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,16 +20,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SettingsIcon from '@material-ui/icons/Settings';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
-import Messenger from '../containers/Messenger';
-import makeToast from '../utils/Toaster';
-import ChatRoom from './ChatRoom';
-import network from '../utils/network';
+import LogoutModal from './LogoutModal';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -108,8 +109,12 @@ const NavBar: React.FC<navbarProps> = ({
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
-  const context = useContext(UserContext);
+  const [
+    mobileMoreAnchorEl,
+    setMobileMoreAnchorEl,
+  ] = React.useState<null | HTMLElement>(null);
+  const [openLogout, setOpenLogout] = React.useState<boolean>(false);
+  const context = React.useContext(UserContext);
   const history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
@@ -117,6 +122,14 @@ const NavBar: React.FC<navbarProps> = ({
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleLogoutOpen = () => {
+    setOpenLogout(true);
+  };
+
+  const handleLogoutClose = () => {
+    setOpenLogout(false);
   };
 
   const handleMobileMenuClose = () => {
@@ -138,7 +151,7 @@ const NavBar: React.FC<navbarProps> = ({
     handleMenuClose();
   };
 
-  const handleMobileMenu = (url : string) => {
+  const handleMobileMenu = (url: string) => {
     handleMenuClose();
     history.push(url);
   };
@@ -154,7 +167,9 @@ const NavBar: React.FC<navbarProps> = ({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}><Link to="/profile">Profile</Link></MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/MyProfile">Profile</Link>
+      </MenuItem>
       {/* <MenuItem onClick={() =>
         context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem> */}
     </Menu>
@@ -171,10 +186,20 @@ const NavBar: React.FC<navbarProps> = ({
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
-          <Badge badgeContent={4} color="secondary">
-            {/* <Link to="/messages"> */}
+      <MenuItem onClick={() => handleMobileMenu('/myProfile')}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        My profile
+      </MenuItem>
+      <MenuItem onClick={() => handleMobileMenu('/messages')}>
+        <IconButton aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={5} color="secondary">
             <MailIcon />
             {/* </Link> */}
           </Badge>
@@ -190,20 +215,7 @@ const NavBar: React.FC<navbarProps> = ({
         <p>Notifications</p>
       </MenuItem>
       {/* onClick={handleProfileMenuOpen} */}
-      <MenuItem
-        onClick={() => handleMobileMenu('/profile')}
-      >
-        <IconButton
-          aria-label="account of current context"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        Profile
-      </MenuItem>
-      <MenuItem onClick={handleLogOut}>
+      <MenuItem onClick={handleLogoutOpen}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -214,6 +226,11 @@ const NavBar: React.FC<navbarProps> = ({
         </IconButton>
         Logout
       </MenuItem>
+      <LogoutModal
+        openLogout={openLogout}
+        handleLogoutClose={handleLogoutClose}
+        logout={handleLogOut}
+      />
     </Menu>
   );
 
@@ -231,42 +248,41 @@ const NavBar: React.FC<navbarProps> = ({
           </IconButton>
           <Link to="/home">
             <h1 className={classes.appBarTitle}>
-              <span className={classes.colorTextRoo}>
-                Roo
-              </span>
-              <span className={classes.colorTextM}>
-                M
-              </span>
-              <span className={classes.colorTextEet}>
-                eet
-              </span>
+              <span className={classes.colorTextRoo}>Roo</span>
+              <span className={classes.colorTextM}>M</span>
+              <span className={classes.colorTextEet}>eet</span>
               .
             </h1>
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {openChatRooms[0] && openChatRooms.map((chatroom) => (
-              <ChatRoom socket={socket} chatroom={chatroom} closeChatRoom={closeChatRoom} />
-            ))}
-            <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+            <IconButton
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={() => history.push('/messages')}
+            >
               <Badge badgeContent={4} color="secondary">
                 {/* <Link to="/messages"> */}
                 <MailIcon />
                 {/* </Link> */}
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit" onClick={() => history.push('/notifications')}>
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={() => history.push('/notifications')}
+            >
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
             <IconButton
+              aria-label="user profile"
+              color="inherit"
+              onClick={() => history.push('/myProfile')}
               edge="end"
-              aria-label="account of current context"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={() => history.push('/profile')}
-              color="inherit"
             >
               <Badge>
                 <AccountCircle />
@@ -277,12 +293,17 @@ const NavBar: React.FC<navbarProps> = ({
               aria-controls="primary-search-account-menu"
               aria-haspopup="true"
               color="inherit"
-              onClick={handleLogOut}
+              onClick={handleLogoutOpen}
             >
               <Badge>
                 <ExitToAppIcon />
               </Badge>
             </IconButton>
+            <LogoutModal
+              openLogout={openLogout}
+              handleLogoutClose={handleLogoutClose}
+              logout={handleLogOut}
+            />
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
