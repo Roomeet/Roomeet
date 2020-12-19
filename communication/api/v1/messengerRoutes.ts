@@ -1,7 +1,7 @@
 const router = require("express").Router();
 import { Request, Response } from 'express';
 import ChatRoom from '../../models/ChatRoom';
-const chatroomController = require("../../controllers/chatroomController");
+const chatroomController = require("../../controllers/chatroomControllers");
 
 
 // Chatroom routes
@@ -14,7 +14,6 @@ router.get("/chatrooms/user/:userId", async (req: Request, res: Response) => {ch
 
 // DELETE all chatrooms
 router.get("/chatrooms/delete", async (req: Request, res: Response) => {chatroomController.deleteAllChatrooms(req,res)});
-
 
 // Messages Routes:
 router.get("/messages/chatroom/:chatroomId",async (req: Request, res: Response) => {chatroomController.getAllMessagesforChatRoomById(req,res)})

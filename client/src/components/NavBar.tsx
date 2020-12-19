@@ -25,6 +25,10 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Messenger from '../containers/Messenger';
+import makeToast from '../utils/Toaster';
+import ChatRoom from './ChatRoom';
+import network from '../utils/network';
 import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 import LogoutModal from './LogoutModal';
@@ -197,14 +201,12 @@ const NavBar: React.FC<navbarProps> = ({
         </IconButton>
         My profile
       </MenuItem>
-      <MenuItem onClick={() => handleMobileMenu('/messages')}>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={5} color="secondary">
+      <MenuItem>
+        <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+          <Badge badgeContent={4} color="secondary">
             <MailIcon />
-            {/* </Link> */}
           </Badge>
         </IconButton>
-        <p>Messages</p>
       </MenuItem>
       <MenuItem onClick={() => handleMobileMenu('/notifications')}>
         <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -256,17 +258,13 @@ const NavBar: React.FC<navbarProps> = ({
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              aria-label="show 4 new mails"
-              color="inherit"
-              onClick={() => history.push('/messages')}
-            >
-              <Badge badgeContent={4} color="secondary">
-                {/* <Link to="/messages"> */}
-                <MailIcon />
-                {/* </Link> */}
-              </Badge>
-            </IconButton>
+            <MenuItem>
+              <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+                <Badge badgeContent={4} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
             <IconButton
               aria-label="show 17 new notifications"
               color="inherit"

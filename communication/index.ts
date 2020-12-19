@@ -6,8 +6,8 @@ import User from './models/User';
 import { MatchInterface } from './models/Match';
 import { Socket } from 'socket.io';
 const matchControllers = require("./controllers/matchControllers");
-const chatroomController = require("./controllers/chatroomController");
-const notificationControllers = require("./controllers/chatroomController");
+const chatroomController = require("./controllers/chatroomControllers");
+const notificationControllers = require("./controllers/notificationControllers");
 
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
@@ -98,9 +98,10 @@ io.on("connect", (socket: any) => {
     try {
       const { users } = match
       await chatroomController.createChatRoom(users, 'chatroomName');
-      users.forEach(async (user) => {
-        await notificationControllers.createNotification(user, 'match', 'you have a new match with' + user);
-      });
+      const user1 = users[0];
+      const user2 = users[1];
+      await notificationControllers.createNotification(user1, 'match', 'you have a new match with' + user2);
+      await notificationControllers.createNotification(user2, 'match', 'you have a new match with' + user1);
     } catch (err) {
       console.log(err);
     }

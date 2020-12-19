@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
+import Notification from '../models/Notification';
+import { Request, Response } from 'express';
+import { NotificationInterface } from '../models/Notification';
 import { ObjectId } from 'mongodb';
-import Notification, { NotificationInterface } from '../models/Notification';
-import Like from '../models/Like';
 
 exports.createNotification = async (userId: string, topic: string, content: string): Promise<NotificationInterface | undefined> => {
   try {
     const notification = new Notification({
+      _id: new ObjectId,
       userId,
       topic,
       content,
@@ -24,3 +26,21 @@ exports.getAllNotificationsByUserId = async (userId: string): Promise<Notificati
     console.log(error)
   }
 }
+
+exports.getAllNotifications = async (req: Request, res: Response) => {
+  try {
+    const notifications = await Notification.find({});
+    res.json(notifications);
+  } catch(error) {
+    res.json({ error })
+  }
+};
+
+exports.notificationControllers = async (req: Request, res: Response) => {
+  try {
+    await Notification.deleteMany({});
+    res.json('delete');
+  } catch(error) {
+    res.json({ error })
+  }
+};

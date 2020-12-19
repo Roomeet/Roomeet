@@ -49,7 +49,6 @@ exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: 
             deletedAt: null
           });
         }
-        console.log(result)
         // Save the document
         result.save();
       }
@@ -59,7 +58,6 @@ exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: 
 
     if(liked) {
       const matchingLikeExist = await checkMatchingLike(activeUserId, passiveUserId);
-      console.log(matchingLikeExist)
       if (matchingLikeExist) {
         match = await createMatch([activeUserId, passiveUserId])
       }
