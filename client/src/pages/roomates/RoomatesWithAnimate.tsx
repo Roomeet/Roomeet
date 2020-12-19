@@ -8,10 +8,10 @@ import {
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
+// import RoomateCard from '../../components/cardnomui';
 import { UserContext } from '../../context/UserContext';
-import './roomates.css';
-import {AnimatePresence} from 'framer-motion'
-
+import {motion,AnimatePresence,} from 'framer-motion'
+import "../../components/card.scss"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -77,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
 function Roomates() {
   const [prefernces, setPrefernces] = useState<boolean>(false); // TODO: get actuall prefernces for the user and create prefernces interface
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
+  const [card,setCard]=useState<number>(0)
   const context = useContext(UserContext);
   const classes = useStyles();
   const theme = useTheme();
@@ -110,7 +111,8 @@ function Roomates() {
   useEffect(() => {
     fetchData();
   }, []);
-
+  const firstCard = allUsersInfo[0]
+  console.log(firstCard)
   return (
     <div className="cards-page">
       {allUsersInfo[0] 
@@ -121,13 +123,37 @@ function Roomates() {
                 Choose Your Next Roomate!
               </Typography>
             </Paper>
-              <AnimatePresence >
-                {allUsersInfo.map(
+              <RoomateCard userInfo={allUsersInfo[card]} like={nextCard} unlike={nextCard}/>             
+                {/* {allUsersInfo.map(
                   (userInfo: UserDataInterface, index: number) => (
                     <RoomateCard userInfo={userInfo} like={like} unlike={unlike} key={userInfo._id} />
-                  )
-                )}
-              </AnimatePresence>
+                    )
+                  )} */}
+                {/* <RoomateCard userInfo={firstCard} like={like} unlike={unlike}/> */}
+                {/* <motion.div
+                  style={{background:'white',height:'fit-content',width:'fit-content'}}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.9}
+                  exit={{
+                    scale: 0.5,
+                    opacity: 0,
+                    transition: {
+                      duration: 1,
+                    },
+                  }}
+                  onDragEnd={
+                    (event, info) => {
+                      if (info.offset.x > 100) {
+                        like(firstCard.userId);
+                      } else if (info.offset.x < -100) {
+                        unlike(firstCard.userId);
+                      }
+                    }
+                  }
+                >
+                  {firstCard.userId}
+                </motion.div> */}
           </div>
             ) 
         : (

@@ -67,7 +67,8 @@ function App(): JSX.Element {
           context.success ? (
             <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
               <NavBar />
-              <Switch>
+              {/* @ts-ignore */}
+              <Switch location={location}>
                 <Route exact path='/about'>
                   <AboutPage />
                 </Route>

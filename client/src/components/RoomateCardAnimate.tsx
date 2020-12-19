@@ -7,7 +7,7 @@ import {
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useAnimation, Variants } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 // import { UserDataInterface } from '../../../server/models/UserData';
@@ -45,6 +45,7 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
   },
   cardDiv: {
+    cursor: 'grab',
     height: '100%',
     width: '80%',
     maxWidth: '500px',
@@ -55,7 +56,8 @@ const useStyles = makeStyles({
   },
   profilePic: {
     borderRadius: '50%',
-    border: '7px solid black',
+    // border: '7px solid black',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
   },
   like: {
     fill: 'green',
@@ -86,6 +88,35 @@ const RoomateCard = ({
 
 }) : JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
+  const controls = useAnimation();
+  const variants : Variants = {
+    initial: {
+      opacity: 0,
+      scale: 0.5,
+    },
+    enter: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    like: {
+      // transform: { rotateY: 90 },
+      x: [null, 100, 0],
+      scale: [1, 0.2, 1],
+      opacity: [1, 0, 1],
+      transition: {
+        times: [0, 0.5, 1],
+      },
+    },
+    unlike: {
+      x: [null, -100, 0],
+      scale: [1, 0.2, 1],
+      opacity: [1, 0, 1],
+      transition: {
+        times: [0, 0.5, 1],
+      },
+    },
+  };
   const classes = useStyles();
 
   const handleOpen = () => {
@@ -98,20 +129,22 @@ const RoomateCard = ({
     <motion.div
       className={classes.cardDiv}
       drag="x"
+      variants={variants}
+      initial="initial"
+      // initial={{ rotateY: 90 }}
+      animate={controls}
+      transition={{ duration: 0.5 }}
+      onLoad={() => { controls.start('enter'); }}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.9}
-      exit={{
-        scale: 0.5,
-        opacity: 0,
-        transition: {
-          duration: 1,
-        },
-      }}
       onDragEnd={
         (event, info) => {
           if (info.offset.x > 100) {
+            controls.start('like');
             like(userInfo.id);
+            // controls.start('enter');
           } else if (info.offset.x < -100) {
+            controls.start('unlike');
             unlike(userInfo.id);
           }
         }
