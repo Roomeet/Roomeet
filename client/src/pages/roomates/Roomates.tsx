@@ -129,6 +129,7 @@ const Roomates: React.FC = () => {
     const { data } = await network.get('/api/v1/users/basic-info');
     const { data: likedData } = await network.get(`/api/v1/users/match-all?userId=${context.id}`)
     const index = data.findIndex((user: any) => user.userId === context.id);
+    console.log(index)
     if(index === -1) {
       history.push('/edit');
     };

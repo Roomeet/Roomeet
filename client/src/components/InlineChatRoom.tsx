@@ -19,8 +19,6 @@ import {
 import io from 'socket.io-client';
 import { UserContext } from '../context/UserContext';
 import network from '../utils/network';
-import chatroomType from '../containers/Messenger'
-
 
 type chatroomType = {
   id: string;
