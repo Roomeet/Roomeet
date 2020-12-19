@@ -1,7 +1,8 @@
 /*eslint-disable */
 
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   MenuItem,
   Container,
@@ -14,35 +15,39 @@ import {
   Select,
   Chip,
   InputLabel,
-} from '@material-ui/core';
-import { Formik, Form, Field, FieldProps } from 'formik';
-import { string, object, number } from 'yup';
-import { UserDataFormResponse } from '../../interfaces/userData';
-import { UserContext } from '../../context/UserContext';
-import axios from 'axios';
+} from "@material-ui/core";
+import { Formik, Form, Field, FieldProps } from "formik";
+import { string, object, number } from "yup";
+import {
+  UserDataFormResponse,
+  UserDataInterface,
+} from "../../interfaces/userData";
+import { UserContext } from "../../context/UserContext";
+import axios from "axios";
+import network from "../../utils/network";
 
 const validationSchema = object({
-  email: string().email().required('email is required'),
+  email: string().email().required("email is required"),
   password: string()
-    .min(4, 'Password must contain at least 4 characters')
-    .required('Enter your password'),
+    .min(4, "Password must contain at least 4 characters")
+    .required("Enter your password"),
 });
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    background: 'white',
-    padding: '20px',
-    borderRadius: '10px/12px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    background: "white",
+    padding: "20px",
+    borderRadius: "10px/12px",
   },
   logo: {
     color: theme.palette.primary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -52,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
   },
   chip: {
     margin: 2,
@@ -65,49 +70,49 @@ const useStyles = makeStyles((theme) => ({
 
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
+  const history = useHistory();
   const context = React.useContext(UserContext);
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState<UserDataInterface>();
 
   const validationSchema = object({
     age: number()
-      .positive('age cannot be negative')
-      .max(120, 'max age is 120')
-      .required('must contain age'),
+      .positive("age cannot be negative")
+      .max(120, "max age is 120")
+      .required("must contain age"),
+    aboutMe: string()
+    .max(300, 'Maximum 300 characters'),
   });
   // @ts-ignore
-  const initialValues: UserDataFormResponse = user
+  const initialValues: any = user
     ? user
     : {
         userId: context.id,
+        fullName: "",
+        gender: "other",
         age: 18,
-        gender: 'female',
-        smoke: 'Never',
+        rentLocation: "",
+        aboutMe: "",
+        smoke: "",
+        numOfRoomates: 0,
         pet: false,
         relationship: false,
         employed: false,
-        interests: [],
-        languages: [],
-        music: [],
-        lookingFor: [],
-        numOfRoomates: 0,
         religion: false,
       };
 
   const submit = async (values: any) => {
-    await axios.post('/api/v1/users/user-data', values);
+    await network.post(`/api/v1/users/user-data/${context.id}`, values);
   };
 
   const fetchUserData = async () => {
-    const { data } = await axios.get(
+    const { data } = await network.get(
       `/api/v1/users/basic-info?id=${context.id}`
     );
-    delete data[0].createdAt;
-    delete data[0].deletedAt;
-    delete data[0].updatedAt;
-    delete data[0].id;
-    console.log(data[0]);
-
-    setUser(data[0]);
+    if (data[0]) {
+      setUser(data[0]);
+    } else {
+      setUser(initialValues);
+    }
   };
 
   React.useEffect(() => {
@@ -115,291 +120,259 @@ const UserDataForm: React.FC = () => {
   }, []);
 
   return (
-    <div className='user-data-form'>
+    <div className="user-data-form">
       {user && (
-        <Container component='main' maxWidth='sm'>
+        <Container component="main" maxWidth="sm">
           <CssBaseline />
           <div className={classes.paper}>
             <div className={classes.logo}>Let Us Know More About You</div>
             <Formik
-            // @ts-ignore
+              // @ts-ignore
               initialValues={user}
               validationSchema={validationSchema}
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 submit(values);
+                history.push("/home");
               }}
             >
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
-                  <Field name='age'>
+                  <Field name="fullName">
                     {({
                       field,
                       meta: { error, value, initialValue, touched },
                     }: FieldProps) => (
                       <TextField
-                        variant='outlined'
-                        style={{ margin: '5px' }}
+                        variant="outlined"
+                        margin="normal"
+                        required
                         fullWidth
-                        id='age'
-                        label='age'
-                        type='number'
-                        autoFocus
-                        data-test='userdata-age'
-                        // error={(touched || value !== initialValue) && Boolean(error)}
+                        id="fullName"
+                        label="Full Name"
+                        type="text"
+                        data-test="form-full-name"
+                        error={
+                          (touched || value !== initialValue) && Boolean(error)
+                        }
                         helperText={
-                          touched || value !== initialValue ? error : ''
+                          touched || value !== initialValue ? error : ""
                         }
                         {...field}
                       />
                     )}
                   </Field>
-                  <Field name='gender'>
+                  <Field name="gender">
                     {({
                       field,
                       meta: { error, value, initialValue, touched },
                     }: FieldProps) => (
                       <TextField
-                        variant='outlined'
-                        style={{ margin: '5px' }}
+                        variant="outlined"
+                        style={{ margin: "5px" }}
                         fullWidth
-                        label='gender'
+                        label="gender"
                         select
-                        id='gender'
-                        data-test='userdata-gender'
+                        id="gender"
+                        data-test="userdata-gender"
                         // error={touched && value !== initialValue && Boolean(error)}
                         helperText={
                           touched && value !== initialValue && touched
                             ? error
-                            : ''
+                            : ""
                         }
                         {...field}
                       >
-                        <MenuItem value='female'>female</MenuItem>
-                        <MenuItem value='male'>male</MenuItem>
+                        <MenuItem value="female">female</MenuItem>
+                        <MenuItem value="male">male</MenuItem>
+                        <MenuItem value="other">other</MenuItem>
                       </TextField>
                     )}
                   </Field>
-                  <Field name='smoke'>
+                  <Field name="age">
                     {({
                       field,
                       meta: { error, value, initialValue, touched },
                     }: FieldProps) => (
                       <TextField
-                        variant='outlined'
-                        style={{ margin: '5px' }}
+                        variant="outlined"
+                        style={{ margin: "5px" }}
                         fullWidth
-                        label='smoke'
+                        id="age"
+                        label="age"
+                        type="number"
+                        data-test="userdata-age"
+                        // error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={
+                          touched || value !== initialValue ? error : ""
+                        }
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name="rentLocation">
+                    {({
+                      field,
+                      meta: { error, value, initialValue, touched },
+                    }: FieldProps) => (
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="rentLocation"
+                        label="Rent Location"
+                        type="text"
+                        data-test="form-full-name"
+                        error={
+                          (touched || value !== initialValue) && Boolean(error)
+                        }
+                        helperText={
+                          touched || value !== initialValue ? error : ""
+                        }
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name="aboutMe">
+                    {({
+                      field,
+                      meta: { error, value, initialValue, touched },
+                    }: FieldProps) => (
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="aboutMe"
+                        label="About Me"
+                        type="text"
+                        data-test="form-full-name"
+                        error={
+                          (touched || value !== initialValue) && Boolean(error)
+                        }
+                        helperText={
+                          touched || value !== initialValue ? error : ""
+                        }
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name="smoke">
+                    {({
+                      field,
+                      meta: { error, value, initialValue, touched },
+                    }: FieldProps) => (
+                      <TextField
+                        variant="outlined"
+                        style={{ margin: "5px" }}
+                        fullWidth
+                        label="smoke"
                         select
-                        id='smoke'
-                        data-test='userdata-smoke'
+                        id="smoke"
+                        data-test="userdata-smoke"
                         // error={touched && value !== initialValue && Boolean(error)}
                         helperText={
                           touched && value !== initialValue && touched
                             ? error
-                            : ''
+                            : ""
                         }
                         {...field}
                       >
-                        <MenuItem value='Never'>Never</MenuItem>
-                        <MenuItem value='Allways'>Allways</MenuItem>
-                        <MenuItem value='Sometimes'>Sometimes</MenuItem>
+                        <MenuItem value="Never">Never</MenuItem>
+                        <MenuItem value="Allways">Allways</MenuItem>
+                        <MenuItem value="Sometimes">Sometimes</MenuItem>
                       </TextField>
                     )}
                   </Field>
-                  <Field name='interests'>
+                  <Field name="numOfRoomates">
                     {({
                       field,
                       meta: { error, value, initialValue, touched },
                     }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
+                      <TextField
+                        variant="outlined"
+                        style={{ margin: "5px" }}
                         fullWidth
-                        label='interests'
-                        multiple
-                        id='interests'
-                        data-test='userdata-interests'
-                        // error={touched && value !== initialValue && Boolean(error)}
+                        id="numOfRoomates"
+                        label="Number Of Roomates"
+                        type="number"
+                        data-test="userdata-age"
+                        // error={(touched || value !== initialValue) && Boolean(error)}
+                        helperText={
+                          touched || value !== initialValue ? error : ""
+                        }
                         {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Sports'>Sports</MenuItem>
-                        <MenuItem value='Dance'>Dance</MenuItem>
-                        <MenuItem value='Books'>Books</MenuItem>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='languages'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
-                        fullWidth
-                        label='languages'
-                        multiple
-                        id='languages'
-                        data-test='userdata-languages'
-                        // error={touched && value !== initialValue && Boolean(error)}
-                        {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Hebrew'>Hebrew</MenuItem>
-                        <MenuItem value='English'>English</MenuItem>
-                        <MenuItem value='Spanish'>Spanish</MenuItem>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='music'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
-                        fullWidth
-                        label='music'
-                        multiple
-                        id='music'
-                        data-test='userdata-music'
-                        // error={touched && value !== initialValue && Boolean(error)}
-                        {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Rock'>Rock</MenuItem>
-                        <MenuItem value='Classic'>Classic</MenuItem>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field name='lookingFor'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <Select
-                        variant='outlined'
-                        style={{ margin: '5px' }}
-                        fullWidth
-                        label='looking for...'
-                        multiple
-                        id='lookingFor'
-                        data-test='userdata-lookingFor'
-                        // error={touched && value !== initialValue && Boolean(error)}
-                        {...field}
-                        renderValue={(selected) => (
-                          <div className={classes.chips}>
-                            {(selected as string[]).map((val) => (
-                              <Chip
-                                key={val}
-                                label={val}
-                                className={classes.chip}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      >
-                        <MenuItem value='Roomate'>Roomate</MenuItem>
-                        <MenuItem value='Friend'>Friend</MenuItem>
-                      </Select>
+                      />
                     )}
                   </Field>
                   <FormControlLabel
                     control={
-                      <Field name='pet'>
+                      <Field name="pet">
                         {({ field }: FieldProps) => (
                           <Checkbox
-                            color='primary'
-                            data-test='userdata-pet'
+                            defaultChecked={user!.pet}
+                            color="primary"
+                            data-test="userdata-pet"
                             {...field}
                           />
                         )}
                       </Field>
                     }
-                    label='pet'
+                    label="pet"
                   />
                   <FormControlLabel
                     control={
-                      <Field name='relationship'>
+                      <Field name="relationship">
                         {({ field }: FieldProps) => (
                           <Checkbox
-                            color='primary'
-                            data-test='userdata-relationship'
+                            defaultChecked={user.relationship}
+                            color="primary"
+                            data-test="userdata-relationship"
                             {...field}
                           />
                         )}
                       </Field>
                     }
-                    label='relationship'
+                    label="relationship"
                   />
                   <FormControlLabel
                     control={
-                      <Field name='employed'>
+                      <Field name="employed">
                         {({ field }: FieldProps) => (
                           <Checkbox
-                            color='primary'
-                            data-test='userdata-employed'
+                            defaultChecked={user.employed}
+                            color="primary"
+                            data-test="userdata-employed"
                             {...field}
                           />
                         )}
                       </Field>
                     }
-                    label='employed'
+                    label="employed"
                   />
                   <FormControlLabel
                     control={
-                      <Field name='religion'>
+                      <Field name="religion">
                         {({ field }: FieldProps) => (
                           <Checkbox
-                            color='primary'
-                            data-test='userdata-religion'
+                            defaultChecked={user.religion}
+                            color="primary"
+                            data-test="userdata-religion"
                             {...field}
                           />
                         )}
                       </Field>
                     }
-                    label='religion'
+                    label="religion"
                   />
                   <Button
-                    type='submit'
+                    type="submit"
                     fullWidth
-                    variant='contained'
-                    color='primary'
+                    variant="contained"
+                    color="primary"
                     className={classes.submit}
-                    data-test='userdata-submit'
+                    data-test="userdata-submit"
                     disabled={!isValid || isSubmitting}
                   >
                     Submit

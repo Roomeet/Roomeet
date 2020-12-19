@@ -3,8 +3,10 @@ import { ObjectId } from 'mongodb';
 
 // interfaces & mongoDB models:
 import User, { UserInterface } from '../../../models/user';
-import RefreshToken, { RefreshTokenInterface } from '../../../models/refreshToken';
-import authenticateToken from '../../helpers/authenticate';
+import RefreshToken, {
+  RefreshTokenInterface
+} from '../../../models/refreshToken';
+import { authenticateToken } from '../../helpers/authenticate';
 
 const router = Router();
 const bcrypt = require('bcrypt');
@@ -17,37 +19,41 @@ type InfoForCookie = {
 };
 
 // helpers:
-const userIsExist = async (email:string):Promise<UserInterface | null> => {
-  const user:UserInterface | null = await User.findOne({ email }).exec();
+const userIsExist = async (email: string): Promise<UserInterface | null> => {
+  const user: UserInterface | null = await User.findOne({ email }).exec();
   return user;
 };
 
 const generateToken = (userInfo: InfoForCookie) => jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
 
 // validateToken
-router.get('/validateToken', authenticateToken, (req: Request, res: Response) => {
-  res.send(true);
-});
+router.get(
+  '/validateToken',
+  authenticateToken,
+  (req: Request, res: Response) => {
+    res.send(true);
+  }
+);
 
 // get new access token
 router.post('/token', async (req, res) => {
   const refreshToken = req.body.token;
   const validRefreshToken = await RefreshToken.findOne({ token: refreshToken });
-
   if (!validRefreshToken) {
     return res.status(403).json({ message: 'Invalid Refresh Token' });
   }
-
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: Error, decoded: any) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid Refresh Token' });
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    (err: Error, decoded: any) => {
+      if (err) { return res.status(403).json({ message: 'Invalid Refresh Token' }); }
+      delete decoded.iat;
+      delete decoded.exp;
+      const updatedAccessToken = generateToken(decoded);
+      res.cookie('accessToken', updatedAccessToken);
+      res.json({ message: 'token updated' });
     }
-    delete decoded.iat;
-    delete decoded.exp;
-    const updatedAccessToken = generateToken(decoded);
-    res.cookie('accessToken', updatedAccessToken);
-    return res.json({ message: 'token updated' });
-  });
+  );
 });
 
 // Registers new user
@@ -55,7 +61,10 @@ router.post('/register', async (req: Request, res: Response) => {
   try {
     const { body: userRegisterationData } = req;
 
-    userRegisterationData.password = await bcrypt.hash(userRegisterationData.password, 10);
+    userRegisterationData.password = await bcrypt.hash(
+      userRegisterationData.password,
+      10
+    );
 
     const newUser = new User({
       _id: new ObjectId(),
@@ -68,9 +77,7 @@ router.post('/register', async (req: Request, res: Response) => {
       deletedAt: null
     });
 
-    newUser.save()
-      .then(() => res.status(201).send('Registerd!'))
-      .catch((e) => { res.status(500).send(e.message); });
+    newUser.save().then(() => res.status(201).send('Registerd!'));
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -85,13 +92,17 @@ router.post('/login', async (req: Request, res: Response) => {
     return res.status(404).send('cannot find user');
   }
   try {
-    await bcrypt.compare(loginData.password, user.password, (err: Error, result:boolean) => {
-      if (err) {
-        res.status(403).send(err);
-      } else if (!result) {
-        res.status(403).send('User or Password incorrect');
+    await bcrypt.compare(
+      loginData.password,
+      user.password,
+      (err: Error, result: boolean) => {
+        if (err) {
+          res.status(403).send(err);
+        } else if (!result) {
+          res.status(403).send('User or Password incorrect');
+        }
       }
-    });
+    );
 
     const expiresIn = loginData.rememberMe ? '365 days' : '24h';
     const infoForCookie: InfoForCookie = {
@@ -107,7 +118,7 @@ router.post('/login', async (req: Request, res: Response) => {
     );
 
     // checking if the user already have a token, and if does updates it.
-    const existingRefreshToken:RefreshTokenInterface | null = await RefreshToken.findOneAndUpdate(
+    const existingRefreshToken: RefreshTokenInterface | null = await RefreshToken.findOneAndUpdate(
       { email: loginData.email },
       { token: refreshToken }
     );
@@ -129,7 +140,8 @@ router.post('/login', async (req: Request, res: Response) => {
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
     res.cookie('email', user.email);
-    res.status(200).send({ accessToken, email: user.email });
+    res.cookie('id', user.id);
+    res.status(200).send({ accessToken, email: user.email, id: user.id });
   } catch (error) {
     res.status(403).send();
   }

@@ -20,6 +20,7 @@ import { Link, useHistory } from 'react-router-dom';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { UserContext } from '../../context/UserContext';
+import UserDataForm from '../preferences-form/UserDataForm';
 import './roomates.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -90,6 +91,7 @@ function Roomates() {
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
   const [activeStep, setActiveStep] = useState(0);
   const context = useContext(UserContext);
+  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
 
@@ -113,9 +115,15 @@ function Roomates() {
 
   const fetchData = async () => {
     const { data } = await network.get('/api/v1/users/basic-info');
-    setAllUsersInfo(data);
+    const { data: likedData } = await network.get(`/api/v1/users/match-all?userId=${context.id}`)
+    const index = data.findIndex((user: any) => user.userId === context.id);
+    if(index === -1) {
+      history.push('/edit');
+    };
+    const filteredData = data.filter((user: any) => user.userId !== context.id);
+    const filteredLikedData = filteredData.filter((user: any) => !likedData.some((like: any) => user.userId === like.passiveUserId));
+    setAllUsersInfo(filteredLikedData);
   };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -123,9 +131,6 @@ function Roomates() {
   return (
     <div className="cards-page">
       {!loading && allUsersInfo[0] ? (
-        prefernces ? (
-          <div>Roomate prefernces</div>
-        ) : (
           <div className={classes.root}>
             <Paper square elevation={0} className={classes.header}>
               <Typography className={classes.headerText}>
@@ -195,8 +200,8 @@ function Roomates() {
               }
             />
           </div>
-        )
-      ) : (
+      )
+: (
         <div>loading...</div>
       )}
     </div>
