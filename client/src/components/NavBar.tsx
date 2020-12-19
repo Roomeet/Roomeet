@@ -246,6 +246,7 @@ const NavBar: React.FC<navbarProps> = ({
             color="inherit"
             aria-label="open drawer"
           >
+            <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)} />
             <MenuIcon />
           </IconButton>
           <Link to="/home">
@@ -258,6 +259,9 @@ const NavBar: React.FC<navbarProps> = ({
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            {openChatRooms[0] && openChatRooms.map((chatroom) => (
+              <ChatRoom socket={socket} chatroom={chatroom} closeChatRoom={closeChatRoom} />
+            ))}
             <MenuItem>
               <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
                 <Badge badgeContent={4} color="secondary">
