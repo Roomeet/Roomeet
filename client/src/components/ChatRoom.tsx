@@ -36,7 +36,6 @@ type chatRoomProps = {
 
 type messageType = {
   message: string;
-  name: string;
   userId: string;
 }
 
@@ -104,7 +103,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 // ];
 
 const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) => {
-  // const [messages, setMessages] = useState<messageType[]>([]);
+  // console.log('renderrrrrrrrrrrrrrrrrrrrrrrrrr');
   const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageType[]>([]);
@@ -114,13 +113,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) 
 
   const sendMessage = () => {
     if (socket) {
-      const message = {
-        message: messageRef.current.value,
-        name: context.name,
-        userId: context.id,
-      };
-      const newMessages = [...messages, message];
-      setMessages(newMessages);
       socket.emit('chatroomMessage', {
         chatroomId: chatroom.id,
         userId: context.id,
@@ -134,7 +126,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) 
   const getMessages = async () => {
     try {
       const { data } = await network.get(`http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`);
-      console.log(data);
       setMessages(data);
     } catch (err) {
       setTimeout(getMessages, 3000);
@@ -143,25 +134,25 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) 
 
   useEffect(() => {
     if (socket) {
+      console.log('client is fetching on live');
       socket.on('newMessage', (message: messageType) => {
-        const newMessages = [...messages, message];
-        console.log(newMessages);
-        setMessages(newMessages);
+        setMessages(((prev) => [...prev, message]));
       });
     }
-  }, [messages]);
+  }, []);
 
   useEffect(() => {
+    console.log('render');
     getMessages();
     if (socket) {
-      socket.emit('joinRoom', {
+      socket.emit('EnteredRoom', {
         chatRoomId: chatroom.id,
       });
     }
 
     return () => {
       if (socket) {
-        socket.emit('leaveRoom', {
+        socket.emit('exitedRoom', {
           chatRoomId: chatroom.id,
         });
       }
@@ -213,7 +204,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) 
                 <Paper
                   key={message.userId}
                   className={
-                    message.name === 'Liam' ? classes.ownMessage : classes.otherMessage
+                    message.userId === context.id ? classes.ownMessage : classes.otherMessage
                   }
                 >
                   <Typography variant="body2">

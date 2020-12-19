@@ -12,7 +12,7 @@ exports.createChatRoom = async (participants: string[], name: string = "") => {
   
     if (!nameRegex.test(chatRoomName)) throw "Chatroom name can contain only alphabets.";
   
-    const chatroomExists = await ChatRoom.findOne({ name });
+    const chatroomExists = await ChatRoom.findOne({ chatRoomName });
   
     if (chatroomExists) throw "Chat room with that name already exists!";
   

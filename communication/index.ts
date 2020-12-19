@@ -57,9 +57,9 @@ io.on("connect", (socket: any) => {
     console.log("Disconnected: " + socket?.userId);
   });
 
-  socket?.on("EnteredRoom", ({ chatroomId }: any ) => {
-    socket.join(chatroomId);
-    console.log("A user joined chatroom: " + chatroomId);
+  socket?.on("EnteredRoom", ({ chatRoomId }: any ) => {
+    socket.join(chatRoomId);
+    console.log("A user joined chatroom: " + chatRoomId);
   });
 
   socket?.on("exitedRoom", ({ chatroomId }:  any) => {
@@ -69,7 +69,6 @@ io.on("connect", (socket: any) => {
 
   socket?.on("chatroomMessage", async ({ userId ,chatroomId, message }: any) => {
     if (message.trim().length > 0) {
-      const user = await User.findById(userId);
       const newMessage = new Message({
         _id: new ObjectId,
         chatroom: chatroomId,
@@ -78,8 +77,7 @@ io.on("connect", (socket: any) => {
       });
       io.to(chatroomId).emit("newMessage", {
         message,
-        name: user?.name,
-        userId: userId,
+        userId,
       });
       await newMessage.save();
     }
