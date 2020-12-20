@@ -1,4 +1,3 @@
-require("dotenv").config();
 import app from './app';
 import { ObjectId } from 'mongodb';
 import Message from './models/Message';
@@ -8,7 +7,9 @@ const matchControllers = require("./controllers/matchControllers");
 const chatroomController = require("./controllers/chatroomControllers");
 const notificationControllers = require("./controllers/notificationControllers");
 const likeControllers = require("./controllers/likeControllers");
+require("dotenv").config();
 
+// mongoose connection:
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGODB_URI, {
@@ -24,9 +25,8 @@ mongoose.connection.once("open", () => {
   console.log("MongoDB Connected!");
 });
 
-//Bring in the models
+//Bring in the models:
 require("./models/User");
-// require("./models/Chatroom");
 require("./models/Message");
 
 const port = process.env.PORT || 3002;
@@ -87,7 +87,6 @@ io.on("connect", (socket: any) => {
       const like: LikeInterface = await likeControllers.handleLike(activeUserId, passiveUserId, liked);
       if(like?.liked) {
         const matchingLikeExist = await likeControllers.checkMatchingLike(activeUserId, passiveUserId);
-        console.log('matchingLikeExist', matchingLikeExist) 
         if (matchingLikeExist) {
           const match = await matchControllers.createMatch([activeUserId, passiveUserId])
           matchEmitter(match)

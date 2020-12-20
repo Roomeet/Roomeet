@@ -1,6 +1,5 @@
 import { Schema, Document, model, SchemaType } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { runInContext } from 'vm';
 
 export interface NotificationInterface extends Document {
   _id: string;

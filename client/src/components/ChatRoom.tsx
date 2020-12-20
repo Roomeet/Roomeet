@@ -17,26 +17,16 @@ import React, {
   useEffect,
   useState,
   useRef,
+  RefObject,
 } from 'react';
-import io from 'socket.io-client';
 import { UserContext } from '../context/UserContext';
+import { messageI, chatRoomI } from '../interfaces/chat';
 import network from '../utils/network';
-
-type chatroomType = {
-  id: string;
-  name: string;
-  participants: string[]
-}
 
 type chatRoomProps = {
   socket: any;
-  chatroom: chatroomType;
-  closeChatRoom: (roomId: chatroomType) => void
-}
-
-type messageType = {
-  message: string;
-  userId: string;
+  chatroom: chatRoomI;
+  closeChatRoom: (roomId: chatRoomI) => void
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -82,8 +72,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     backgroundColor: theme.palette.background.paper,
   },
   input: {
-    // position: 'relative',
-    // bottom: 0,
   },
   sendButton: {
     flexGrow: 1,
@@ -93,33 +81,22 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-// const messages: messageType[] = [
-//   {message: 'hey', name: 'Itay', userId: '1234' },
-//   { message: 'Hi!', name: 'Liam', userId: '123456' },
-//   { message: 'I wanna live with you', name: 'Itay', userId: '1234' },
-//   { message: 'Where??', name: 'Liam', userId: '1234' },
-//   { message: 'TLV BABY', name: 'Itay', userId: '123456' },
-//   { message: 'You just found yourself a Roomeet!', name: 'Liam', userId: '1234' }
-// ];
-
 const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) => {
-  // console.log('renderrrrrrrrrrrrrrrrrrrrrrrrrr');
+  const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
-  const [messages, setMessages] = useState<messageType[]>([]);
-  const messageRef = useRef<any>();
+  const [messages, setMessages] = useState<messageI[]>([]);
+  const messageRef = useRef<HTMLInputElement>(null);
   const context = useContext(UserContext);
-  const classes = useStyles();
 
   const sendMessage = () => {
-    if (socket) {
+    if (socket && messageRef) {
       socket.emit('chatroomMessage', {
         chatroomId: chatroom.id,
         userId: context.id,
-        message: messageRef.current.value,
+        message: messageRef?.current?.value,
       });
-
-      messageRef.current.value = '';
+      if (messageRef?.current) messageRef.current.value = '';
     }
   };
 
@@ -142,7 +119,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) 
       });
 
       // define the new message event
-      socket.on('newMessage', (message: messageType) => {
+      socket.on('newMessage', (message: messageI) => {
         setMessages(((prev) => [...prev, message]));
       });
     }

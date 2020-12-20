@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
 import Like, { LikeInterface } from '../models/Like';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import { MatchInterface } from '../models/Match';
 
 
 exports.getAllLikes = async (req: Request, res: Response) => {

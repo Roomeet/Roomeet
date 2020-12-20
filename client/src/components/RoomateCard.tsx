@@ -3,17 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card, CardActions, CardContent, Button, Typography, Modal,
 } from '@material-ui/core/';
-// import blueDoor from '../images/blueDoor.png';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import { Link } from 'react-router-dom';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
-// import { UserDataInterface } from '../../../server/models/UserData';
-
-export type Props = {
-  [key: string]: any;
-};
+import { UserDataInterface } from '../interfaces/userData';
 
 const useStyles = makeStyles({
   root: {
@@ -58,8 +52,6 @@ const useStyles = makeStyles({
   },
   like: {
     fill: 'green',
-    // backgroundColor: "green",
-    // color: "black",
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
@@ -67,14 +59,19 @@ const useStyles = makeStyles({
   },
   unlike: {
     fill: 'red',
-    // backgroundColor: "red",
-    // color: "black",
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
     },
   },
 });
+
+export type Props = {
+  userInfo: UserDataInterface;
+  handleNext: (liked: boolean) => void;
+  activeStep: number;
+  length: number;
+};
 
 const RoomateCard: React.FC<Props> = ({
   userInfo, handleNext, activeStep, length,
@@ -125,7 +122,6 @@ const RoomateCard: React.FC<Props> = ({
             onClick={handleOpen}
             className={classes.goToProfile}
             size="small"
-            // onClick={handleOpenProfile}
           >
             <img
               className={classes.goToProfile}
@@ -140,7 +136,6 @@ const RoomateCard: React.FC<Props> = ({
             size="small"
             className={classes.like}
             onClick={() => handleNext(true)}
-            // disabled={activeStep === allUsersInfo.length - 1}
             disabled={activeStep === length}
           >
             <ThumbUpIcon className={classes.like} />
@@ -148,9 +143,7 @@ const RoomateCard: React.FC<Props> = ({
           <Button
             size="small"
             className={classes.unlike}
-            // onClick={handleBack}
             onClick={() => handleNext(false)}
-            // disabled={activeStep === 0}
             disabled={activeStep === length}
           >
             <ThumbDownIcon className={classes.unlike} style={{ fill: 'red' }} />

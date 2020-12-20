@@ -77,7 +77,6 @@ const MyProfile: React.FC = () => {
     setUserInformation(data);
   };
 
-  console.log(userInformation, 'data!!!!!!!!!!!!!!');
   useEffect(() => {
     fetchData();
   }, []);

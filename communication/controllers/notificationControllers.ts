@@ -1,7 +1,5 @@
-const mongoose = require("mongoose");
-import Notification from '../models/Notification';
+import Notification, { NotificationInterface } from '../models/Notification';
 import { Request, Response } from 'express';
-import { NotificationInterface } from '../models/Notification';
 import { ObjectId } from 'mongodb';
 
 exports.createNotification = async (userId: string, topic: string, content: string): Promise<NotificationInterface | undefined> => {

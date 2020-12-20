@@ -65,9 +65,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// interface Props {
-// }
-
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -175,7 +172,6 @@ const UserDataForm: React.FC = () => {
                         select
                         id="gender"
                         data-test="userdata-gender"
-                        // error={touched && value !== initialValue && Boolean(error)}
                         helperText={
                           touched && value !== initialValue && touched
                             ? error
@@ -202,7 +198,6 @@ const UserDataForm: React.FC = () => {
                         label="age"
                         type="number"
                         data-test="userdata-age"
-                        // error={(touched || value !== initialValue) && Boolean(error)}
                         helperText={
                           touched || value !== initialValue ? error : ""
                         }
@@ -271,7 +266,6 @@ const UserDataForm: React.FC = () => {
                         select
                         id="smoke"
                         data-test="userdata-smoke"
-                        // error={touched && value !== initialValue && Boolean(error)}
                         helperText={
                           touched && value !== initialValue && touched
                             ? error
@@ -298,7 +292,6 @@ const UserDataForm: React.FC = () => {
                         label="Number Of Roomates"
                         type="number"
                         data-test="userdata-age"
-                        // error={(touched || value !== initialValue) && Boolean(error)}
                         helperText={
                           touched || value !== initialValue ? error : ""
                         }

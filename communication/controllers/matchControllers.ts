@@ -1,8 +1,6 @@
-const mongoose = require("mongoose");
 import { ObjectId } from 'mongodb';
-import Match, { MatchInterface } from '../models/Match';
-import Like from '../models/Like';
 import { Request, Response } from 'express';
+import Match from '../models/Match';
 
 exports.createMatch = async (users: string[]) => {
   try{  

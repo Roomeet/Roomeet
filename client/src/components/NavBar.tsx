@@ -1,8 +1,7 @@
 import React, {
-  useState,
-  useContext,
   Dispatch,
   SetStateAction,
+  useState,
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -14,24 +13,20 @@ import {
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import SettingsIcon from '@material-ui/icons/Settings';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Messenger from '../containers/Messenger';
-import makeToast from '../utils/Toaster';
 import ChatRoom from './ChatRoom';
-import network from '../utils/network';
 import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 import LogoutModal from './LogoutModal';
+import { chatRoomI } from '../interfaces/chat';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -92,17 +87,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-type chatroomType = {
-  id: string;
-  name: string;
-  participants: string[]
-}
-
 type navbarProps = {
   setMessengerOpen: Dispatch<SetStateAction<boolean>>;
-  openChatRooms: chatroomType[];
+  openChatRooms: chatRoomI[];
   socket: any;
-  closeChatRoom: (roomId: chatroomType) => void;
+  closeChatRoom: (roomId: chatRoomI) => void;
 }
 
 const NavBar: React.FC<navbarProps> = ({
@@ -113,20 +102,13 @@ const NavBar: React.FC<navbarProps> = ({
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [
-    mobileMoreAnchorEl,
-    setMobileMoreAnchorEl,
-  ] = React.useState<null | HTMLElement>(null);
+  const [ mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const [openLogout, setOpenLogout] = React.useState<boolean>(false);
   const context = React.useContext(UserContext);
   const history = useHistory();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleLogoutOpen = () => {
     setOpenLogout(true);
@@ -174,8 +156,6 @@ const NavBar: React.FC<navbarProps> = ({
       <MenuItem onClick={handleMenuClose}>
         <Link to="/MyProfile">Profile</Link>
       </MenuItem>
-      {/* <MenuItem onClick={() =>
-        context.logUserOut()}><Link to="/landing">Logout</Link></MenuItem> */}
     </Menu>
   );
 
@@ -216,7 +196,6 @@ const NavBar: React.FC<navbarProps> = ({
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      {/* onClick={handleProfileMenuOpen} */}
       <MenuItem onClick={handleLogoutOpen}>
         <IconButton
           aria-label="account of current user"

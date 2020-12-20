@@ -1,10 +1,7 @@
 /*eslint-disable */
 
-import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/UserContext';
-import makeToast from '../utils/Toaster';
-import ChatRoom from '../components/ChatRoom';
 import network from '../utils/network';
 import {
   AppBar,
@@ -25,16 +22,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/More';
 import { AddIcCallOutlined } from '@material-ui/icons';
 import InlineChatRoom from '../components/InlineChatRoom';
-
-type chatroomType = {
-  id: string;
-  name: string;
-  participants: string[]
-}
+import { chatRoomI } from '../interfaces/chat';
+import { MatchInterface } from '../interfaces/match';
 
 type messengerProps = {
   messengerOpen: boolean;
-  openChatRoom: (roomId: chatroomType) => void
+  openChatRoom: (roomId: chatRoomI) => void
   socket: any;
 }
 
@@ -80,8 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,socket }) => {
-  const [chatrooms, setChatrooms] = useState<chatroomType[]>([]);
-  const [allMatches, setAllMatches] = useState<any[]>([]);
+  const [chatrooms, setChatrooms] = useState<chatRoomI[]>([]);
   const context = useContext(UserContext);
   const classes = useStyles();
 
@@ -115,7 +107,6 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,sock
                   <List className={classes.list}>
                     {chatrooms ? chatrooms.map((chatroom) => (
                       <InlineChatRoom 
-                        socket={socket}
                         chatroom={chatroom}
                         openChatRoom={openChatRoom}
                       />

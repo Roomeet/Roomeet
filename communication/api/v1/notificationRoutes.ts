@@ -1,5 +1,5 @@
-const router = require("express").Router();
 import { Request, Response } from 'express';
+const router = require("express").Router();
 const notificationControllers = require("../../controllers/notificationControllers");
 
 

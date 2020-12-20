@@ -11,7 +11,6 @@ import MyProfile from '../pages/profile/MyProfile';
 
 const PrivateRoutesContainer: React.FC = () => (
   <div>
-    {/* <NavBar /> */}
     <PrivateRoute exact path="/home">
       <div>
         <Roomates />

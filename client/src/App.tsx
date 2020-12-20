@@ -5,8 +5,6 @@ import {
   Redirect,
   Route,
   Switch,
-  useHistory,
-  useLocation,
 } from 'react-router-dom';
 import io from 'socket.io-client';
 import Cookies from 'js-cookie';
@@ -27,19 +25,13 @@ import BGImage from './images/woodBG.jpg';
 import Messenger from './containers/Messenger';
 import makeToast from './utils/Toaster';
 import SocketContext from './context/socketContext';
-
-type chatroomType = {
-  id: string;
-  name: string;
-  participants: string[]
-}
+import { chatRoomI } from './interfaces/chat';
 
 function App(): JSX.Element {
-  // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
   const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
-  const [openChatRooms, setOpenChatrooms] = useState<chatroomType[]>([]);
+  const [openChatRooms, setOpenChatrooms] = useState<chatRoomI[]>([]);
   const context = React.useContext(UserContext);
 
   const setupSocket = () => {
@@ -72,8 +64,8 @@ function App(): JSX.Element {
     }
   };
 
-  const openChatRoom = (chatroom: chatroomType) => {
-    setOpenChatrooms((prevOpenChatRooms: chatroomType[]) => {
+  const openChatRoom = (chatroom: chatRoomI) => {
+    setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
       const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
       if (!prevOpenChatroomsIds.includes(chatroom.id)) {
         return [...prevOpenChatRooms, chatroom];
@@ -82,8 +74,8 @@ function App(): JSX.Element {
     });
   };
   
-  const closeChatRoom = (chatroom: chatroomType) => {
-    setOpenChatrooms((prevOpenChatRooms: chatroomType[]) => {
+  const closeChatRoom = (chatroom: chatRoomI) => {
+    setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
       const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
       const index = prevOpenChatroomsIds.indexOf(chatroom.id);
       prevOpenChatRooms.splice(index, 1);

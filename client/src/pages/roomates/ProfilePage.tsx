@@ -27,9 +27,6 @@ const useStyles = makeStyles({
     textAlign: 'center',
     height: '70%',
     overflowY: 'auto',
-    // '*::-webkit-scrollbar': {
-    //   width: '1px',
-    // },
     width: '40%',
     marginTop: '5%',
     marginLeft: 'auto',
@@ -44,27 +41,20 @@ const useStyles = makeStyles({
     width: '100%',
   },
   labels: {
-    // fontWeight: 'bold',
-    // left: '35%',
+
   },
   infoData: {
-    // fontSize: '1.4em',
-    // left: '0%',
+
   },
   profilePic: {
-    // position: 'relative',
-    // left: '0%',
-    // top: '0%',
+
     borderRadius: '50%',
     border: '3px solid black',
-    // // backgroundColor: 'green',
     height: '30%',
     maxWidth: '50%',
     maxHeight: '30%',
-    // width: '30%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    // marginTop: '0',
   },
   nameTitle: {
     fontSize: '1.3em',
@@ -82,7 +72,6 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     width: '60%',
     backgroundColor: '#BFB4AB',
-    // marginTop: '0',
   },
   titleInfoDiv: {
     display: 'flex',

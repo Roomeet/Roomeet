@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import ChatRoom from '../models/ChatRoom';

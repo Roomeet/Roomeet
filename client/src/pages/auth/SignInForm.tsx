@@ -17,7 +17,6 @@ import {
   Formik, Form, Field, FieldProps,
 } from 'formik';
 import { string, object } from 'yup';
-// import Alert from '@material-ui/lab/Alert';
 import { Grow } from '@material-ui/core';
 import BGImage from '../../images/BGSignin.jpg';
 import { SignInUserData } from '../../interfaces/authentication';
@@ -68,10 +67,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// interface Props {
-//   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
-// }
-
 const SignInForm: React.FC<any> = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -109,14 +104,6 @@ const SignInForm: React.FC<any> = () => {
             {...(checked ? { timeout: 1000 } : {})}
           >
             <div className={classes.paper}>
-              {/* {authState.context?.message && (
-            <Alert data-test="signin-error" severity="error" className={classes.alertMessage}>
-              {authState.context.message}
-            </Alert>
-          )} */}
-              {/* <div className={classes.logo}>
-              Welcome To Roomeet
-            </div> */}
               <Avatar className={classes.avatar}>
                 <LockOutlinedIcon />
               </Avatar>
@@ -195,7 +182,6 @@ const SignInForm: React.FC<any> = () => {
                     </Button>
                     <Grid container>
                       <Grid item xs>
-                        {/* <Link to="/forgotpassword">Forgot password?</Link> */}
                         <div onClick={() => alert('need to go to the forgot password functionality')}>
                           Forgot password?
                         </div>

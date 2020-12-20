@@ -1,56 +1,25 @@
-import React, {
-  useState,
-  useRef,
-  SetStateAction,
-  Dispatch,
-  useEffect,
-} from 'react';
+import React from 'react';
 import {
   Avatar,
   createStyles,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  ListSubheader,
   makeStyles,
   Theme,
 }
   from '@material-ui/core';
-import io from 'socket.io-client';
-import { UserContext } from '../context/UserContext';
-import network from '../utils/network';
-
-type chatroomType = {
-  id: string;
-  name: string;
-  participants: string[]
-}
+import { chatRoomI } from '../interfaces/chat';
 
 type chatRoomProps = {
-  socket: any;
-  chatroom: chatroomType;
-  openChatRoom: (chatroom: chatroomType) => void
+  chatroom: chatRoomI;
+  openChatRoom: (chatroom: chatRoomI) => void
 }
 
-type messageType = {
-  message: string;
-  name: string;
-  id: string;
-}
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  subheader: {
-    backgroundColor: theme.palette.background.paper,
-    padding: 0,
-  },
-}));
-
-const InlineChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, openChatRoom }) => {
-  const classes = useStyles();
+const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom }) => {
 
   return (
     <React.Fragment key={chatroom.id}>
-      {/* <ListSubheader className={classes.subheader}>Date</ListSubheader> */}
       <ListItem button onClick={() => { openChatRoom(chatroom); }}>
         <ListItemAvatar>
           <Avatar alt="Profile Picture" src="https://picsum.photos/150/150" />
