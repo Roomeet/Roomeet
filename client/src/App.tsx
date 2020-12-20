@@ -95,7 +95,6 @@ function App(): JSX.Element {
         };
         const { data: user } = await network.get(`api/v1/users/?id=${id}`);
         context.logUserIn({ ...dataCookie, ...data, name: user[0].name + " " + user[0].lastName, success: true });
-        console.log(context);
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });
@@ -107,7 +106,6 @@ function App(): JSX.Element {
     }
   };
 
-  console.log(context)
   // Socket connection
   useEffect(() => {
     setupSocket();

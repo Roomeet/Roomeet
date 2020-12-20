@@ -73,7 +73,6 @@ const Roomates: React.FC = () => {
 
  const handleNext = async (liked: boolean) => {
   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  console.log(context);
   socket?.emit(
    "like",
    {

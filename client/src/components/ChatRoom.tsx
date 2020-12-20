@@ -133,7 +133,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           chatRoomId: chatroom.id,
         });
       }
-      console.log(getChatroomName(chatroom.name, context.name));
     };
   }, []);
 

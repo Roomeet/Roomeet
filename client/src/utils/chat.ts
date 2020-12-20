@@ -3,5 +3,3 @@ export const getChatroomName = (participantsName: string, userName: string): str
   return splittedNames[0].toLowerCase() === userName.toLowerCase()
     ? splittedNames[1] : splittedNames[0];
 };
-
-console.log(getChatroomName('Liam Kless,Sulimani', 'Liam Kless'));
