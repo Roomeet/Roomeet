@@ -34,7 +34,7 @@ mongoose
     console.log('error connecting to MongoDB:', error.message);
   });
 
-mongoose.set("useCreateIndex", true);
+mongoose.set('useCreateIndex', true);
 
 app.use('/api', require('./api/index.ts'));
 

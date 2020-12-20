@@ -4,9 +4,9 @@ import { ObjectId } from 'mongodb';
 // interfaces:
 
 // mongoDB models:
-import User from '../../../models/user';
-import UserData from '../../../models/UserData';
-import Match from '../../../models/match';
+import User from '../../models/user';
+import UserData from '../../models/UserData';
+import Match from '../../models/match';
 
 const router = Router();
 

@@ -27,6 +27,7 @@ module.exports = {
         exports: 'never',
         functions: 'never'
       }
-    ]
+    ],
+    'consistent-return': 0
   }
 };

@@ -24,11 +24,11 @@ export interface UserPreferencesInterface extends Document {
 const UserPreferenceSchema = new Schema({
   _id: {
     type: ObjectId,
-    required: true,
+    required: true
   },
   userId: {
     type: String,
-    required: true,
+    required: true
   },
   ages: { type: Schema.Types.Mixed },
   genders: { type: Schema.Types.Mixed },
@@ -44,7 +44,7 @@ const UserPreferenceSchema = new Schema({
   religion: String,
   createdAt: Date,
   updatedAt: Date,
-  deletedAt: Date,
+  deletedAt: Date
 });
 
 UserPreferenceSchema.set('toJSON', {
@@ -52,7 +52,7 @@ UserPreferenceSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  },
+  }
 });
 
 module.exports = model<UserPreferencesInterface>(

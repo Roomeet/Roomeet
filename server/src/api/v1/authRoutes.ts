@@ -2,11 +2,11 @@ import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 
 // interfaces & mongoDB models:
-import User, { UserInterface } from '../../../models/user';
+import User, { UserInterface } from '../../models/user';
 import RefreshToken, {
   RefreshTokenInterface
-} from '../../../models/refreshToken';
-import { authenticateToken } from '../../helpers/authenticate';
+} from '../../models/refreshToken';
+import authenticateToken from '../../helpers/authenticate';
 
 const router = Router();
 const bcrypt = require('bcrypt');
