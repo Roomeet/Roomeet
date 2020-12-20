@@ -84,7 +84,6 @@ const UserDataForm: React.FC = () => {
     ? user
     : {
         userId: context.id,
-        fullName: "",
         gender: "other",
         age: 18,
         rentLocation: "",
@@ -135,30 +134,6 @@ const UserDataForm: React.FC = () => {
             >
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
-                  <Field name="fullName">
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="fullName"
-                        label="Full Name"
-                        type="text"
-                        data-test="form-full-name"
-                        error={
-                          (touched || value !== initialValue) && Boolean(error)
-                        }
-                        helperText={
-                          touched || value !== initialValue ? error : ""
-                        }
-                        {...field}
-                      />
-                    )}
-                  </Field>
                   <Field name="gender">
                     {({
                       field,

@@ -92,15 +92,12 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom }) =>
 
   useEffect(() => {
     getChatrooms();
-
     if (socket) {
         // define the new message event
-        socket.on('match', (message: messageI) => {
-          console.log('theres a match!');
+        socket.on('match', () => {
           getChatrooms();
         });
       }
-
   }, []);
 
   return (

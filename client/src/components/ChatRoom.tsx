@@ -22,6 +22,7 @@ import React, {
 import SocketContext from '../context/socketContext';
 import { UserContext } from '../context/UserContext';
 import { messageI, chatRoomI } from '../interfaces/chat';
+import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
 
 type chatRoomProps = {
@@ -132,6 +133,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           chatRoomId: chatroom.id,
         });
       }
+      console.log(getChatroomName(chatroom.name, context.name));
     };
   }, []);
 
@@ -144,7 +146,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           onClick={() => { setOpen((prev) => !prev); }}
         >
           <Avatar>
-            {chatroom.name}
+            {getChatroomName(chatroom.name, context.name)[0]}
           </Avatar>
         </IconButton>
         <Badge
@@ -173,7 +175,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
               variant="h5"
               gutterBottom
             >
-              {chatroom.name}
+              {getChatroomName(chatroom.name, context.name)}
             </Typography>
             <List className={classes.list}>
               {messages[0] ? messages.map((message) => (
