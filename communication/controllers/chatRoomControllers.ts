@@ -2,10 +2,13 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import ChatRoom from '../models/ChatRoom';
 import Message from '../models/Message';
+import { userForMatch } from '../models/User';
 
-exports.createChatRoom = async (participants: string[], name: string = "") => {
+exports.createChatRoom = async (participants: userForMatch[], name: string = "") => {
   try{
-    const chatRoomName: string = !name ? `${participants[0]}${participants[1]}` : name
+    const activeUser = participants[0];
+    const passiveUser = participants[1];
+    const chatRoomName: string = !name ? `${activeUser.name},${passiveUser.name}` : name
 
     const nameRegex = /^[A-Za-z\s]+$/;
   
@@ -18,7 +21,7 @@ exports.createChatRoom = async (participants: string[], name: string = "") => {
     const chatroom = new ChatRoom({
       _id: new ObjectId,
       name: chatRoomName,
-      participants
+      participants: [activeUser.id, passiveUser.id],
     });
   
     return await chatroom.save();

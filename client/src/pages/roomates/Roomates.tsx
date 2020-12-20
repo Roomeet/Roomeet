@@ -78,8 +78,8 @@ const Roomates: React.FC = () => {
    "like",
    {
     liked,
-    activeUserId: context.id,
-    passiveUserId: allUsersInfo[activeStep].userId,
+    activeUserId: {id: context.id, name: `${context.name} ${context.lastName}`},
+    passiveUserId: {id: allUsersInfo[activeStep].userId, name: allUsersInfo[activeStep].fullName},
    },
    (match: any) => {
     if (match) {

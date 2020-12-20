@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import Message from './models/Message';
 import { MatchInterface } from './models/Match';
 import { LikeInterface } from './models/Like';
+import { userForMatch } from './models/User';
 const matchControllers = require("./controllers/matchControllers");
 const chatroomController = require("./controllers/chatroomControllers");
 const notificationControllers = require("./controllers/notificationControllers");
@@ -50,12 +51,14 @@ io.use(async (socket: any, next: any) => {
 io.on("connect", (socket: any) => {
   // @ts-ignore
   console.log("Connected: " + socket?.userId);
-
+  socket.join(socket?.userId);
+  
   socket?.on("disconnect", (userId: string) => {
-  // @ts-ignore
+    // @ts-ignore
     console.log("Disconnected: " + socket?.userId);
   });
-
+  
+  
   socket?.on("EnteredRoom", ({ chatRoomId }: any ) => {
     socket.join(chatRoomId);
     console.log("A user joined chatroom: " + chatRoomId);
@@ -82,14 +85,14 @@ io.on("connect", (socket: any) => {
     }
   });
 
-  socket?.on("like", async ({ passiveUserId, activeUserId, liked }: {passiveUserId: string, activeUserId: string, liked: boolean}, matchEmitter: (match: MatchInterface) => void) => {
+  socket?.on("like", async ({ passiveUser, activeUser, liked }: {passiveUser: userForMatch, activeUser: userForMatch, liked: boolean}, matchEmitter: (matchUsers: userForMatch[]) => void) => {
     try {
-      const like: LikeInterface = await likeControllers.handleLike(activeUserId, passiveUserId, liked);
+      const like: LikeInterface = await likeControllers.handleLike(activeUser.id, passiveUser.id, liked);
       if(like?.liked) {
-        const matchingLikeExist = await likeControllers.checkMatchingLike(activeUserId, passiveUserId);
+        const matchingLikeExist = await likeControllers.checkMatchingLike(activeUser.id, passiveUser.id);
         if (matchingLikeExist) {
-          const match = await matchControllers.createMatch([activeUserId, passiveUserId])
-          matchEmitter(match)
+          await matchControllers.createMatch([activeUser.id, passiveUser.id])
+          matchEmitter([passiveUser, activeUser])
         }
       }
     } catch (err) {
@@ -97,14 +100,15 @@ io.on("connect", (socket: any) => {
     }
   })
   
-  socket?.on("match", async ({ match }: {match: MatchInterface}) => {
+  socket?.on("match", async ({ matchUsers }: {matchUsers: userForMatch[]}) => {
     try {
-      const { users } = match
-      await chatroomController.createChatRoom(users, 'chatroomName');
-      const user1 = users[0];
-      const user2 = users[1];
-      await notificationControllers.createNotification(user1, 'match', 'you have a new match with' + user2);
-      await notificationControllers.createNotification(user2, 'match', 'you have a new match with' + user1);
+      const activeUser = matchUsers[0];
+      const passiveUser = matchUsers[1];
+      await chatroomController.createChatRoom(matchUsers);
+      await notificationControllers.createNotification(activeUser.id, 'match', 'you have a new match with' + passiveUser.id);
+      await notificationControllers.createNotification(passiveUser.id, 'match', 'you have a new match with' + activeUser.id);
+      io.to(activeUser.id).emit('match');
+      io.to(passiveUser.id).emit('match');
     } catch (err) {
       console.log(err);
     }

@@ -90,19 +90,17 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 type navbarProps = {
   setMessengerOpen: Dispatch<SetStateAction<boolean>>;
   openChatRooms: chatRoomI[];
-  socket: any;
   closeChatRoom: (roomId: chatRoomI) => void;
 }
 
 const NavBar: React.FC<navbarProps> = ({
   setMessengerOpen,
   openChatRooms,
-  socket,
   closeChatRoom,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [ mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const [openLogout, setOpenLogout] = React.useState<boolean>(false);
   const context = React.useContext(UserContext);
   const history = useHistory();
@@ -238,7 +236,7 @@ const NavBar: React.FC<navbarProps> = ({
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {openChatRooms[0] && openChatRooms.map((chatroom) => (
-              <ChatRoom socket={socket} chatroom={chatroom} closeChatRoom={closeChatRoom} />
+              <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
             ))}
             <MenuItem>
               <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>

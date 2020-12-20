@@ -22,13 +22,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/More';
 import { AddIcCallOutlined } from '@material-ui/icons';
 import InlineChatRoom from '../components/InlineChatRoom';
-import { chatRoomI } from '../interfaces/chat';
+import { chatRoomI, messageI } from '../interfaces/chat';
 import { MatchInterface } from '../interfaces/match';
+import SocketContext from '../context/socketContext';
 
 type messengerProps = {
   messengerOpen: boolean;
   openChatRoom: (roomId: chatRoomI) => void
-  socket: any;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -72,14 +72,16 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,socket }) => {
+const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom }) => {
   const [chatrooms, setChatrooms] = useState<chatRoomI[]>([]);
   const context = useContext(UserContext);
   const classes = useStyles();
+  const socket = useContext(SocketContext)
 
   const getChatrooms = async () => {
     try {
       const { data } = await network.get(`http://localhost:3002/api/v1/messenger/chatrooms/user/${context.id}`);
+      console.log(data);
       if (data[0]) {
         setChatrooms(data);
       }
@@ -90,6 +92,15 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom ,sock
 
   useEffect(() => {
     getChatrooms();
+
+    if (socket) {
+        // define the new message event
+        socket.on('match', (message: messageI) => {
+          console.log('theres a match!');
+          getChatrooms();
+        });
+      }
+
   }, []);
 
   return (

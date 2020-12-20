@@ -19,12 +19,12 @@ import React, {
   useRef,
   RefObject,
 } from 'react';
+import SocketContext from '../context/socketContext';
 import { UserContext } from '../context/UserContext';
 import { messageI, chatRoomI } from '../interfaces/chat';
 import network from '../utils/network';
 
 type chatRoomProps = {
-  socket: any;
   chatroom: chatRoomI;
   closeChatRoom: (roomId: chatRoomI) => void
 }
@@ -81,13 +81,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) => {
+const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageI[]>([]);
   const messageRef = useRef<HTMLInputElement>(null);
   const context = useContext(UserContext);
+  const socket = useContext(SocketContext);
 
   const sendMessage = () => {
     if (socket && messageRef) {

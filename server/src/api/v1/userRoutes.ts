@@ -19,7 +19,8 @@ router.get(
   '/',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const users = await User.find();
+      const { id } = req.query
+      const users = await User.find(id ? {_id: String(id)} : {});
       res.json(users);
     } catch (error) {
       res.status(500).json({ error });

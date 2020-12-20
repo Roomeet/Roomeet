@@ -45,7 +45,7 @@ function App(): JSX.Element {
 
         newSocket.on('disconnect', () => {
           setSocket(undefined);
-          setTimeout(setupSocket, 3000);
+          // setTimeout(setupSocket, 3000);
           makeToast('error', 'Disconnected!');
         });
 
@@ -87,13 +87,14 @@ function App(): JSX.Element {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
+        const id = Cookies.get('id')
         const dataCookie = {
-          id: Cookies.get('id'),
+          id,
           email: Cookies.get('email'),
           accessToken: Cookies.get('accessToken'),
         };
-        
-        context.logUserIn({ ...dataCookie, ...data, success: true });
+        const { data: user } = await network.get(`api/v1/users/?id=${id}`);
+        context.logUserIn({ ...dataCookie, ...data, ...user, success: true });
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });
@@ -108,7 +109,8 @@ function App(): JSX.Element {
   // Socket connection
   useEffect(() => {
     setupSocket();
-  }, [context]);
+    // socket?.emit('relateToUser', context.id);
+  }, []);
 
   // checks if a user is logged
   useEffect(() => {
@@ -125,7 +127,6 @@ function App(): JSX.Element {
                 setMessengerOpen={setMessengerOpen}
                 openChatRooms={openChatRooms}
                 closeChatRoom={closeChatRoom}
-                socket={socket}
               />
               <Switch>
                 <Route exact path='/about'>
@@ -141,7 +142,6 @@ function App(): JSX.Element {
                   <Logged.Provider value={context.success}>
                     <Messenger
                       messengerOpen={messengerOpen}
-                      socket={socket}
                       openChatRoom={openChatRoom}
                       />
                     <PrivateRoutesContainer />
