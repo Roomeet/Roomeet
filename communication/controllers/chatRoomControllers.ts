@@ -10,9 +10,9 @@ exports.createChatRoom = async (participants: userForMatch[], name: string = "")
     const passiveUser = participants[1];
     const chatRoomName: string = !name ? `${activeUser.name},${passiveUser.name}` : name
 
-    const nameRegex = /^[A-Za-z,\s]+$/;
+    // const nameRegex = /^[A-Za-z,\s]+$/;
   
-    if (!nameRegex.test(chatRoomName)) throw "Chatroom name can contain only alphabets.";
+    // if (!nameRegex.test(chatRoomName)) throw "Chatroom name can contain only alphabets.";
   
     const chatroomExists = await ChatRoom.findOne({ chatRoomName });
   
