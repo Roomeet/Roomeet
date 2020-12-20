@@ -3,9 +3,11 @@ import app from './app';
 import { ObjectId } from 'mongodb';
 import Message from './models/Message';
 import { MatchInterface } from './models/Match';
+import { LikeInterface } from './models/Like';
 const matchControllers = require("./controllers/matchControllers");
 const chatroomController = require("./controllers/chatroomControllers");
 const notificationControllers = require("./controllers/notificationControllers");
+const likeControllers = require("./controllers/likeControllers");
 
 const mongoose = require("mongoose");
 mongoose.set('useCreateIndex', true);
@@ -82,8 +84,15 @@ io.on("connect", (socket: any) => {
 
   socket?.on("like", async ({ passiveUserId, activeUserId, liked }: {passiveUserId: string, activeUserId: string, liked: boolean}, matchEmitter: (match: MatchInterface) => void) => {
     try {
-      const match: MatchInterface = await matchControllers.handleLike(activeUserId, passiveUserId, liked);
-      matchEmitter(match)
+      const like: LikeInterface = await likeControllers.handleLike(activeUserId, passiveUserId, liked);
+      if(like?.liked) {
+        const matchingLikeExist = await likeControllers.checkMatchingLike(activeUserId, passiveUserId);
+        console.log('matchingLikeExist', matchingLikeExist) 
+        if (matchingLikeExist) {
+          const match = await matchControllers.createMatch([activeUserId, passiveUserId])
+          matchEmitter(match)
+        }
+      }
     } catch (err) {
       console.log(err)
     }

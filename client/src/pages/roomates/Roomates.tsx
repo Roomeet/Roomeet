@@ -115,8 +115,6 @@ const Roomates: React.FC = () => {
     });
   };
 
-  
-
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -133,6 +131,7 @@ const Roomates: React.FC = () => {
     const { data } = await network.get(`/api/v1/users/all-cards?userId=${context.id}`);
     setAllUsersInfo(data);
   };
+  
   useEffect(() => {
     fetchData();
   }, []);

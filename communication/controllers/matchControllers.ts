@@ -4,16 +4,7 @@ import Match, { MatchInterface } from '../models/Match';
 import Like from '../models/Like';
 import { Request, Response } from 'express';
 
-const checkMatchingLike = async (activeUserId: string, passiveUserId: string) => {
-  try{ 
-    //checks if the equivalent user is liking you to
-    return await Like.findOne({activeUserId: passiveUserId, passiveUserId: activeUserId});
-  } catch(error) {
-    console.trace(error);
-  }
-};
-
-const createMatch = async (users: string[]) => {
+exports.createMatch = async (users: string[]) => {
   try{  
     const matchExists = await Match.findOne({ users });
   
@@ -26,43 +17,6 @@ const createMatch = async (users: string[]) => {
   
     return await match.save();
 
-  } catch(error) {
-    console.log(error)
-  }
-};
-
-exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: boolean): Promise<MatchInterface | undefined> => {
-  try{
-    // if like exist - changes it
-    await Like.findOneAndUpdate({ passiveUserId, activeUserId }, {liked: liked}, { new: true }, (error : any, result : any) => {
-      if (!error) {
-        // If like doesn't exist
-        if (!result) {
-          // Create it
-          result = new Like({
-            _id: new ObjectId,
-            activeUserId,
-            passiveUserId,
-            liked,
-            createdAt: new Date(),
-            updatedAt: null,
-            deletedAt: null
-          });
-        }
-        // Save the document
-        result.save();
-      }
-    });
-
-    let match: MatchInterface | undefined;
-
-    if(liked) {
-      const matchingLikeExist = await checkMatchingLike(activeUserId, passiveUserId);
-      if (matchingLikeExist) {
-        match = await createMatch([activeUserId, passiveUserId])
-      }
-    }
-    return match
   } catch(error) {
     console.log(error)
   }
