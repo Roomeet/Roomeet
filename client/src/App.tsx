@@ -54,20 +54,20 @@ function App(): JSX.Element {
         newSocket.on('disconnect', () => {
           setSocket(undefined);
           setTimeout(setupSocket, 3000);
-          makeToast('error', 'Socket Disconnected!');
+          makeToast('error', 'Disconnected!');
         });
 
         newSocket.on('connect',  () => {
-          makeToast('success', 'Socket Connected!');
+          makeToast('success', 'Connected!');
         });
 
-        newSocket.on('newMatch', () => {
+        newSocket.on('match', () => {
           makeToast('info', 'You got a new match!');
         });
 
         setSocket(newSocket);
       } catch (error) {
-        console.log('error in socket');
+        makeToast('error', 'Error connecting!');
       }
     }
   };

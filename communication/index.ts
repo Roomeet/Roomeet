@@ -2,9 +2,7 @@ require("dotenv").config();
 import app from './app';
 import { ObjectId } from 'mongodb';
 import Message from './models/Message';
-import User from './models/User';
 import { MatchInterface } from './models/Match';
-import { Socket } from 'socket.io';
 const matchControllers = require("./controllers/matchControllers");
 const chatroomController = require("./controllers/chatroomControllers");
 const notificationControllers = require("./controllers/notificationControllers");
@@ -40,8 +38,7 @@ const io = require("socket.io")(server);
 io.use(async (socket: any, next: any) => {
   try {
     // @ts-ignore
-    const userId = socket?.handshake.query.userId;
-    socket.userId = userId;
+    socket.userId = socket?.handshake.query.userId;
     next();
   } catch (err) {
     console.log(err)

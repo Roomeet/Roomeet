@@ -133,23 +133,21 @@ const ChatRoom: React.FC<chatRoomProps> = ({ socket, chatroom, closeChatRoom }) 
   };
 
   useEffect(() => {
+    getMessages();
+
     if (socket) {
-      console.log('client is fetching on live');
+    // trig the enteredRoom event
+      socket.emit('EnteredRoom', {
+        chatRoomId: chatroom.id,
+      });
+
+      // define the new message event
       socket.on('newMessage', (message: messageType) => {
         setMessages(((prev) => [...prev, message]));
       });
     }
-  }, []);
 
-  useEffect(() => {
-    console.log('render');
-    getMessages();
-    if (socket) {
-      socket.emit('EnteredRoom', {
-        chatRoomId: chatroom.id,
-      });
-    }
-
+    // trig the exitedRoom event on unmount
     return () => {
       if (socket) {
         socket.emit('exitedRoom', {

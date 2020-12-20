@@ -246,7 +246,6 @@ const NavBar: React.FC<navbarProps> = ({
             color="inherit"
             aria-label="open drawer"
           >
-            <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)} />
             <MenuIcon />
           </IconButton>
           <Link to="/home">
@@ -263,18 +262,18 @@ const NavBar: React.FC<navbarProps> = ({
               <ChatRoom socket={socket} chatroom={chatroom} closeChatRoom={closeChatRoom} />
             ))}
             <MenuItem>
-              <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
-                <Badge badgeContent={4} color="secondary">
+              <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+                <Badge badgeContent={0} color="secondary">
                   <MailIcon />
                 </Badge>
               </IconButton>
             </MenuItem>
             <IconButton
-              aria-label="show 17 new notifications"
+              aria-label="show notifications"
               color="inherit"
               onClick={() => history.push('/notifications')}
             >
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
