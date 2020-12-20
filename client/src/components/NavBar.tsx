@@ -1,6 +1,8 @@
 import React, {
   Dispatch,
   SetStateAction,
+  useContext,
+  useEffect,
   useState,
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -27,6 +29,9 @@ import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 import LogoutModal from './LogoutModal';
 import { chatRoomI } from '../interfaces/chat';
+import { NotificationI } from '../interfaces/notification';
+import SocketContext from '../context/socketContext';
+import network from '../utils/network';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -91,12 +96,14 @@ type navbarProps = {
   setMessengerOpen: Dispatch<SetStateAction<boolean>>;
   openChatRooms: chatRoomI[];
   closeChatRoom: (roomId: chatRoomI) => void;
+  setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const NavBar: React.FC<navbarProps> = ({
   setMessengerOpen,
   openChatRooms,
   closeChatRoom,
+  setNotificationsOpen,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -186,7 +193,7 @@ const NavBar: React.FC<navbarProps> = ({
           </Badge>
         </IconButton>
       </MenuItem>
-      <MenuItem onClick={() => handleMobileMenu('/notifications')}>
+      <MenuItem onClick={() => { setNotificationsOpen((prev) => !prev); }}>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
@@ -248,7 +255,7 @@ const NavBar: React.FC<navbarProps> = ({
             <IconButton
               aria-label="show notifications"
               color="inherit"
-              onClick={() => history.push('/notifications')}
+              onClick={() => { setNotificationsOpen((prev) => !prev); }}
             >
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />

@@ -23,15 +23,19 @@ import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
 import BGImage from './images/woodBG.jpg';
 import Messenger from './containers/Messenger';
+import Notifications from './containers/Notifications';
 import makeToast from './utils/Toaster';
 import SocketContext from './context/socketContext';
 import { chatRoomI } from './interfaces/chat';
+import { NotificationI } from './interfaces/notification';
 
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
   const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const [openChatRooms, setOpenChatrooms] = useState<chatRoomI[]>([]);
+  const [allNotifications, setAllNotifications] = React.useState<NotificationI[] | null>(null);
+  const [notificationsOpen, setNotificationsOpen] = React.useState<boolean>(false);
   const context = React.useContext(UserContext);
 
   const setupSocket = () => {
@@ -55,6 +59,7 @@ function App(): JSX.Element {
 
         newSocket.on('match', () => {
           makeToast('info', 'You got a new match!');
+          fetchAllNotifications();
         });
 
         setSocket(newSocket);
@@ -83,6 +88,15 @@ function App(): JSX.Element {
     });
   };
 
+  const fetchAllNotifications = async () => {
+    try {
+      const { data } = await network.get(`http://localhost:3002/api/v1/notifications/userId/${context.id}`);
+      setAllNotifications(data);
+    } catch (err) {
+      setTimeout(fetchAllNotifications, 3000);
+    }
+  }
+
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
@@ -109,6 +123,7 @@ function App(): JSX.Element {
   // Socket connection
   useEffect(() => {
     setupSocket();
+    fetchAllNotifications();
     // socket?.emit('relateToUser', context.id);
   }, [context]);
 
@@ -124,29 +139,34 @@ function App(): JSX.Element {
           context.success ? (
             <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
               <SocketContext.Provider value={socket}>
-                <NavBar
-                  setMessengerOpen={setMessengerOpen}
-                  openChatRooms={openChatRooms}
-                  closeChatRoom={closeChatRoom}
-                />
-                <Switch>
-                  <Route exact path='/about'>
-                    <AboutPage />
-                  </Route>
-                  <Route exact path='/term-and-conditions'>
-                    <TermsConditionPage />
-                  </Route>
-                  <Route exact path='/contact-us'>
-                    <ContactUsPage />
-                  </Route>
-                    <Logged.Provider value={context.success}>
-                      <Messenger
-                        messengerOpen={messengerOpen}
-                        openChatRoom={openChatRoom}
-                        />
-                      <PrivateRoutesContainer />
-                    </Logged.Provider>
-                </Switch>
+                <Logged.Provider value={context.success}>
+                  <NavBar
+                    setMessengerOpen={setMessengerOpen}
+                    openChatRooms={openChatRooms}
+                    closeChatRoom={closeChatRoom}
+                    setNotificationsOpen={setNotificationsOpen}
+                  />
+                  <Messenger
+                    messengerOpen={messengerOpen}
+                    openChatRoom={openChatRoom}
+                  />
+                  <Notifications
+                    notificationsOpen={notificationsOpen}
+                    allNotifications={allNotifications}
+                  />
+                  <Switch>
+                    <Route exact path='/about'>
+                      <AboutPage />
+                    </Route>
+                    <Route exact path='/term-and-conditions'>
+                      <TermsConditionPage />
+                    </Route>
+                    <Route exact path='/contact-us'>
+                      <ContactUsPage />
+                    </Route>
+                    <PrivateRoutesContainer />
+                  </Switch>
+                </Logged.Provider>
               </SocketContext.Provider>
             </div>
           ) : (
