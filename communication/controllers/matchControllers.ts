@@ -58,6 +58,6 @@ exports.deleteAllMatches = async (req: Request, res: Response) => {
     await Match.deleteMany({});
     res.json('delete');
   } catch(error) {
-    res.json({ error })
+    res.json({ error });
   }
 };

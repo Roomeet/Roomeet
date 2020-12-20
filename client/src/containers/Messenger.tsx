@@ -22,8 +22,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/More';
 import { AddIcCallOutlined } from '@material-ui/icons';
 import InlineChatRoom from '../components/InlineChatRoom';
-import { chatRoomI, messageI } from '../interfaces/chat';
-import { MatchInterface } from '../interfaces/match';
+import { chatRoomI } from '../interfaces/chat';
 import SocketContext from '../context/socketContext';
 
 type messengerProps = {
@@ -122,18 +121,9 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom }) =>
                   </List>
                 <AppBar color="primary" className={classes.appBar}>
                   <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="open drawer">
-                      <MenuIcon />
-                    </IconButton>
-                    <Fab color="secondary" aria-label="add" className={classes.fabButton}>
-                      <AddIcCallOutlined />
-                    </Fab>
                     <div className={classes.grow} />
                     <IconButton color="inherit">
                       <SearchIcon />
-                    </IconButton>
-                    <IconButton edge="end" color="inherit">
-                      <MoreIcon />
                     </IconButton>
                   </Toolbar>
                 </AppBar>

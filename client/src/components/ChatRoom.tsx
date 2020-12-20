@@ -17,7 +17,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  RefObject,
 } from 'react';
 import SocketContext from '../context/socketContext';
 import { UserContext } from '../context/UserContext';
@@ -92,6 +91,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
   const socket = useContext(SocketContext);
 
   const sendMessage = () => {
+    // console.log('socket....', socket, 'reffff', messageRef);
     if (socket && messageRef) {
       socket.emit('chatroomMessage', {
         chatroomId: chatroom.id,
@@ -113,7 +113,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
 
   useEffect(() => {
     getMessages();
-
     if (socket) {
     // trig the enteredRoom event
       socket.emit('EnteredRoom', {

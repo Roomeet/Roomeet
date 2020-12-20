@@ -95,7 +95,6 @@ function App(): JSX.Element {
         };
         const { data: user } = await network.get(`api/v1/users/?id=${id}`);
         context.logUserIn({ ...dataCookie, ...data, name: user[0].name + " " + user[0].lastName, success: true });
-        console.log(context);
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });
@@ -107,7 +106,6 @@ function App(): JSX.Element {
     }
   };
 
-  console.log(context)
   // Socket connection
   useEffect(() => {
     setupSocket();
@@ -125,31 +123,31 @@ function App(): JSX.Element {
         {!loading ? (
           context.success ? (
             <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
-              <NavBar
-                setMessengerOpen={setMessengerOpen}
-                openChatRooms={openChatRooms}
-                closeChatRoom={closeChatRoom}
-              />
-              <Switch>
-                <Route exact path='/about'>
-                  <AboutPage />
-                </Route>
-                <Route exact path='/term-and-conditions'>
-                  <TermsConditionPage />
-                </Route>
-                <Route exact path='/contact-us'>
-                  <ContactUsPage />
-                </Route>
-                <SocketContext.Provider value={socket}>
-                  <Logged.Provider value={context.success}>
-                    <Messenger
-                      messengerOpen={messengerOpen}
-                      openChatRoom={openChatRoom}
-                      />
-                    <PrivateRoutesContainer />
-                  </Logged.Provider>
-                </SocketContext.Provider>
-              </Switch>
+              <SocketContext.Provider value={socket}>
+                <NavBar
+                  setMessengerOpen={setMessengerOpen}
+                  openChatRooms={openChatRooms}
+                  closeChatRoom={closeChatRoom}
+                />
+                <Switch>
+                  <Route exact path='/about'>
+                    <AboutPage />
+                  </Route>
+                  <Route exact path='/term-and-conditions'>
+                    <TermsConditionPage />
+                  </Route>
+                  <Route exact path='/contact-us'>
+                    <ContactUsPage />
+                  </Route>
+                    <Logged.Provider value={context.success}>
+                      <Messenger
+                        messengerOpen={messengerOpen}
+                        openChatRoom={openChatRoom}
+                        />
+                      <PrivateRoutesContainer />
+                    </Logged.Provider>
+                </Switch>
+              </SocketContext.Provider>
             </div>
           ) : (
             <Logged.Provider value={context.success}>

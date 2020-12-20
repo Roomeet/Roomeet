@@ -19,6 +19,8 @@ router.get("/messages/chatroom/:chatroomId",async (req: Request, res: Response) 
 
 router.get("/messages/delete",async (req: Request, res: Response) => {chatroomController.deleteAllMessages(req,res)})
 
+router.get("/chatrooms/:chatroomId/lastMessage", async (req: Request, res: Response) => {chatroomController.getLastMessageforChatRoomById(req,res)})
+
 
 
 module.exports = router;

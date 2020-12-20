@@ -12,6 +12,6 @@ router.get("/user/:userId", (req :Request, res: Response) => {matchControllers.g
 // DELETE all matches
 router.get("/delete", (req :Request, res: Response) => {matchControllers.deleteAllMatches(req, res)});
 
-// router.post("/unMatch", (req :Request, res: Response) => {matchControllers.cancelMatch});
+router.post("/un-match", (req :Request, res: Response) => {matchControllers.cancelMatch});
 
 module.exports = router;

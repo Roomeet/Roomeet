@@ -9,10 +9,6 @@ exports.createChatRoom = async (participants: userForMatch[], name: string = "")
     const activeUser = participants[0];
     const passiveUser = participants[1];
     const chatRoomName: string = !name ? `${activeUser.name},${passiveUser.name}` : name
-
-    // const nameRegex = /^[A-Za-z,\s]+$/;
-  
-    // if (!nameRegex.test(chatRoomName)) throw "Chatroom name can contain only alphabets.";
   
     const chatroomExists = await ChatRoom.findOne({ chatRoomName });
   
@@ -74,3 +70,13 @@ exports.getAllMessagesforChatRoomById = async (req: Request | any, res: Response
     res.json(error)
   }
 };
+
+exports.getLastMessageforChatRoomById = async (req: Request | any, res: Response) => {
+  try{
+    const messages = await Message.find({chatroom: req.params.chatroomId});
+    res.json(messages[messages.length - 1]);
+  } catch(error) {
+    res.status(500).json({ error })
+  }
+}
+
