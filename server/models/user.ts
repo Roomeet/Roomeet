@@ -21,30 +21,30 @@ export interface UserInterface extends Document {
 const userSchema = new Schema({
   _id: {
     type: ObjectID,
-    required: true,
+    required: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   lastName: {
     type: String,
-    required: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
     // match: passwordRegexp,
   },
   email: {
     type: String,
     unique: true,
     required: true,
-    match: emailRegexp,
+    match: emailRegexp
   },
   createdAt: Date,
   updatedAt: Date,
-  deletedAt: Date,
+  deletedAt: Date
 });
 
 userSchema.set('toJSON', {
@@ -52,7 +52,7 @@ userSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  },
+  }
 });
 
 export default model<UserInterface>('User', userSchema);

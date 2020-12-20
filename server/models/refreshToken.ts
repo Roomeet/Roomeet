@@ -10,19 +10,19 @@ export interface RefreshTokenInterface extends Document {
 const RefreshTokenSchema = new Schema({
   _id: {
     type: ObjectId,
-    required: true,
+    required: true
   },
   email: {
     type: String,
-    required: true,
+    required: true
   },
   token: {
     type: String,
-    required: true,
+    required: true
   },
   createdAt: Date,
   updatedAt: Date,
-  deletedAt: Date,
+  deletedAt: Date
 });
 
 RefreshTokenSchema.set('toJSON', {
@@ -30,7 +30,7 @@ RefreshTokenSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  },
+  }
 });
 
 export default model<RefreshTokenInterface>('RefreshToken', RefreshTokenSchema);

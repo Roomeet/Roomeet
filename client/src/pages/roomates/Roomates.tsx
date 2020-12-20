@@ -126,16 +126,12 @@ const Roomates: React.FC = () => {
   };
 
   const fetchData = async () => {
-    const { data } = await network.get('/api/v1/users/basic-info');
-    const { data: likedData } = await network.get(`/api/v1/users/match-all?userId=${context.id}`)
-    const index = data.findIndex((user: any) => user.userId === context.id);
-    console.log(index)
-    if(index === -1) {
+    const { data: isExist } = await network.get(`/api/v1/users/user-data/${context.id}`);
+    if(isExist.length === 0) {
       history.push('/edit');
     };
-    const filteredData = data.filter((user: any) => user.userId !== context.id);
-    const filteredLikedData = filteredData.filter((user: any) => !likedData.some((like: any) => user.userId === like.passiveUserId));
-    setAllUsersInfo(filteredLikedData);
+    const { data } = await network.get(`/api/v1/users/all-cards?userId=${context.id}`);
+    setAllUsersInfo(data);
   };
   useEffect(() => {
     fetchData();

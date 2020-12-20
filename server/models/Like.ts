@@ -1,42 +1,39 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectID } from 'mongodb';
 
-export interface MatchInterface extends Document {
+export interface LikeInterface extends Document {
   _id: string;
-  users: string[];
+  liked: boolean;
+  activeUserId: string;
+  passiveUserId: string;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
 }
 
-function usersLimit(users: string[]): boolean {
-  return users.length === 2;
-}
-
-const MatchSchema = new Schema({
+const likeSchema = new Schema({
   _id: {
     type: ObjectID,
     required: true
   },
-  users: {
-    type: [String],
-    required: true,
-    validate: {
-      validator: usersLimit,
-      message: 'A match can occur between two peoples only'
-    }
-  },
-  canceled: {
+  liked: {
     type: Boolean,
-    required: true,
-    default: false
+    required: true
+  },
+  activeUserId: {
+    type: String,
+    required: true
+  },
+  passiveUserId: {
+    type: String,
+    required: true
   },
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date
 });
 
-MatchSchema.set('toJSON', {
+likeSchema.set('toJSON', {
   transform: (document: any, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -44,4 +41,4 @@ MatchSchema.set('toJSON', {
   }
 });
 
-export default model<MatchInterface>('Match', MatchSchema);
+export default model<LikeInterface>('Like', likeSchema);

@@ -22,18 +22,18 @@ export interface Interaction extends Document {
 const InteractionsSchema = new Schema({
   _id: {
     type: ObjectId,
-    required: true,
+    required: true
   },
   userId: {
     type: String,
-    required: true,
+    required: true
   },
   liked: [Schema.Types.Mixed],
   unLiked: [Schema.Types.Mixed],
   pending: [Schema.Types.Mixed],
   createdAt: Date,
   updatedAt: Date,
-  deletedAt: Date,
+  deletedAt: Date
 });
 
 // ???
@@ -42,7 +42,7 @@ InteractionsSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  },
+  }
 });
 
 module.exports = model<Interaction>('Interactions', InteractionsSchema);
