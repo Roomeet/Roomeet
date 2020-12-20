@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
+  fullName: string;
   aboutMe: string;
   rentLocation: string;
   age: number;
@@ -28,6 +29,7 @@ const UserDataSchema = new Schema({
     type: ObjectId,
     required: true
   },
+  fullName: { type: String, required: true },
   aboutMe: { type: String, required: true },
   rentLocation: { type: String, required: true },
   age: { type: Number, required: true },

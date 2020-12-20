@@ -84,6 +84,7 @@ const UserDataForm: React.FC = () => {
     ? user
     : {
         userId: context.id,
+        fullName: context.name,
         gender: "other",
         age: 18,
         rentLocation: "",
