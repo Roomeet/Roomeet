@@ -80,7 +80,6 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom }) =>
   const getChatrooms = async () => {
     try {
       const { data } = await network.get(`http://localhost:3002/api/v1/messenger/chatrooms/user/${context.id}`);
-      console.log(data);
       if (data[0]) {
         setChatrooms(data);
       }
