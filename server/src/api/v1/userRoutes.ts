@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import Match from '../../../models/Match';
-import Like from '../../../models/Like';
+import Match from '../../models/Match';
+import Like from '../../models/Like';
 
 // mongoDB models:
-import User from '../../../models/user';
-import UserData, { UserDataInterface } from '../../../models/UserData';
+import User from '../../models/user';
+import UserData, { UserDataInterface } from '../../models/UserData';
 
 const router = Router();
 
