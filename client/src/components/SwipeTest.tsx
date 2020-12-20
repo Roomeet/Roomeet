@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import SwipeCard from './SwipeCard';
 
+const initNames = [
+  'harry',
+  'sally',
+  'mary',
+  'joe',
+  'terry',
+  'larry',
+  'geraldine',
+  'harriet',
+];
 function App():JSX.Element {
-  const [names, setNames] = useState<string[]>([
-    'harry',
-    'sally',
-    'mary',
-    'joe',
-    'terry',
-    'larry',
-    'geraldine',
-    'harriet',
-  ]);
+  const [names, setNames] = useState<string[]>(initNames);
   const removeCard = (nameToRemove:string):void => {
-    const newNames = names.filter((name) => name !== nameToRemove);
+    // const newNames = names.filter((name) => name !== nameToRemove);
+    const newNames = names.slice(1);
     setNames(newNames);
   };
   return (
@@ -24,8 +26,16 @@ function App():JSX.Element {
       backgroundColor: 'white',
     }}
     >
-      <AnimatePresence>
-        {names.map((name) => <SwipeCard name={name} remove={removeCard} key={name} />)}
+      <button onClick={() => { setNames(initNames); }}>
+        reset
+      </button>
+      <AnimatePresence exitBeforeEnter initial={false}>
+        {/* {names.map((name) => <SwipeCard name={name} remove={removeCard} key={name} />)} */}
+        <SwipeCard
+          key={names[0]}
+          name={names[0]}
+          remove={removeCard}
+        />
       </AnimatePresence>
     </div>
 

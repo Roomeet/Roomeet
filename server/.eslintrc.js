@@ -18,6 +18,7 @@ module.exports = {
     eqeqeq: ['error', 'always'],
     'import/extensions': 0,
     'import/no-unresolved': 0,
+    'consistent-return': 0,
     'comma-dangle': [
       'error',
       {

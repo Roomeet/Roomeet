@@ -24,6 +24,8 @@ import TermsConditionPage from './pages/footers/TermsConditionPage';
 import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
 import BGImage from './images/woodBG.jpg';
+// import Animtest from './Animtest'
+import Animtest from './components/SwipeTest'
 
 
 
@@ -65,10 +67,15 @@ function App(): JSX.Element {
       <Router>
         {!loading ? (
           context.success ? (
-            <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
+            <div id="private-routes" style={{ height:'100vh',backgroundImage: `url(${BGImage})` }}>
               <NavBar />
-              {/* @ts-ignore */}
-              <Switch location={location}>
+              <Switch
+              // @ts-ignore 
+              //  location={location}
+               >
+                <Route exact path='/ala'>
+                  <Animtest />
+                </Route>
                 <Route exact path='/about'>
                   <AboutPage />
                 </Route>
@@ -86,6 +93,9 @@ function App(): JSX.Element {
           ) : (
             <Logged.Provider value={context.success}>
               <Switch>
+                <Route exact path='/ala'>
+                  <Animtest />
+                </Route>
                 <Route exact path='/loading'>
                   <Loading />
                 </Route>

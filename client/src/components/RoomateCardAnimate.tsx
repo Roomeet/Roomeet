@@ -7,14 +7,16 @@ import {
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { Link } from 'react-router-dom';
-import { motion, useAnimation, Variants } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
+import { UserDataInterface } from '../interfaces/userData';
 // import { UserDataInterface } from '../../../server/models/UserData';
 
 export type Props = {
   [key: string]: any;
 };
+const screenWidth = window.screen.availWidth;
 
 const useStyles = makeStyles({
   root: {
@@ -82,38 +84,27 @@ const useStyles = makeStyles({
 const RoomateCard = ({
   userInfo, like, unlike,
 }:{
-  userInfo:any,
+  userInfo:UserDataInterface,
   like:(id:string)=>void,
   unlike:(id:string)=>void,
 
 }) : JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
-  const controls = useAnimation();
-  const variants : Variants = {
+  const cardVariants = {
     initial: {
       opacity: 0,
       scale: 0.5,
     },
-    enter: {
-      x: 0,
+    animate: {
       opacity: 1,
       scale: 1,
     },
-    like: {
-      // transform: { rotateY: 90 },
-      x: [null, 100, 0],
-      scale: [1, 0.2, 1],
-      opacity: [1, 0, 1],
+    exit: {
+      x: screenWidth,
+      scale: 0.9,
+      opacity: 0,
       transition: {
-        times: [0, 0.5, 1],
-      },
-    },
-    unlike: {
-      x: [null, -100, 0],
-      scale: [1, 0.2, 1],
-      opacity: [1, 0, 1],
-      transition: {
-        times: [0, 0.5, 1],
+        duration: 0.5,
       },
     },
   };
@@ -128,27 +119,32 @@ const RoomateCard = ({
   return (
     <motion.div
       className={classes.cardDiv}
-      drag="x"
-      variants={variants}
+      variants={cardVariants}
       initial="initial"
-      // initial={{ rotateY: 90 }}
-      animate={controls}
-      transition={{ duration: 0.5 }}
-      onLoad={() => { controls.start('enter'); }}
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.9}
+      animate="animate"
+      exit="exit"
       onDragEnd={
         (event, info) => {
-          if (info.offset.x > 100) {
-            controls.start('like');
+          if (info.offset.x > screenWidth / 6) {
+            cardVariants.exit.x = screenWidth;
             like(userInfo.id);
-            // controls.start('enter');
-          } else if (info.offset.x < -100) {
-            controls.start('unlike');
+          }
+          if (info.offset.x < -screenWidth / 6) {
+            cardVariants.exit.x = -screenWidth;
             unlike(userInfo.id);
           }
         }
       }
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      style={{
+        margin: 'auto',
+        // marginTop: '20vh',
+        height: '30vh',
+        width: '30vw',
+        backgroundColor: 'red',
+      }}
+      dragElastic={0.9}
     >
       <Card className={classes.root}>
         <CardContent>
@@ -165,7 +161,7 @@ const RoomateCard = ({
             />
           </Typography>
           <Typography variant="h5" component="h2">
-            {userInfo.userId}
+            {userInfo.fullName}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
             Summary:
@@ -174,14 +170,6 @@ const RoomateCard = ({
             {userInfo.age}
             ,
             {userInfo.gender}
-            <br />
-            looking for:
-            {' '}
-            {userInfo.lookingFor?.roomate ? 'roomate' : ''}
-            {userInfo.lookingFor?.roomate && userInfo.lookingFor?.friend
-              ? ', '
-              : ' '}
-            {userInfo.lookingFor?.friend ? 'friend' : ''}
           </Typography>
         </CardContent>
         <CardActions>

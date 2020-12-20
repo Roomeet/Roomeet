@@ -1,16 +1,40 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
+const screenWidth = window.screen.availWidth;
 function Card({ name, remove }:{name:string, remove:(word:string)=>void}):JSX.Element {
+  const cardVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.5,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+    },
+    exit: {
+      x: screenWidth,
+      scale: 0.9,
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
   return (
     <motion.div
-      exit={{
-        scale: 0.5,
-        opacity: 0,
-      }}
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       onDragEnd={
         (event, info) => {
-          if (info.offset.x > 100 || info.offset.x < -100) {
+          if (info.offset.x > screenWidth / 6) {
+            cardVariants.exit.x = screenWidth;
+            remove(name);
+          }
+          if (info.offset.x < -screenWidth / 6) {
+            cardVariants.exit.x = -screenWidth;
             remove(name);
           }
         }
@@ -28,6 +52,7 @@ function Card({ name, remove }:{name:string, remove:(word:string)=>void}):JSX.El
     >
       {name}
     </motion.div>
+
   );
 }
 export default Card;
