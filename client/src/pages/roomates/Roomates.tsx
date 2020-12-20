@@ -73,19 +73,17 @@ const Roomates: React.FC = () => {
 
  const handleNext = async (liked: boolean) => {
   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
+  console.log(context);
   socket?.emit(
    "like",
    {
     liked,
-    activeUserId: {id: context.id, name: `${context.name} ${context.lastName}`},
-    passiveUserId: {id: allUsersInfo[activeStep].userId, name: allUsersInfo[activeStep].fullName},
+    activeUser: {id: context.id, name: context.name},
+    passiveUser: {id: allUsersInfo[activeStep].userId, name: allUsersInfo[activeStep].fullName},
    },
-   (match: any) => {
-    if (match) {
-     socket?.emit("match", {
-      match,
-     });
+   (matchUsers: any) => {
+    if (matchUsers) {
+     socket?.emit("match", matchUsers);
     }
    }
   );

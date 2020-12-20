@@ -45,7 +45,7 @@ function App(): JSX.Element {
 
         newSocket.on('disconnect', () => {
           setSocket(undefined);
-          // setTimeout(setupSocket, 3000);
+          setTimeout(setupSocket, 3000);
           makeToast('error', 'Disconnected!');
         });
 
@@ -87,14 +87,14 @@ function App(): JSX.Element {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
-        const id = Cookies.get('id')
+        const id = Cookies.get('id');
         const dataCookie = {
           id,
           email: Cookies.get('email'),
           accessToken: Cookies.get('accessToken'),
         };
         const { data: user } = await network.get(`api/v1/users/?id=${id}`);
-        context.logUserIn({ ...dataCookie, ...data, ...user, success: true });
+        context.logUserIn({ ...dataCookie, ...data, name: user[0].name + " " + user[0].lastName, success: true });
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });
@@ -106,11 +106,12 @@ function App(): JSX.Element {
     }
   };
 
+  console.log(context)
   // Socket connection
   useEffect(() => {
     setupSocket();
     // socket?.emit('relateToUser', context.id);
-  }, []);
+  }, [context]);
 
   // checks if a user is logged
   useEffect(() => {

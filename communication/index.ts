@@ -88,9 +88,11 @@ io.on("connect", (socket: any) => {
   socket?.on("like", async ({ passiveUser, activeUser, liked }: {passiveUser: userForMatch, activeUser: userForMatch, liked: boolean}, matchEmitter: (matchUsers: userForMatch[]) => void) => {
     try {
       const like: LikeInterface = await likeControllers.handleLike(activeUser.id, passiveUser.id, liked);
+      console.log(like);
       if(like?.liked) {
         const matchingLikeExist = await likeControllers.checkMatchingLike(activeUser.id, passiveUser.id);
         if (matchingLikeExist) {
+          console.log('Like exist!!');
           await matchControllers.createMatch([activeUser.id, passiveUser.id])
           matchEmitter([passiveUser, activeUser])
         }
@@ -100,8 +102,9 @@ io.on("connect", (socket: any) => {
     }
   })
   
-  socket?.on("match", async ({ matchUsers }: {matchUsers: userForMatch[]}) => {
+  socket?.on("match", async ( matchUsers : userForMatch[] ) => {
     try {
+      console.log(matchUsers);
       const activeUser = matchUsers[0];
       const passiveUser = matchUsers[1];
       await chatroomController.createChatRoom(matchUsers);
