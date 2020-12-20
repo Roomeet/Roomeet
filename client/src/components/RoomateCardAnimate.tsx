@@ -59,6 +59,7 @@ const useStyles = makeStyles({
   profilePic: {
     borderRadius: '50%',
     // border: '7px solid black',
+    pointerEvents: 'none',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
   },
   like: {
