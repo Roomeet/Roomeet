@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  motion, AnimatePresence, useAnimation, Variants, AnimationControls,
 } from 'framer-motion';
 import { string } from 'yup';
 

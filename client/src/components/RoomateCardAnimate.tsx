@@ -157,7 +157,7 @@ const RoomateCard = ({
             <img
               alt="profilePic"
               className={classes.profilePic}
-              src={`https://picsum.photos/seed/${userInfo.id}/150/150`}
+              src={`https://picsum.photos/seed/${userInfo.userId}/150/150`}
             />
           </Typography>
           <Typography variant="h5" component="h2">

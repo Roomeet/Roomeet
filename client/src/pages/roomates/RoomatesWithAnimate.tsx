@@ -82,23 +82,22 @@ function Roomates() {
   const context = useContext(UserContext);
   const classes = useStyles();
   const theme = useTheme();
-
   const like = async (likeId:string) => {
-
+    
     // await network.post('/api/v1/users/match', {
-    //   like:true,
-    //   userId: context.id,
-    //   passiveUserId: likeId
-    // });
-    nextCard()
-  };
+      //   like:true,
+      //   userId: context.id,
+      //   passiveUserId: likeId
+      // });
+      nextCard()
+    };
   const unlike = async (likeId:string) => {
     // await network.post('/api/v1/users/match', {
-    //   like:false,
-    //   userId: context.id,
-    //   passiveUserId: likeId
-    // });
-    nextCard()
+      //   like:false,
+      //   userId: context.id,
+      //   passiveUserId: likeId
+      // });
+      nextCard()
   };
   const nextCard = ():void =>{
     const removedFirstCard = allUsersInfo.slice(1)

@@ -117,7 +117,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
               <img
                 alt="profilePic"
                 className={classes.profilePic}
-                src="https://picsum.photos/150/150"
+                src={`https://picsum.photos/seed/${userId}/150/150`}
               />
               <h1>{userInformation?.fullName}</h1>
               <div className={classes.titleInfoDiv}>
