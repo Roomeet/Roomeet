@@ -1,12 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import Match from '../../../models/Match';
+import Match from '../../models/Match';
 
 // interfaces:
 
 // mongoDB models:
-import User from '../../../models/user';
-import UserData from '../../../models/UserData';
+import User from '../../models/user';
+import UserData from '../../models/UserData';
 
 const router = Router();
 
@@ -212,7 +212,5 @@ router.get('/userData/delete', async (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 });
-
-
 
 export default router;

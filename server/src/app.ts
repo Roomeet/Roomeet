@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import api from './api/index';
 
 const cors = require('cors');
 
@@ -33,9 +34,9 @@ mongoose
     console.log('error connecting to MongoDB:', error.message);
   });
 
-mongoose.set("useCreateIndex", true);
+mongoose.set('useCreateIndex', true);
 
-app.use('/api', require('./api/index.ts'));
+app.use('/api', api);
 
 app.use('*', (req, res) => {
   res.sendStatus(404);
