@@ -5,9 +5,8 @@ import {
   Redirect,
   Route,
   Switch,
-  useHistory,
-  useLocation,
 } from 'react-router-dom';
+import io from 'socket.io-client';
 import Cookies from 'js-cookie';
 import { Logged } from './context/UserContext';
 import './App.css';
@@ -26,25 +25,93 @@ import NavBar from './components/NavBar';
 import BGImage from './images/woodBG.jpg';
 // import Animtest from './Animtest'
 import Animtest from './components/SwipeTest'
-
-
+import Messenger from './containers/Messenger';
+import Notifications from './containers/Notifications';
+import makeToast from './utils/Toaster';
+import SocketContext from './context/socketContext';
+import { chatRoomI } from './interfaces/chat';
+import { NotificationI } from './interfaces/notification';
 
 function App(): JSX.Element {
-  // const [logged, setLogged] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
+  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
+  const [openChatRooms, setOpenChatrooms] = useState<chatRoomI[]>([]);
+  const [allNotifications, setAllNotifications] = React.useState<NotificationI[] | null>(null);
+  const [notificationsOpen, setNotificationsOpen] = React.useState<boolean>(false);
   const context = React.useContext(UserContext);
+
+  const setupSocket = () => {
+    if (!socket && context.id) {
+      try {
+        const newSocket = io('http://localhost:3002', {
+          query: {
+            userId: context.id,
+          },
+        });
+
+        newSocket.on('disconnect', () => {
+          setSocket(undefined);
+          setTimeout(setupSocket, 3000);
+          makeToast('error', 'Disconnected!');
+        });
+
+        newSocket.on('connect',  () => {
+          makeToast('success', 'Connected!');
+        });
+
+        newSocket.on('match', () => {
+          makeToast('info', 'You got a new match!');
+          fetchAllNotifications();
+        });
+
+        setSocket(newSocket);
+      } catch (error) {
+        makeToast('error', 'Error connecting!');
+      }
+    }
+  };
+
+  const openChatRoom = (chatroom: chatRoomI) => {
+    setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      if (!prevOpenChatroomsIds.includes(chatroom.id)) {
+        return [...prevOpenChatRooms, chatroom];
+      }
+      return prevOpenChatRooms;
+    });
+  };
+  
+  const closeChatRoom = (chatroom: chatRoomI) => {
+    setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      const index = prevOpenChatroomsIds.indexOf(chatroom.id);
+      prevOpenChatRooms.splice(index, 1);
+      return [...prevOpenChatRooms];
+    });
+  };
+
+  const fetchAllNotifications = async () => {
+    try {
+      const { data } = await network.get(`http://localhost:3002/api/v1/notifications/userId/${context.id}`);
+      setAllNotifications(data);
+    } catch (err) {
+      setTimeout(fetchAllNotifications, 3000);
+    }
+  }
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
         const { data } = await network.get('api/v1/auth/validateToken');
+        const id = Cookies.get('id');
         const dataCookie = {
-          id: Cookies.get('id'),
+          id,
           email: Cookies.get('email'),
           accessToken: Cookies.get('accessToken'),
         };
-        
-        context.logUserIn({ ...dataCookie, ...data, success: true });
+        const { data: user } = await network.get(`api/v1/users/?id=${id}`);
+        context.logUserIn({ ...dataCookie, ...data, name: user[0].name + " " + user[0].lastName, success: true });
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });
@@ -56,9 +123,15 @@ function App(): JSX.Element {
     }
   };
 
+  // Socket connection
+  useEffect(() => {
+    setupSocket();
+    fetchAllNotifications();
+    // socket?.emit('relateToUser', context.id);
+  }, [context]);
+
   // checks if a user is logged
   useEffect(() => {
-    console.log(context);
     isLoggedIn();
   }, []);
 
@@ -67,28 +140,37 @@ function App(): JSX.Element {
       <Router>
         {!loading ? (
           context.success ? (
-            <div id="private-routes" style={{ height:'100vh',backgroundImage: `url(${BGImage})` }}>
-              <NavBar />
-              <Switch
-              // @ts-ignore 
-              //  location={location}
-               >
-                <Route exact path='/ala'>
-                  <Animtest />
-                </Route>
-                <Route exact path='/about'>
-                  <AboutPage />
-                </Route>
-                <Route exact path='/term-and-conditions'>
-                  <TermsConditionPage />
-                </Route>
-                <Route exact path='/contact-us'>
-                  <ContactUsPage />
-                </Route>
+            <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
+              <SocketContext.Provider value={socket}>
                 <Logged.Provider value={context.success}>
-                  <PrivateRoutesContainer />
+                  <NavBar
+                    setMessengerOpen={setMessengerOpen}
+                    openChatRooms={openChatRooms}
+                    closeChatRoom={closeChatRoom}
+                    setNotificationsOpen={setNotificationsOpen}
+                  />
+                  <Messenger
+                    messengerOpen={messengerOpen}
+                    openChatRoom={openChatRoom}
+                  />
+                  <Notifications
+                    notificationsOpen={notificationsOpen}
+                    allNotifications={allNotifications}
+                  />
+                  <Switch>
+                    <Route exact path='/about'>
+                      <AboutPage />
+                    </Route>
+                    <Route exact path='/term-and-conditions'>
+                      <TermsConditionPage />
+                    </Route>
+                    <Route exact path='/contact-us'>
+                      <ContactUsPage />
+                    </Route>
+                    <PrivateRoutesContainer />
+                  </Switch>
                 </Logged.Provider>
-              </Switch>
+              </SocketContext.Provider>
             </div>
           ) : (
             <Logged.Provider value={context.success}>

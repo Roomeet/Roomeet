@@ -3,12 +3,10 @@ import mongoose from 'mongoose';
 import path from 'path';
 
 const cors = require('cors');
-
 require('dotenv').config();
 
-const URI = process.env.MONGODB_URI;
-
 const app: express.Application = express();
+const URI = process.env.MONGODB_URI;
 
 let requestID = 0;
 function logger(req: Request, res: Response, next: NextFunction) {

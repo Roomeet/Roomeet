@@ -1,12 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-
-// interfaces:
+import Match from '../../models/Match';
+import Like from '../../models/Like';
 
 // mongoDB models:
 import User from '../../models/user';
-import UserData from '../../models/UserData';
-import Match from '../../models/match';
+import UserData, { UserDataInterface } from '../../models/UserData';
 
 const router = Router();
 
@@ -20,7 +19,8 @@ router.get(
   '/',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const users = await User.find();
+      const { id } = req.query;
+      const users = await User.find(id ? { _id: String(id) } : {});
       res.json(users);
     } catch (error) {
       res.status(500).json({ error });
@@ -73,19 +73,7 @@ router.get(
 
     try {
       const userData = await UserData.find({ userId: id });
-      res.json({
-        fullName: userData[0].fullName,
-        aboutMe: userData[0].aboutMe,
-        rentLocation: userData[0].rentLocation,
-        age: userData[0].age,
-        gender: userData[0].gender,
-        smoke: userData[0].smoke,
-        pet: userData[0].pet,
-        relationship: userData[0].relationship,
-        employed: userData[0].employed,
-        numOfRoomates: userData[0].numOfRoomates,
-        religion: userData[0].religion
-      });
+      res.json(userData);
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -188,6 +176,43 @@ router.get('/match-all', async (req: Request, res: Response) => {
     // @ts-ignore
     const matches = await Match.find({ userId });
     res.status(200).json(matches);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/delete', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    await User.deleteMany({});
+    res.status(200).json('deleted');
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/userData/delete', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    await UserData.deleteMany({});
+    res.status(200).json('deleted');
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/all-cards', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    const { userId }: { userId: string } = req.query;
+    const likes = await Like.find({ activeUserId: userId });
+    const usersLike: string[] = likes.map((like) => like.passiveUserId);
+    const allcards: UserDataInterface[] = await UserData.find({
+      userId: {
+        $nin: [...usersLike, userId]
+      }
+    });
+    res.status(200).json(allcards);
   } catch (error) {
     res.status(500).json({ error });
   }

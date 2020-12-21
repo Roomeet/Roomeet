@@ -65,9 +65,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// interface Props {
-// }
-
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -87,7 +84,7 @@ const UserDataForm: React.FC = () => {
     ? user
     : {
         userId: context.id,
-        fullName: "",
+        fullName: context.name,
         gender: "other",
         age: 18,
         rentLocation: "",
@@ -138,30 +135,6 @@ const UserDataForm: React.FC = () => {
             >
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
-                  <Field name="fullName">
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="fullName"
-                        label="Full Name"
-                        type="text"
-                        data-test="form-full-name"
-                        error={
-                          (touched || value !== initialValue) && Boolean(error)
-                        }
-                        helperText={
-                          touched || value !== initialValue ? error : ""
-                        }
-                        {...field}
-                      />
-                    )}
-                  </Field>
                   <Field name="gender">
                     {({
                       field,
@@ -175,7 +148,6 @@ const UserDataForm: React.FC = () => {
                         select
                         id="gender"
                         data-test="userdata-gender"
-                        // error={touched && value !== initialValue && Boolean(error)}
                         helperText={
                           touched && value !== initialValue && touched
                             ? error
@@ -202,7 +174,6 @@ const UserDataForm: React.FC = () => {
                         label="age"
                         type="number"
                         data-test="userdata-age"
-                        // error={(touched || value !== initialValue) && Boolean(error)}
                         helperText={
                           touched || value !== initialValue ? error : ""
                         }
@@ -271,7 +242,6 @@ const UserDataForm: React.FC = () => {
                         select
                         id="smoke"
                         data-test="userdata-smoke"
-                        // error={touched && value !== initialValue && Boolean(error)}
                         helperText={
                           touched && value !== initialValue && touched
                             ? error
@@ -298,7 +268,6 @@ const UserDataForm: React.FC = () => {
                         label="Number Of Roomates"
                         type="number"
                         data-test="userdata-age"
-                        // error={(touched || value !== initialValue) && Boolean(error)}
                         helperText={
                           touched || value !== initialValue ? error : ""
                         }

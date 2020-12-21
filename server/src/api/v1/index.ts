@@ -1,13 +1,18 @@
 import { Router } from 'express';
-import authenticateToken from '../../helpers/authenticate';
-
-// routes:
 import userRoutes from './userRoutes';
 import authRoutes from './authRoutes';
 
 const router = Router();
+// import { io } from '../../index'
+
+// import { authenticateToken } from 'helpers/authenticate';
+
+// routes:
+
+// const chatRoutes = require('./chatRoutes');
 
 router.use('/auth', authRoutes);
-router.use('/users', /* authenticateToken, */ userRoutes);
+// router.use("/chatroom", /*authenticateToken, */ chatRoutes(io));
+router.use('/users', userRoutes);
 
 export default router;

@@ -77,7 +77,6 @@ const MyProfile: React.FC = () => {
     setUserInformation(data);
   };
 
-  console.log(userInformation, 'data!!!!!!!!!!!!!!');
   useEffect(() => {
     fetchData();
   }, []);
@@ -105,7 +104,7 @@ const MyProfile: React.FC = () => {
               label="Full Name:"
               className={classes.textFiled}
               InputProps={{ readOnly: true }}
-              value={userInformation.fullName}
+              value={context.fullName}
             />
             <div className={classes.textArea}>
               <TextField

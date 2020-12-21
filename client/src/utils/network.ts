@@ -6,7 +6,6 @@ const network = axios.create({});
 const getToken = () => Cookies.get('accessToken');
 
 network.interceptors.request.use((config: AxiosRequestConfig) => {
-  // Do something before request is sent
   config.headers.Authorization = `bearer ${getToken()}`;
   return config;
 });

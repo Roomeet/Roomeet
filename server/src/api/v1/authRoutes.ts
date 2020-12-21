@@ -6,7 +6,7 @@ import User, { UserInterface } from '../../models/user';
 import RefreshToken, {
   RefreshTokenInterface
 } from '../../models/refreshToken';
-import authenticateToken from '../../helpers/authenticate';
+import { authenticateToken } from '../../helpers/authenticate';
 
 const router = Router();
 const bcrypt = require('bcrypt');
@@ -87,6 +87,7 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   const loginData = req.body;
   const user = await userIsExist(loginData.email);
+  console.log(user);
 
   if (!user) {
     return res.status(404).send('cannot find user');
