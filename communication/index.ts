@@ -104,12 +104,11 @@ io.on("connect", (socket: any) => {
   
   socket?.on("match", async ( matchUsers : userForMatch[] ) => {
     try {
-      console.log(matchUsers);
       const activeUser = matchUsers[0];
       const passiveUser = matchUsers[1];
       await chatroomController.createChatRoom(matchUsers);
-      await notificationControllers.createNotification(activeUser.id, 'match', 'you have a new match with' + passiveUser.id);
-      await notificationControllers.createNotification(passiveUser.id, 'match', 'you have a new match with' + activeUser.id);
+      await notificationControllers.createNotification(activeUser.id, 'match', 'you have a new match with ' + passiveUser.name);
+      await notificationControllers.createNotification(passiveUser.id, 'match', 'you have a new match with ' + activeUser.name);
       io.to(activeUser.id).emit('match');
       io.to(passiveUser.id).emit('match');
     } catch (err) {

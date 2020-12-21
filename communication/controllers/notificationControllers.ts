@@ -16,14 +16,15 @@ exports.createNotification = async (userId: string, topic: string, content: stri
   }
 };
 
-exports.getAllNotificationsByUserId = async (userId: string): Promise<NotificationInterface[] | undefined> => {
+exports.getAllNotificationsByUserId = async (req: Request, res: Response) => {
   try {
+    const userId = req.params.userId
     const notifications = await Notification.find({userId});
-    return notifications
-  } catch (error) {
-    console.log(error)
+    res.json(notifications);
+  } catch(error) {
+    res.json(error);
   }
-}
+};
 
 exports.getAllNotifications = async (req: Request, res: Response) => {
   try {
@@ -34,11 +35,20 @@ exports.getAllNotifications = async (req: Request, res: Response) => {
   }
 };
 
-exports.notificationControllers = async (req: Request, res: Response) => {
+exports.deleteAllNotifications = async (req: Request, res: Response) => {
   try {
     await Notification.deleteMany({});
     res.json('delete');
   } catch(error) {
-    res.json({ error })
+    res.json({ error });
+  }
+};
+
+exports.seeNotification = async (req: Request, res: Response) => {
+  try{
+    const { NotificationId: id } = req.params
+    await Notification.findOneAndUpdate({ id }, {seen: false}, { new: true })
+  } catch(error) {
+    console.log(error)
   }
 };
