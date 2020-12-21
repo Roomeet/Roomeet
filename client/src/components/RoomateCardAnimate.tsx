@@ -13,9 +13,10 @@ import ProfilePage from '../pages/roomates/ProfilePage';
 import { UserDataInterface } from '../interfaces/userData';
 // import { UserDataInterface } from '../../../server/models/UserData';
 
-export type Props = {
-  [key: string]: any;
-};
+export interface CardProps {
+  userInfo:UserDataInterface,
+  handleSwipe:(liked:boolean)=>void
+}
 const screenWidth = window.screen.availWidth;
 
 const useStyles = makeStyles({
@@ -83,13 +84,8 @@ const useStyles = makeStyles({
 });
 
 const RoomateCard = ({
-  userInfo, like, unlike,
-}:{
-  userInfo:UserDataInterface,
-  like:(id:string)=>void,
-  unlike:(id:string)=>void,
-
-}) : JSX.Element => {
+  userInfo, handleSwipe,
+}:CardProps) : JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const cardVariants = {
     initial: {
@@ -128,11 +124,11 @@ const RoomateCard = ({
         (event, info) => {
           if (info.offset.x > screenWidth / 6) {
             cardVariants.exit.x = screenWidth;
-            like(userInfo.id);
+            handleSwipe(true);
           }
           if (info.offset.x < -screenWidth / 6) {
             cardVariants.exit.x = -screenWidth;
-            unlike(userInfo.id);
+            handleSwipe(false);
           }
         }
       }
@@ -165,12 +161,16 @@ const RoomateCard = ({
             {userInfo.fullName}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            Summary:
+            About me:
           </Typography>
           <Typography variant="body2" component="p">
-            {userInfo.age}
-            ,
-            {userInfo.gender}
+            {userInfo.aboutMe}
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            Searching to rent in:
+          </Typography>
+          <Typography variant="body2" component="p">
+            {userInfo.rentLocation}
           </Typography>
         </CardContent>
         <CardActions>
@@ -192,14 +192,14 @@ const RoomateCard = ({
           <Button
             size="small"
             className={classes.like}
-            onClick={() => { like(userInfo.id); }}
+            onClick={() => { handleSwipe(true); }}
           >
             <ThumbUpIcon className={classes.like} />
           </Button>
           <Button
             size="small"
             className={classes.unlike}
-            onClick={() => { unlike(userInfo.id); }}
+            onClick={() => { handleSwipe(false); }}
           >
             <ThumbDownIcon className={classes.unlike} style={{ fill: 'red' }} />
           </Button>

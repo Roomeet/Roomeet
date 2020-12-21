@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
 import RoomatesWithAnimate from '../pages/roomates/RoomatesWithAnimate';
+import Roomates from '../pages/roomates/Roomates';
 import UserDataForm from '../pages/preferences-form/UserDataForm';
 import NavBar from '../components/NavBar';
 import AboutPage from '../pages/footers/AboutPage';
@@ -10,10 +11,11 @@ import ContactUsPage from '../pages/footers/ContactUsPage';
 import MyProfile from '../pages/profile/MyProfile';
 
 const PrivateRoutesContainer: React.FC = () => (
-  <div>
+  <>
     <PrivateRoute exact path="/home">
       <div>
         <RoomatesWithAnimate />
+        {/* <Roomates /> */}
       </div>
     </PrivateRoute>
     <PrivateRoute exact path="/myProfile">
@@ -33,7 +35,7 @@ const PrivateRoutesContainer: React.FC = () => (
         }}
       />
     </Route>
-  </div>
+  </>
 );
 
 export default PrivateRoutesContainer;

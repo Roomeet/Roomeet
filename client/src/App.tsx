@@ -209,9 +209,9 @@ function App(): JSX.Element {
               </Switch>
             </Logged.Provider>
           )
-        ) : (
-          <div>We're Loading...</div>
-        )}
+        ) 
+        :<div>We're Loading...</div>
+        }
       <Footer />
       </Router>
     </div>

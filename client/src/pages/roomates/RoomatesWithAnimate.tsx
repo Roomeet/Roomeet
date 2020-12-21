@@ -9,8 +9,12 @@ import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
 // import RoomateCard from '../../components/cardnomui';
-import { UserContext } from '../../context/UserContext';
 import {motion,AnimatePresence,} from 'framer-motion'
+import { UserContext } from '../../context/UserContext';
+import SocketContext from "../../context/socketContext";
+import { useHistory } from "react-router-dom";
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -25,10 +29,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     height: 50,
     paddingLeft: theme.spacing(4),
-    // backgroundColor: theme.palette.background.default,
     backgroundColor: "#8f7967",
     fontFamily: "fantasy",
-    // fontFamily
   },
   headerText: {
     fontFamily: "fantasy",
@@ -41,25 +43,18 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   item: {
-    // display: 'flex',
-    // alignItems: 'center',
-    // justifyContent: 'center',
     display: "block",
     top: "50%",
-    // maxWidth: 400,
     overflow: "hidden",
     width: "100%",
   },
   footer: {
     backgroundColor: "#8f7967",
-    // color: "white",
     bottom: 0,
     fontFamily: "fantasy",
   },
   like: {
     fill: "green",
-    // backgroundColor: "green",
-    // color: "black",
     bottom: 0,
     "&:hover": {
       backgroundColor: "#BFB4AB",
@@ -67,8 +62,6 @@ const useStyles = makeStyles((theme) => ({
   },
   unlike: {
     fill: "red",
-    // backgroundColor: "red",
-    // color: "black",
     bottom: 0,
     "&:hover": {
       backgroundColor: "#BFB4AB",
@@ -76,35 +69,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Roomates() {
-  const [prefernces, setPrefernces] = useState<boolean>(false); // TODO: get actuall prefernces for the user and create prefernces interface
+const Roomates: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
   const context = useContext(UserContext);
+  const socket = useContext(SocketContext);
+  const history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
-  const like = async (likeId:string) => {
-    
-    // await network.post('/api/v1/users/match', {
-      //   like:true,
-      //   userId: context.id,
-      //   passiveUserId: likeId
-      // });
-      nextCard()
-    };
-  const unlike = async (likeId:string) => {
-    // await network.post('/api/v1/users/match', {
-      //   like:false,
-      //   userId: context.id,
-      //   passiveUserId: likeId
-      // });
-      nextCard()
-  };
-  const nextCard = ():void =>{
-    const removedFirstCard = allUsersInfo.slice(1)
-    setAllUsersInfo(removedFirstCard)
+
+  const firstCard = allUsersInfo[0]
+
+  const handleSwipe = (liked:boolean)=>{
+    socket?.emit(
+      "like",
+      {
+       liked,
+       activeUser: {id: context.id, name: context.name},
+       passiveUser: {id: firstCard.userId, name: firstCard.fullName},
+      },
+      (matchUsers: any) => {
+       if (matchUsers) {
+        socket?.emit("match", matchUsers);
+       }
+      }
+     );
+     const removedFirstCard = allUsersInfo.slice(1)
+     setAllUsersInfo(removedFirstCard)
   }
   const fetchData = async () => {
-    const { data } = await network.get('/api/v1/users/basic-info');
+    const { data: userDataForm } = await network.get(
+      `/api/v1/users/user-data/${context.id}`
+     );
+    if (userDataForm.length === 0) {
+      history.push("/edit");
+    }
+    const { data } = await network.get(
+      `/api/v1/users/all-cards?userId=${context.id}`
+    );
     setAllUsersInfo(data);
   };
 
@@ -112,8 +114,6 @@ function Roomates() {
     fetchData();
   }, []);
 
-  const firstCard = allUsersInfo[0]
-  console.log(firstCard)
   return (
     <div className="cards-page">
       {allUsersInfo[0] 
@@ -128,8 +128,7 @@ function Roomates() {
               <RoomateCard 
                 key={firstCard.id}
                 userInfo={firstCard} 
-                like={nextCard} 
-                unlike={nextCard}
+                handleSwipe={handleSwipe}
               />             
             </AnimatePresence>
               </div>
