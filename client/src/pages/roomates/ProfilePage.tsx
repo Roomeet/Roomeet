@@ -90,7 +90,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${userId}`);
-    setUserInformation(data);
+    setUserInformation(data[0]);
   };
 
   useEffect(() => {
