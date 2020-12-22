@@ -97,23 +97,26 @@ const Roomates: React.FC = () => {
      const removedFirstCard = allUsersInfo.slice(1)
      setAllUsersInfo(removedFirstCard)
   }
+  
   const fetchData = async () => {
-    const { data: userDataForm } = await network.get(
-      `/api/v1/users/user-data/${context.id}`
-     );
-    if (userDataForm.length === 0) {
-      history.push("/edit");
+    const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
+    context.name = user[0].name + " " + user[0].lastName;
+    const { data: isExist } = await network.get(
+     `/api/v1/users/user-data/${context.id}`
+    );
+    if (isExist.length === 0) {
+      console.log('dadsadas',isExist)
+     history.push("/edit");
     }
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${context.id}`
+     `/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
-  };
-
-  useEffect(() => {
+   };
+  
+   useEffect(() => {
     fetchData();
-  }, []);
-
+   }, []);
   return (
     <div className="cards-page">
       {allUsersInfo[0] 

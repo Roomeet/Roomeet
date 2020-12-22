@@ -67,7 +67,7 @@ const useStyles = makeStyles({
 
 const MyProfile: React.FC = () => {
   const [userInformation, setUserInformation] = useState<UserDataInterface>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();
   const context = useContext(UserContext);
   const classes = useStyles();
@@ -75,6 +75,7 @@ const MyProfile: React.FC = () => {
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
     setUserInformation(data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -84,116 +85,121 @@ const MyProfile: React.FC = () => {
   return (
     <>
       <div className={classes.root}>
-        {!loading && userInformation ? (
-          <div className={classes.myProfileDiv}>
-            <div className={classes.editButton}>
-              <Button onClick={() => history.push('/edit')}>
-                <EditIcon />
-              </Button>
-            </div>
-            <div className={classes.titleAndPic}>
-              <h1>My Profile</h1>
-              <img
-                alt="profilePic"
-                className={classes.profilePic}
-                src="https://picsum.photos/150/150"
-              />
-            </div>
-            <TextField
-              id="standard-disabled"
-              label="Full Name:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={context.fullName}
-            />
-            <div className={classes.textArea}>
-              <TextField
-                id="standard-disabled"
-                label="About Me:"
-                multiline
-                fullWidth
-                InputProps={{ readOnly: true }}
-                value={userInformation.aboutMe}
-              />
-            </div>
-            <TextField
-              id="standard-disabled"
-              label="Rent Location:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.rentLocation}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Age:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.age}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Gender:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.gender}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Smoke:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.smoke}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Pet:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.pet ? 'Yes' : 'No'}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Status:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={
-                userInformation.relationship ? 'In Relationship' : 'Single'
-              }
-            />
-            <TextField
-              id="standard-disabled"
-              label="Employed:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.employed ? 'Yes' : 'No'}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Number of Roomates:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.numOfRoomates}
-            />
-            <TextField
-              id="standard-disabled"
-              label="Religion:"
-              className={classes.textFiled}
-              InputProps={{ readOnly: true }}
-              value={userInformation.religion ? 'Yes' : 'No'}
-            />
-          </div>
-        ) : (
-          <div className={classes.noProfileDiv}>
-            You don't have any profile....
-            <br />
-            You can click here and create one
-            <Button>
-              <Button onClick={() => history.push('/edit')}>
-                <PersonAddIcon />
-              </Button>
-            </Button>
-          </div>
-        )}
+        {!loading ? (
+          <>
+            { userInformation ? (
+              <div className={classes.myProfileDiv}>
+                <div className={classes.editButton}>
+                  <Button onClick={() => history.push('/edit')}>
+                    <EditIcon />
+                  </Button>
+                </div>
+                <div className={classes.titleAndPic}>
+                  <h1>My Profile</h1>
+                  <img
+                    alt="profilePic"
+                    className={classes.profilePic}
+                    src="https://picsum.photos/150/150"
+                  />
+                </div>
+                <TextField
+                  id="standard-disabled"
+                  label="Full Name:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={context.fullName}
+                />
+                <div className={classes.textArea}>
+                  <TextField
+                    id="standard-disabled"
+                    label="About Me:"
+                    multiline
+                    fullWidth
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.aboutMe}
+                  />
+                </div>
+                <TextField
+                  id="standard-disabled"
+                  label="Rent Location:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.rentLocation}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Age:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.age}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Gender:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.gender}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Smoke:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.smoke}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Pet:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.pet ? 'Yes' : 'No'}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Status:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={
+                    userInformation.relationship ? 'In Relationship' : 'Single'
+                  }
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Employed:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.employed ? 'Yes' : 'No'}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Number of Roomates:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.numOfRoomates}
+                />
+                <TextField
+                  id="standard-disabled"
+                  label="Religion:"
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.religion ? 'Yes' : 'No'}
+                />
+              </div>
+            ) : (
+              <div className={classes.noProfileDiv}>
+                You don't have any profile....
+                <br />
+                You can click here and create one
+                <Button>
+                  <Button onClick={() => history.push('/edit')}>
+                    <PersonAddIcon />
+                  </Button>
+                </Button>
+              </div>
+            )}
+          </>
+        )
+          : <div>were loading...</div>}
       </div>
     </>
   );
