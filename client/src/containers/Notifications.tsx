@@ -1,6 +1,8 @@
 /*eslint-disable */
 
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../context/UserContext';
+import network from '../utils/network';
 import {
   AppBar,
   Avatar,
@@ -26,17 +28,19 @@ type notificationsProps = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    messenger: {
+      position: 'absolute',
+      maxWidth: '400px',
+      top: '50px',
+      right: '100px',
+      zIndex: 10,
+    },
     header: {
       padding: theme.spacing(2, 2, 0),
       position: 'relative',
       top: 0,
     },
     paper: {
-      position: 'absolute',
-      maxWidth: '400px',
-      top: '50px',
-      right: '100px',
-      zIndex: 10,
     },
     list: {
       overflowY: 'scroll',
@@ -71,6 +75,7 @@ const Messenger: React.FC<notificationsProps> = ({ notificationsOpen, allNotific
       {
         notificationsOpen
           && (
+            <div className={classes.messenger}>
               <React.Fragment>
                 <CssBaseline />
                 <Paper square className={classes.paper}>
@@ -94,6 +99,7 @@ const Messenger: React.FC<notificationsProps> = ({ notificationsOpen, allNotific
                 </AppBar>
                 </Paper>
               </React.Fragment>
+            </div>
           )
       }
     </>
