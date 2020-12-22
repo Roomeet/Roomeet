@@ -107,8 +107,7 @@ function App(): JSX.Element {
           email: Cookies.get('email'),
           accessToken: Cookies.get('accessToken'),
         };
-        const { data: user } = await network.get(`api/v1/users/?id=${id}`);
-        context.logUserIn({ ...dataCookie, ...data, name: user[0].name + " " + user[0].lastName, success: true });
+        context.logUserIn({ ...dataCookie, ...data, success: true });
         setLoading(false);
       } catch (e) {
         context.logUserIn({ success: false });

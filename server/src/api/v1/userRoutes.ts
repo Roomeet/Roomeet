@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Match from '../../models/Match';
@@ -19,8 +20,8 @@ router.get(
   '/',
   /* authenticateToken , */ async (req: Request, res: Response) => {
     try {
-      const { id } = req.query
-      const users = await User.find(id ? {_id: String(id)} : {});
+      const { id } = req.query;
+      const users = await User.find(id ? { _id: String(id) } : {});
       res.json(users);
     } catch (error) {
       res.status(500).json({ error });
@@ -106,6 +107,7 @@ router.post('/user-data/:id', async (req: Request, res: Response) => {
               deletedAt: null
             });
             // Save the document
+            console.log(result);
             result.save((err: any) => {
               if (!err) {
                 // Do something with the document
