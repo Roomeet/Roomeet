@@ -1,8 +1,4 @@
 import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
   useState,
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -29,9 +25,6 @@ import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 import LogoutModal from './LogoutModal';
 import { chatRoomI } from '../interfaces/chat';
-import { NotificationI } from '../interfaces/notification';
-import SocketContext from '../context/socketContext';
-import network from '../utils/network';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -90,20 +83,23 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     fontSize: '1.5rem',
     fontFamily: 'Nunito',
   },
+  chats: {
+    marginLeft: '50px',
+    display: 'flex',
+    flexDirection: 'row',
+  },
 }));
 
 type navbarProps = {
-  setMessengerOpen: Dispatch<SetStateAction<boolean>>;
   activeChatrooms: chatRoomI[];
   closeChatRoom: (roomId: chatRoomI) => void;
-  setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
+  openNavDrawer: (drawer: string) => boolean
 };
 
 const NavBar: React.FC<navbarProps> = ({
-  setMessengerOpen,
+  openNavDrawer,
   activeChatrooms,
   closeChatRoom,
-  setNotificationsOpen,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -141,7 +137,7 @@ const NavBar: React.FC<navbarProps> = ({
 
   const handleNotificationClick = () => {
     handleMenuClose();
-    setNotificationsOpen((prev) => !prev);
+    openNavDrawer('notifications');
   };
 
   const handleLogOut = () => {
@@ -204,7 +200,7 @@ const NavBar: React.FC<navbarProps> = ({
           My profile
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
-          <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+          <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => { openNavDrawer('messenger'); }}>
             <Badge badgeContent={numberOfNewMesseges} color="secondary">
               <MailIcon />
             </Badge>
@@ -261,16 +257,18 @@ const NavBar: React.FC<navbarProps> = ({
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {activeChatrooms[0] && activeChatrooms.map((chatroom) => (
-              <ChatRoom
-                chatroom={chatroom}
-                closeChatRoom={closeChatRoom}
-                setOpenChatroom={setOpenChatroom}
-                open={openChatroom === chatroom.id}
-              />
-            ))}
+            <div className={classes.chats}>
+              {activeChatrooms[0] && activeChatrooms.map((chatroom) => (
+                <ChatRoom
+                  chatroom={chatroom}
+                  closeChatRoom={closeChatRoom}
+                  setOpenChatroom={setOpenChatroom}
+                  open={openChatroom === chatroom.id}
+                />
+              ))}
+            </div>
             <MenuItem>
-              <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+              <IconButton aria-label="show messenger" color="inherit" onClick={() => { openNavDrawer('messenger'); }}>
                 <Badge badgeContent={numberOfNewMesseges} color="secondary">
                   <MailIcon />
                 </Badge>
@@ -279,7 +277,7 @@ const NavBar: React.FC<navbarProps> = ({
             <IconButton
               aria-label="show notifications"
               color="inherit"
-              onClick={() => { setNotificationsOpen((prev) => !prev); }}
+              onClick={() => { openNavDrawer('notifications'); }}
             >
               <Badge badgeContent={numberOfNewNotifications} color="secondary">
                 <NotificationsIcon />

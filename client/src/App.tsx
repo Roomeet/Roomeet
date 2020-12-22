@@ -35,10 +35,9 @@ import { NotificationI } from './interfaces/notification';
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
-  const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
+  const [openDrawer, setOpenDrawer] = useState<string>('');
   const [activeChatrooms, setActiveChatrooms] = useState<chatRoomI[]>([]);
   const [allNotifications, setAllNotifications] = React.useState<NotificationI[] | null>(null);
-  const [notificationsOpen, setNotificationsOpen] = React.useState<boolean>(false);
   const context = React.useContext(UserContext);
 
   const setupSocket = () => {
@@ -72,11 +71,23 @@ function App(): JSX.Element {
     }
   };
 
+  const openNavDrawer = (drawer: string) => {
+    let open = false;
+    setOpenDrawer((prev) => {
+      if (prev === drawer) {
+        return '';
+      } 
+      open = false;
+      return drawer;
+    });
+    return open
+  }
+
   const openChatRoom = (chatroom: chatRoomI) => {
     setActiveChatrooms((prevactiveChatrooms: chatRoomI[]) => {
       const prevActiveChatroomsIds = prevactiveChatrooms.map(chatroom => chatroom.id)
       if (!prevActiveChatroomsIds.includes(chatroom.id)) {
-        return [...prevactiveChatrooms, chatroom];
+        return [chatroom , ...prevactiveChatrooms];
       }
       return prevactiveChatrooms;
     });
@@ -143,19 +154,17 @@ function App(): JSX.Element {
               <SocketContext.Provider value={socket}>
                 <Logged.Provider value={context.success}>
                   <NavBar
-                    setMessengerOpen={setMessengerOpen}
+                    openNavDrawer={openNavDrawer}
                     activeChatrooms={activeChatrooms}
                     closeChatRoom={closeChatRoom}
-                    setNotificationsOpen={setNotificationsOpen}
                   />
                   <Messenger
-                    messengerOpen={messengerOpen}
-                    setMessengerOpen={setMessengerOpen}
                     openChatRoom={openChatRoom}
+                    messengerOpen={openDrawer === 'messenger'}
                   />
                   <Notifications
-                    notificationsOpen={notificationsOpen}
                     allNotifications={allNotifications}
+                    notificationsOpen={openDrawer === 'notifications'}
                   />
                   <Switch>
                     <Route exact path='/about'>

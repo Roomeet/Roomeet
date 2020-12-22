@@ -1,9 +1,8 @@
 import React, {
-  Dispatch, SetStateAction, useContext, useEffect, useState,
+  useContext, useEffect, useState,
 } from 'react';
 import {
   Avatar,
-  createStyles,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -17,10 +16,9 @@ import network from '../utils/network';
 type chatRoomProps = {
   chatroom: chatRoomI;
   openChatRoom: (chatroom: chatRoomI) => void
-  setMessengerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMessengerOpen }) => {
+const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom }) => {
   const context = useContext(UserContext);
   const [lastMessage, setLastMessage] = useState<messageI | null>(null);
 
@@ -35,7 +33,6 @@ const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMe
 
   const onInlineChatRoomClick = () => {
     openChatRoom(chatroom);
-    setMessengerOpen(false);
   };
 
   useEffect(() => {
