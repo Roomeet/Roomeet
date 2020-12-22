@@ -90,7 +90,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${userId}`);
-    setUserInformation(data);
+    setUserInformation(data[0]);
   };
 
   useEffect(() => {
@@ -145,11 +145,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   Smoking
                 </Typography>
                 <Typography className={classes.infoData}>
-                  {userInformation?.gender ? (
-                    <SmokingRoomsOutlinedIcon style={{ fill: 'green' }} />
-                  ) : (
-                    <SmokeFreeOutlinedIcon style={{ fill: 'red' }} />
-                  )}
+                  {userInformation?.smoke}
                 </Typography>
               </p>
               <p className={classes.rows}>

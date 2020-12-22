@@ -97,7 +97,7 @@ type navbarProps = {
   openChatRooms: chatRoomI[];
   closeChatRoom: (roomId: chatRoomI) => void;
   setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
-}
+};
 
 const NavBar: React.FC<navbarProps> = ({
   setMessengerOpen,
@@ -109,6 +109,8 @@ const NavBar: React.FC<navbarProps> = ({
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const [openLogout, setOpenLogout] = React.useState<boolean>(false);
+  const [numberOfNewMesseges, setNumberOfNewMesseges] = React.useState<number | null>(0);
+  const [numberOfNewNotifications, setNumberOfNewNotifications] = React.useState<number | null>(0);
   const context = React.useContext(UserContext);
   const history = useHistory();
 
@@ -134,6 +136,11 @@ const NavBar: React.FC<navbarProps> = ({
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationClick = () => {
+    handleMenuClose();
+    setNotificationsOpen((prev) => !prev);
   };
 
   const handleLogOut = () => {
@@ -166,58 +173,64 @@ const NavBar: React.FC<navbarProps> = ({
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={() => handleMobileMenu('/myProfile')}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        My profile
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-      </MenuItem>
-      <MenuItem onClick={() => { setNotificationsOpen((prev) => !prev); }}>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleLogoutOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <ExitToAppIcon />
-        </IconButton>
-        Logout
-      </MenuItem>
-      <LogoutModal
-        openLogout={openLogout}
-        handleLogoutClose={handleLogoutClose}
-        logout={handleLogOut}
-      />
-    </Menu>
+    <div className={classes.sectionMobile}>
+      {openChatRooms[0] && openChatRooms.map((chatroom) => (
+        <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
+      ))}
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        <MenuItem onClick={() => handleMobileMenu('/myProfile')}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          My profile
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+            <Badge badgeContent={numberOfNewMesseges} color="secondary">
+              <MailIcon />
+            </Badge>
+            <p>Messeges</p>
+          </IconButton>
+        </MenuItem>
+        <MenuItem onClick={handleNotificationClick}>
+          <IconButton aria-label="show 11 new notifications" color="inherit">
+            <Badge badgeContent={numberOfNewNotifications} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <p>Notifications</p>
+        </MenuItem>
+        <MenuItem onClick={handleLogoutOpen}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <ExitToAppIcon />
+          </IconButton>
+          Logout
+        </MenuItem>
+        <LogoutModal
+          openLogout={openLogout}
+          handleLogoutClose={handleLogoutClose}
+          logout={handleLogOut}
+        />
+      </Menu>
+    </div>
   );
 
   return (
@@ -247,7 +260,7 @@ const NavBar: React.FC<navbarProps> = ({
             ))}
             <MenuItem>
               <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
-                <Badge badgeContent={0} color="secondary">
+                <Badge badgeContent={numberOfNewMesseges} color="secondary">
                   <MailIcon />
                 </Badge>
               </IconButton>
@@ -257,7 +270,7 @@ const NavBar: React.FC<navbarProps> = ({
               color="inherit"
               onClick={() => { setNotificationsOpen((prev) => !prev); }}
             >
-              <Badge badgeContent={0} color="secondary">
+              <Badge badgeContent={numberOfNewNotifications} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>

@@ -1,6 +1,6 @@
 /*eslint-disable */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, SetStateAction, Dispatch } from 'react';
 import { UserContext } from '../context/UserContext';
 import network from '../utils/network';
 import {
@@ -28,6 +28,7 @@ import SocketContext from '../context/socketContext';
 type messengerProps = {
   messengerOpen: boolean;
   openChatRoom: (roomId: chatRoomI) => void
+  setMessengerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom }) => {
+const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom, setMessengerOpen }) => {
   const [chatrooms, setChatrooms] = useState<chatRoomI[]>([]);
   const context = useContext(UserContext);
   const classes = useStyles();
@@ -115,6 +116,7 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom }) =>
                       <InlineChatRoom 
                         chatroom={chatroom}
                         openChatRoom={openChatRoom}
+                        setMessengerOpen={setMessengerOpen}
                       />
                       )) : <div>No chat rooms for you buddy</div>}
                   </List>

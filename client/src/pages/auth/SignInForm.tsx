@@ -21,6 +21,7 @@ import BGImage from '../../images/BGSignin.jpg';
 import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
 import { UserContext } from '../../context/UserContext';
+import makeToast from '../../utils/Toaster';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -84,9 +85,13 @@ const SignInForm: React.FC<any> = () => {
   };
 
   const login = async (values: SignInUserData) => {
-    const { data } = await network.post('/api/v1/auth/login', values);
-    context.logUserIn({ ...data, success: true });
-    history.push('/home');
+    try {
+      const { data } = await network.post('/api/v1/auth/login', values);
+      context.logUserIn({ ...data, success: true });
+      history.push('/home');
+    } catch (error) {
+      makeToast('error', 'Email or Password is incorrect!');
+    }
   };
 
   return (

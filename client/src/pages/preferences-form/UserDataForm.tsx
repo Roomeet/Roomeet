@@ -98,6 +98,8 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
+    console.log(context);
+    values.fullName = context.name;
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
   };
 

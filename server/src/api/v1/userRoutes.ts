@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Match from '../../models/Match';

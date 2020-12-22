@@ -93,6 +93,8 @@ const Roomates: React.FC = () => {
  };
 
  const fetchData = async () => {
+  const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
+  context.name = user[0].name + " " + user[0].lastName;
   const { data: isExist } = await network.get(
    `/api/v1/users/user-data/${context.id}`
   );
