@@ -94,14 +94,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 type navbarProps = {
   setMessengerOpen: Dispatch<SetStateAction<boolean>>;
-  openChatRooms: chatRoomI[];
+  activeChatrooms: chatRoomI[];
   closeChatRoom: (roomId: chatRoomI) => void;
   setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const NavBar: React.FC<navbarProps> = ({
   setMessengerOpen,
-  openChatRooms,
+  activeChatrooms,
   closeChatRoom,
   setNotificationsOpen,
 }) => {
@@ -111,6 +111,7 @@ const NavBar: React.FC<navbarProps> = ({
   const [openLogout, setOpenLogout] = React.useState<boolean>(false);
   const [numberOfNewMesseges, setNumberOfNewMesseges] = React.useState<number | null>(0);
   const [numberOfNewNotifications, setNumberOfNewNotifications] = React.useState<number | null>(0);
+  const [openChatroom, setOpenChatroom] = useState<string>('');
   const context = React.useContext(UserContext);
   const history = useHistory();
 
@@ -174,8 +175,13 @@ const NavBar: React.FC<navbarProps> = ({
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <div className={classes.sectionMobile}>
-      {openChatRooms[0] && openChatRooms.map((chatroom) => (
-        <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
+      {activeChatrooms[0] && activeChatrooms.map((chatroom) => (
+        <ChatRoom
+          chatroom={chatroom}
+          closeChatRoom={closeChatRoom}
+          setOpenChatroom={setOpenChatroom}
+          open={openChatroom === chatroom.id}
+        />
       ))}
       <Menu
         anchorEl={mobileMoreAnchorEl}
@@ -255,8 +261,13 @@ const NavBar: React.FC<navbarProps> = ({
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {openChatRooms[0] && openChatRooms.map((chatroom) => (
-              <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
+            {activeChatrooms[0] && activeChatrooms.map((chatroom) => (
+              <ChatRoom
+                chatroom={chatroom}
+                closeChatRoom={closeChatRoom}
+                setOpenChatroom={setOpenChatroom}
+                open={openChatroom === chatroom.id}
+              />
             ))}
             <MenuItem>
               <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
