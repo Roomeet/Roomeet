@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { Link, useHistory } from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -74,7 +72,7 @@ const MyProfile: React.FC = () => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
-    setUserInformation(data);
+    setUserInformation(data[0]);
     setLoading(false);
   };
 
@@ -104,13 +102,15 @@ const MyProfile: React.FC = () => {
                 </div>
                 <TextField
                   id="standard-disabled"
+                  disabled
                   label="Full Name:"
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
-                  value={context.fullName}
+                  value={userInformation.fullName}
                 />
                 <div className={classes.textArea}>
                   <TextField
+                    disabled
                     id="standard-disabled"
                     label="About Me:"
                     multiline
@@ -120,6 +120,7 @@ const MyProfile: React.FC = () => {
                   />
                 </div>
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Rent Location:"
                   className={classes.textFiled}
@@ -127,6 +128,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.rentLocation}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Age:"
                   className={classes.textFiled}
@@ -134,6 +136,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.age}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Gender:"
                   className={classes.textFiled}
@@ -141,6 +144,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.gender}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Smoke:"
                   className={classes.textFiled}
@@ -148,6 +152,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.smoke}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Pet:"
                   className={classes.textFiled}
@@ -155,6 +160,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.pet ? 'Yes' : 'No'}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Status:"
                   className={classes.textFiled}
@@ -164,6 +170,7 @@ const MyProfile: React.FC = () => {
                   }
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Employed:"
                   className={classes.textFiled}
@@ -171,6 +178,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.employed ? 'Yes' : 'No'}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Number of Roomates:"
                   className={classes.textFiled}
@@ -178,6 +186,7 @@ const MyProfile: React.FC = () => {
                   value={userInformation.numOfRoomates}
                 />
                 <TextField
+                  disabled
                   id="standard-disabled"
                   label="Religion:"
                   className={classes.textFiled}
