@@ -26,7 +26,7 @@ import network from '../utils/network';
 
 type chatRoomProps = {
   chatroom: chatRoomI;
-  closeChatRoom: (roomId: chatRoomI) => void
+  closeChatRoom: (roomId: chatRoomI) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({

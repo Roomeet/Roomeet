@@ -147,6 +147,7 @@ function App(): JSX.Element {
                   />
                   <Messenger
                     messengerOpen={messengerOpen}
+                    setMessengerOpen={setMessengerOpen}
                     openChatRoom={openChatRoom}
                   />
                   <Notifications

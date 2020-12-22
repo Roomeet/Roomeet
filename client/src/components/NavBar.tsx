@@ -97,7 +97,7 @@ type navbarProps = {
   openChatRooms: chatRoomI[];
   closeChatRoom: (roomId: chatRoomI) => void;
   setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
-}
+};
 
 const NavBar: React.FC<navbarProps> = ({
   setMessengerOpen,
