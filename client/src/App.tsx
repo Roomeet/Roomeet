@@ -36,7 +36,7 @@ function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
   const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
   const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
-  const [activeChatrooms, setActiveChatrooms] = useState<chatRoomI[]>([]);
+  const [openChatRooms, setOpenChatrooms] = useState<chatRoomI[]>([]);
   const [allNotifications, setAllNotifications] = React.useState<NotificationI[] | null>(null);
   const [notificationsOpen, setNotificationsOpen] = React.useState<boolean>(false);
   const context = React.useContext(UserContext);
@@ -73,21 +73,21 @@ function App(): JSX.Element {
   };
 
   const openChatRoom = (chatroom: chatRoomI) => {
-    setActiveChatrooms((prevactiveChatrooms: chatRoomI[]) => {
-      const prevActiveChatroomsIds = prevactiveChatrooms.map(chatroom => chatroom.id)
-      if (!prevActiveChatroomsIds.includes(chatroom.id)) {
-        return [...prevactiveChatrooms, chatroom];
+    setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      if (!prevOpenChatroomsIds.includes(chatroom.id)) {
+        return [...prevOpenChatRooms, chatroom];
       }
-      return prevactiveChatrooms;
+      return prevOpenChatRooms;
     });
   };
   
   const closeChatRoom = (chatroom: chatRoomI) => {
-    setActiveChatrooms((prevactiveChatrooms: chatRoomI[]) => {
-      const prevActiveChatroomsIds = prevactiveChatrooms.map(chatroom => chatroom.id)
-      const index = prevActiveChatroomsIds.indexOf(chatroom.id);
-      prevactiveChatrooms.splice(index, 1);
-      return [...prevactiveChatrooms];
+    setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      const index = prevOpenChatroomsIds.indexOf(chatroom.id);
+      prevOpenChatRooms.splice(index, 1);
+      return [...prevOpenChatRooms];
     });
   };
 
@@ -144,7 +144,7 @@ function App(): JSX.Element {
                 <Logged.Provider value={context.success}>
                   <NavBar
                     setMessengerOpen={setMessengerOpen}
-                    activeChatrooms={activeChatrooms}
+                    openChatRooms={openChatRooms}
                     closeChatRoom={closeChatRoom}
                     setNotificationsOpen={setNotificationsOpen}
                   />

@@ -3,7 +3,6 @@ import {
   Badge,
   createStyles,
   CssBaseline,
-  Fade,
   IconButton,
   Input,
   List,
@@ -18,8 +17,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  Dispatch,
-  SetStateAction,
 } from 'react';
 import SocketContext from '../context/socketContext';
 import { UserContext } from '../context/UserContext';
@@ -28,17 +25,16 @@ import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
 
 type chatRoomProps = {
-  setOpenChatroom: Dispatch<SetStateAction<string>>;
-  closeChatRoom: (roomId: chatRoomI) => void;
-  open: boolean;
   chatroom: chatRoomI;
+  closeChatRoom: (roomId: chatRoomI) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   paper: {
     position: 'absolute',
     maxWidth: '400px',
-    top: '57px',
+    top: '50px',
+    right: '200px',
     zIndex: 10,
     padding: '5px',
   },
@@ -85,14 +81,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const ChatRoom: React.FC<chatRoomProps> = ({
-  chatroom,
-  setOpenChatroom,
-  closeChatRoom,
-  open,
-}) => {
+const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
   const classes = useStyles();
-  // const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageI[]>([]);
   const messageRef = useRef<HTMLInputElement>(null);
@@ -118,13 +109,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     } catch (err) {
       setTimeout(getMessages, 3000);
     }
-  };
-
-  const openChatroom = () => {
-    setOpenChatroom((prev) => {
-      if (prev === chatroom.id) return '';
-      return chatroom.id;
-    });
   };
 
   useEffect(() => {
@@ -157,7 +141,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
         <IconButton
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
-          onClick={() => { openChatroom(); }}
+          onClick={() => { setOpen((prev) => !prev); }}
         >
           <Avatar>
             {getChatroomName(chatroom.name, context.name)[0]}
@@ -179,11 +163,12 @@ const ChatRoom: React.FC<chatRoomProps> = ({
           <IconButton />
         </Badge>
       </div>
-      <Fade in={open} timeout={500}>
-        <div>
+      { open && (
+        <React.Fragment>
           <CssBaseline />
           <Paper square className={classes.paper}>
             <Typography
+              onClick={() => { setOpen((prev) => !prev); }}
               className={classes.header}
               variant="h5"
               gutterBottom
@@ -222,8 +207,8 @@ const ChatRoom: React.FC<chatRoomProps> = ({
               </div>
             </div>
           </Paper>
-        </div>
-      </Fade>
+        </React.Fragment>
+      )}
     </div>
   );
 };
