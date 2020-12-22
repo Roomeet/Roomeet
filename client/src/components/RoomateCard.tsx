@@ -3,11 +3,21 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card, CardActions, CardContent, Button, Typography, Modal,
 } from '@material-ui/core/';
+// import blueDoor from '../images/blueDoor.png';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import { Link } from 'react-router-dom';
+import { motion, Variants } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 import { UserDataInterface } from '../interfaces/userData';
+// import { UserDataInterface } from '../../../server/models/UserData';
+
+export interface CardProps {
+  userInfo:UserDataInterface,
+  handleSwipe:(liked:boolean)=>void
+}
+const screenWidth = window.screen.availWidth;
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +48,7 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
   },
   cardDiv: {
+    cursor: 'grab',
     height: '100%',
     width: '80%',
     maxWidth: '500px',
@@ -48,10 +59,14 @@ const useStyles = makeStyles({
   },
   profilePic: {
     borderRadius: '50%',
-    border: '7px solid black',
+    // border: '7px solid black',
+    pointerEvents: 'none',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
   },
   like: {
     fill: 'green',
+    // backgroundColor: "green",
+    // color: "black",
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
@@ -59,6 +74,8 @@ const useStyles = makeStyles({
   },
   unlike: {
     fill: 'red',
+    // backgroundColor: "red",
+    // color: "black",
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
@@ -66,17 +83,28 @@ const useStyles = makeStyles({
   },
 });
 
-export type Props = {
-  userInfo: UserDataInterface;
-  handleNext: (liked: boolean) => void;
-  activeStep: number;
-  length: number;
-};
-
-const RoomateCard: React.FC<Props> = ({
-  userInfo, handleNext, activeStep, length,
-}) => {
+const RoomateCard = ({
+  userInfo, handleSwipe,
+}:CardProps) : JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
+  const cardVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.5,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+    },
+    exit: {
+      x: screenWidth,
+      scale: 0.9,
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
   const classes = useStyles();
 
   const handleOpen = () => {
@@ -86,8 +114,34 @@ const RoomateCard: React.FC<Props> = ({
     setOpen(false);
   };
   return (
-    <div
+    <motion.div
       className={classes.cardDiv}
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      onDragEnd={
+        (event, info) => {
+          if (info.offset.x > screenWidth / 6) {
+            cardVariants.exit.x = screenWidth;
+            handleSwipe(true);
+          }
+          if (info.offset.x < -screenWidth / 6) {
+            cardVariants.exit.x = -screenWidth;
+            handleSwipe(false);
+          }
+        }
+      }
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      style={{
+        margin: 'auto',
+        // marginTop: '20vh',
+        height: '30vh',
+        width: '30vw',
+        backgroundColor: 'red',
+      }}
+      dragElastic={0.9}
     >
       <Card className={classes.root}>
         <CardContent>
@@ -100,7 +154,7 @@ const RoomateCard: React.FC<Props> = ({
             <img
               alt="profilePic"
               className={classes.profilePic}
-              src="https://picsum.photos/150/150"
+              src={`https://picsum.photos/seed/${userInfo.userId}/150/150`}
             />
           </Typography>
           <Typography variant="h5" component="h2">
@@ -124,6 +178,7 @@ const RoomateCard: React.FC<Props> = ({
             onClick={handleOpen}
             className={classes.goToProfile}
             size="small"
+            // onClick={handleOpenProfile}
           >
             <img
               className={classes.goToProfile}
@@ -137,22 +192,20 @@ const RoomateCard: React.FC<Props> = ({
           <Button
             size="small"
             className={classes.like}
-            onClick={() => handleNext(true)}
-            disabled={activeStep === length}
+            onClick={() => { handleSwipe(true); }}
           >
             <ThumbUpIcon className={classes.like} />
           </Button>
           <Button
             size="small"
             className={classes.unlike}
-            onClick={() => handleNext(false)}
-            disabled={activeStep === length}
+            onClick={() => { handleSwipe(false); }}
           >
             <ThumbDownIcon className={classes.unlike} style={{ fill: 'red' }} />
           </Button>
         </CardActions>
       </Card>
-    </div>
+    </motion.div>
   );
 };
 
