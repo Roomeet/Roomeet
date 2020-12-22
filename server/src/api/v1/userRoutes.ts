@@ -107,7 +107,6 @@ router.post('/user-data/:id', async (req: Request, res: Response) => {
               deletedAt: null
             });
             // Save the document
-            console.log(result);
             result.save((err: any) => {
               if (!err) {
                 // Do something with the document

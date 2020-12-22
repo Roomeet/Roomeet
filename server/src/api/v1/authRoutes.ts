@@ -87,10 +87,9 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   const loginData = req.body;
   const user = await userIsExist(loginData.email);
-  console.log(user);
 
   if (!user) {
-    return res.status(404).send('cannot find user');
+    return res.status(404).json('cannot find user');
   }
   try {
     await bcrypt.compare(
