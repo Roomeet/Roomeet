@@ -29,11 +29,6 @@ const PrivateRoutesContainer: React.FC = () => (
         <UserDataForm />
       </div>
     </PrivateRoute>
-    {/* <PrivateRoute exact path="/messenger">
-      <div id="private-routes">
-        <Messenger />
-      </div>
-    </PrivateRoute> */}
     <Route path="/*">
       <Redirect
         to={{
