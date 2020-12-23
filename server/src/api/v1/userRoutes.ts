@@ -8,6 +8,9 @@ import Like from '../../models/Like';
 import User from '../../models/user';
 import UserData, { UserDataInterface } from '../../models/UserData';
 
+const { readFileSync } = require('fs');
+const path = require('path');
+
 const router = Router();
 
 const crypto = require('crypto');
@@ -216,6 +219,19 @@ router.get('/all-cards', async (req: Request, res: Response) => {
     res.status(200).json(allcards);
   } catch (error) {
     res.status(500).json({ error });
+  }
+});
+
+// get all cities
+router.get('/cities', async (req, res) => {
+  try {
+    const data = readFileSync(path.resolve(__dirname, './backup.json'));
+    const dataJson = JSON.parse(data);
+    res.send(dataJson.Sheet1);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).send({ message: error.message });
   }
 });
 
