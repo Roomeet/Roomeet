@@ -9,6 +9,8 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import "./roomates.css";
 import SocketContext from "../../context/socketContext";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 const useStyles = makeStyles((theme) => ({
  root: {
@@ -114,7 +116,8 @@ const Roomates: React.FC = () => {
 
  return (
   <div className="cards-page">
-   {!loading && allUsersInfo[0] ? (
+   {!loading &&
+    allUsersInfo[0] ? (
     <div className={classes.root}>
      <SwipeableViews
       axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -137,7 +140,9 @@ const Roomates: React.FC = () => {
      </SwipeableViews>
     </div>
    ) : (
-    <div>loading...</div>
+    <div>
+     Loading..
+    </div>
    )}
   </div>
  );

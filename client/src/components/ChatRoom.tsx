@@ -24,6 +24,7 @@ import { messageI, chatRoomI } from '../interfaces/chat';
 import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
 
+
 type chatRoomProps = {
   chatroom: chatRoomI;
   closeChatRoom: (roomId: chatRoomI) => void;
@@ -90,6 +91,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
 
+
   const sendMessage = () => {
     // console.log('socket....', socket, 'reffff', messageRef);
     if (socket && messageRef) {
@@ -99,6 +101,11 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
         message: messageRef?.current?.value,
       });
       if (messageRef?.current) messageRef.current.value = '';
+    }
+  };
+  const sendByEnter = (e: any) => {
+    if (e.key === 'Enter') {
+      sendMessage();
     }
   };
 
@@ -124,7 +131,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
         setMessages(((prev) => [...prev, message]));
       });
     }
-
     // trig the exitedRoom event on unmount
     return () => {
       if (socket) {
@@ -141,54 +147,62 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
         <IconButton
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
-          onClick={() => { setOpen((prev) => !prev); }}
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
         >
-          <Avatar>
-            {getChatroomName(chatroom.name, context.name)[0]}
-          </Avatar>
+          <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
         </IconButton>
         <Badge
           badgeContent="X"
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
           color="secondary"
-          style={{ marginLeft: '-15px' }}
-          onClick={() => { closeChatRoom(chatroom); }}
+          style={{ marginLeft: "-15px" }}
+          onClick={() => {
+            closeChatRoom(chatroom);
+          }}
           invisible={badgeInvisible}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
         >
           <IconButton />
         </Badge>
       </div>
-      { open && (
+      {open && (
         <React.Fragment>
           <CssBaseline />
           <Paper square className={classes.paper}>
             <Typography
-              onClick={() => { setOpen((prev) => !prev); }}
+              onClick={() => {
+                setOpen((prev) => !prev);
+              }}
               className={classes.header}
               variant="h5"
               gutterBottom
             >
               {getChatroomName(chatroom.name, context.name)}
             </Typography>
-            <List className={classes.list}>
-              {messages[0] ? messages.map((message) => (
-                <Paper
-                  key={message.userId}
-                  className={
-                    message.userId === context.id ? classes.ownMessage : classes.otherMessage
-                  }
-                >
-                  <Typography variant="body2">
-                    {message.message}
-                  </Typography>
-                </Paper>
-              )) : <div>no messages</div>}
-            </List>
+              <List className={classes.list}>
+                {messages[0] ? (
+                  messages.map((message) => (
+                    <Paper
+                      key={message.userId}
+                      className={
+                        message.userId === context.id
+                          ? classes.ownMessage
+                          : classes.otherMessage
+                      }
+                    >
+                      <Typography variant="body2">{message.message}</Typography>
+                    </Paper>
+                  ))
+                ) : (
+                  <div>no messages</div>
+                )}
+              </List>
             <div className="chatroomActions">
               <div className={classes.submit}>
                 <Input
@@ -197,10 +211,13 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
                   name="message"
                   placeholder="Type here..."
                   inputRef={messageRef}
+                  onKeyPress={(e) => sendByEnter(e)}
                 />
                 <IconButton
                   className={classes.sendButton}
-                  onClick={() => { sendMessage(); }}
+                  onClick={() => {
+                    sendMessage();
+                  }}
                 >
                   <SendIcon />
                 </IconButton>
