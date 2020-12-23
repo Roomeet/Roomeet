@@ -124,11 +124,11 @@ const RoomateCard = ({
         (event, info) => {
           if (info.offset.x > screenWidth / 6) {
             cardVariants.exit.x = screenWidth;
-            handleSwipe(true);
+            handleSwipe(false);
           }
           if (info.offset.x < -screenWidth / 6) {
             cardVariants.exit.x = -screenWidth;
-            handleSwipe(false);
+            handleSwipe(true);
           }
         }
       }

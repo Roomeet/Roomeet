@@ -87,6 +87,7 @@ io.on("connect", (socket: any) => {
 
   socket?.on("like", async ({ passiveUser, activeUser, liked }: {passiveUser: userForMatch, activeUser: userForMatch, liked: boolean}, matchEmitter: (matchUsers: userForMatch[]) => void) => {
     try {
+      console.log(liked);
       const like: LikeInterface = await likeControllers.handleLike(activeUser.id, passiveUser.id, liked);
       console.log(like);
       if(like?.liked) {
