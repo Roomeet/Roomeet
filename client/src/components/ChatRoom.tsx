@@ -102,6 +102,11 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
       if (messageRef?.current) messageRef.current.value = '';
     }
   };
+  const sendByEnter = (e: any) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
 
   const getMessages = async () => {
     try {
@@ -131,7 +136,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
         setMessages(((prev) => [...prev, message]));
       });
     }
-
     // trig the exitedRoom event on unmount
     return () => {
       if (socket) {
@@ -149,11 +153,11 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
         <IconButton
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
-          onClick={() => { setOpen((prev) => !prev); }}
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
         >
-          <Avatar>
-            {getChatroomName(chatroom.name, context.name)[0]}
-          </Avatar>
+          <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
         </IconButton>
         <Badge
           badgeContent="X"
@@ -161,7 +165,9 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           onMouseLeave={() => setBadgeInvisible(true)}
           color="secondary"
           style={{ marginLeft: '-15px' }}
-          onClick={() => { closeChatRoom(chatroom); }}
+          onClick={() => {
+            closeChatRoom(chatroom);
+          }}
           invisible={badgeInvisible}
           anchorOrigin={{
             vertical: 'top',
@@ -171,12 +177,14 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           <IconButton />
         </Badge>
       </div>
-      { open && (
+      {open && (
         <React.Fragment>
           <CssBaseline />
           <Paper square className={classes.paper}>
             <Typography
-              onClick={() => { setOpen((prev) => !prev); }}
+              onClick={() => {
+                setOpen((prev) => !prev);
+              }}
               className={classes.header}
               variant="h5"
               gutterBottom
@@ -206,10 +214,13 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
                   name="message"
                   placeholder="Type here..."
                   inputRef={messageRef}
+                  onKeyPress={(e) => sendByEnter(e)}
                 />
                 <IconButton
                   className={classes.sendButton}
-                  onClick={() => { sendMessage(); }}
+                  onClick={() => {
+                    sendMessage();
+                  }}
                 >
                   <SendIcon />
                 </IconButton>

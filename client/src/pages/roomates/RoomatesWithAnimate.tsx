@@ -13,6 +13,8 @@ import {motion,AnimatePresence,} from 'framer-motion'
 import { UserContext } from '../../context/UserContext';
 import SocketContext from "../../context/socketContext";
 import { useHistory } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -67,6 +69,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#BFB4AB",
     },
   },
+  loading: {
+    backgroundColor: 'white',
+    border: '1px solid black',
+    width: '40vw',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  }
 }));
 
 const Roomates: React.FC = () => {
@@ -119,26 +128,29 @@ const Roomates: React.FC = () => {
    }, []);
   return (
     <div className="cards-page">
-      {allUsersInfo[0] 
-        ? (
-          <div className={classes.root}>
-            <Paper square elevation={0} className={classes.header}>
-              <Typography className={classes.headerText}>
-                Choose Your Next Roomate!
-              </Typography>
-            </Paper>
-            <AnimatePresence exitBeforeEnter initial={false}>
-              <RoomateCard 
-                key={firstCard.id}
-                userInfo={firstCard} 
-                handleSwipe={handleSwipe}
-              />             
-            </AnimatePresence>
-              </div>
-            ) 
-        : (
-          <div>loading...</div>
-        )}
-    </div>);
+      {allUsersInfo[0] ? (
+        <div className={classes.root}>
+          <Paper square elevation={0} className={classes.header}>
+            <Typography className={classes.headerText}>
+              Choose Your Next Roomate!
+            </Typography>
+          </Paper>
+          <AnimatePresence exitBeforeEnter initial={false}>
+            <RoomateCard
+              key={firstCard.id}
+              userInfo={firstCard}
+              handleSwipe={handleSwipe}
+            />
+          </AnimatePresence>
+        </div>
+      ) : (
+        <div className={classes.loading}>
+          {" "}
+          <CircularProgress size={50} />
+          Waiting for more cards...
+        </div>
+      )}
+    </div>
+  );
 }
 export default Roomates;
