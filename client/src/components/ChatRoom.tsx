@@ -87,6 +87,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageI[]>([]);
   const messageRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
 
@@ -108,6 +109,12 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
       setMessages(data);
     } catch (err) {
       setTimeout(getMessages, 3000);
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -134,6 +141,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
       }
     };
   }, []);
+  useEffect(scrollToBottom, [messages]);
 
   return (
     <div className="ChatRoom">
@@ -188,6 +196,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
                   </Typography>
                 </Paper>
               )) : <div>no messages</div>}
+              <div ref={messagesEndRef} />
             </List>
             <div className="chatroomActions">
               <div className={classes.submit}>
