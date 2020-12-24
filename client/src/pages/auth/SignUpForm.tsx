@@ -91,7 +91,15 @@ const SignUpForm: React.FC = () => {
     email: '',
   };
 
+  const upperCaseName = (name:string) => {
+    const str = name.slice(1);
+    const firstLetter = name[0].toUpperCase();
+    return (firstLetter + str);
+  };
+
   const signUp = (values: SignUpUserData) => {
+    values.name = upperCaseName(values.name);
+    values.lastName = upperCaseName(values.lastName);
     network.post('/api/v1/auth/register', values);
     location.push('/signin');
   };
