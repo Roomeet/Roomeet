@@ -49,7 +49,7 @@ exports.handleLike = async (activeUserId: string, passiveUserId: string, liked: 
 exports.checkMatchingLike = async (activeUserId: string, passiveUserId: string) => {
   try{ 
     //checks if the equivalent user is liking you to
-    return await Like.findOne({activeUserId: passiveUserId, passiveUserId: activeUserId});
+    return await Like.findOne({activeUserId: passiveUserId, passiveUserId: activeUserId, liked: true});
   } catch(error) {
     console.trace(error);
   }

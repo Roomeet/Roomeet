@@ -102,6 +102,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
       if (messageRef?.current) messageRef.current.value = '';
     }
   };
+
   const sendByEnter = (e: any) => {
     if (e.key === 'Enter') {
       sendMessage();
@@ -124,23 +125,35 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
   };
 
   useEffect(() => {
+    if (socket) {
+      socket.on('newMessage', (message: messageI) => {
+        if (chatroom.participants.includes(message.userId)) {
+          const newMessages = [...messages, message];
+          setMessages(newMessages);
+        }
+      });
+    }
+  }, [messages]);
+
+  useEffect(() => {
     getMessages();
     if (socket) {
     // trig the enteredRoom event
       socket.emit('EnteredRoom', {
-        chatRoomId: chatroom.id,
+        chatroomId: chatroom.id,
       });
 
       // define the new message event
-      socket.on('newMessage', (message: messageI) => {
-        setMessages(((prev) => [...prev, message]));
-      });
+    //   socket.on('newMessage', (message: messageI) => {
+    //     setMessages(((prev) => [...prev, message]));
+    //   });
     }
+
     // trig the exitedRoom event on unmount
     return () => {
       if (socket) {
         socket.emit('exitedRoom', {
-          chatRoomId: chatroom.id,
+          chatroomId: chatroom.id,
         });
       }
     };
