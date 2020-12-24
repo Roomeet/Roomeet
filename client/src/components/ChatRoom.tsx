@@ -122,7 +122,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView();
     }
   };
 
@@ -160,7 +160,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       }
     };
   }, []);
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, open]);
 
   return (
     <div className="ChatRoom">
