@@ -167,21 +167,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
           onClick={() => {
-            setOpen((prev) => {
-              console.log(socket);
-              if (socket) {
-                if (!prev === false) {
-                  socket.emit('exitedRoom', {
-                    chatroomId: chatroom.id,
-                  });
-                } else if (!prev === true) {
-                  socket.emit('EnteredRoom', {
-                    chatroomId: chatroom.id,
-                  });
-                }
-              }
-              return !prev;
-            });
+            setOpen((prev) => !prev);
           }}
         >
           <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
