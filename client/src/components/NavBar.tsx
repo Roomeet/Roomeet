@@ -111,6 +111,7 @@ const NavBar: React.FC<navbarProps> = ({
   const [openLogout, setOpenLogout] = React.useState<boolean>(false);
   const [numberOfNewMesseges, setNumberOfNewMesseges] = React.useState<number | null>(0);
   const [numberOfNewNotifications, setNumberOfNewNotifications] = React.useState<number | null>(0);
+  const [openChatroom, setOpenChatroom] = useState('');
   const context = React.useContext(UserContext);
   const history = useHistory();
 
@@ -154,6 +155,14 @@ const NavBar: React.FC<navbarProps> = ({
     history.push(url);
   };
 
+  const openChatroomOnClick = (chatroomId: string) => {
+    if (openChatroom === chatroomId) {
+      setOpenChatroom('');
+      return;
+    }
+    setOpenChatroom(chatroomId);
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -175,7 +184,12 @@ const NavBar: React.FC<navbarProps> = ({
   const renderMobileMenu = (
     <div className={classes.sectionMobile}>
       {openChatRooms[0] && openChatRooms.map((chatroom) => (
-        <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
+        <ChatRoom
+          chatroom={chatroom}
+          closeChatRoom={closeChatRoom}
+          open={openChatroom === chatroom.id}
+          openChatroomOnClick={openChatroomOnClick}
+        />
       ))}
       <Menu
         anchorEl={mobileMoreAnchorEl}
@@ -256,7 +270,12 @@ const NavBar: React.FC<navbarProps> = ({
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {openChatRooms[0] && openChatRooms.map((chatroom) => (
-              <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
+              <ChatRoom
+                chatroom={chatroom}
+                closeChatRoom={closeChatRoom}
+                open={openChatroom === chatroom.id}
+                openChatroomOnClick={openChatroomOnClick}
+              />
             ))}
             <MenuItem>
               <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>

@@ -77,7 +77,7 @@ io.on("connect", (socket: any) => {
         userId,
         message,
       });
-      io.to(chatroomId).emit("newMessage", {
+      io.to(chatroomId).emit(`newMessage${chatroomId}`, {
         message,
         userId,
       });

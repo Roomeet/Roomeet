@@ -27,6 +27,8 @@ import network from '../utils/network';
 type chatRoomProps = {
   chatroom: chatRoomI;
   closeChatRoom: (roomId: chatRoomI) => void;
+  open: boolean;
+  openChatroomOnClick: (chatroomId: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -34,7 +36,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     position: 'absolute',
     maxWidth: '400px',
     top: '50px',
-    right: '200px',
     zIndex: 10,
     padding: '5px',
   },
@@ -81,9 +82,10 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
+const ChatRoom: React.FC<chatRoomProps> = ({
+  chatroom, closeChatRoom, open, openChatroomOnClick,
+}) => {
   const classes = useStyles();
-  const [open, setOpen] = useState<boolean>(false);
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageI[]>([]);
   const messageRef = useRef<HTMLInputElement>(null);
@@ -126,7 +128,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
 
   useEffect(() => {
     if (socket) {
-      socket.on('newMessage', (message: messageI) => {
+      socket.on(`newMessage${chatroom.id}`, (message: messageI) => {
         if (chatroom.participants.includes(message.userId)) {
           const newMessages = [...messages, message];
           setMessages(newMessages);
@@ -167,7 +169,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
           onClick={() => {
-            setOpen((prev) => !prev);
+            openChatroomOnClick(chatroom.id);
           }}
         >
           <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
@@ -195,9 +197,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({ chatroom, closeChatRoom }) => {
           <CssBaseline />
           <Paper square className={classes.paper}>
             <Typography
-              onClick={() => {
-                setOpen((prev) => !prev);
-              }}
               className={classes.header}
               variant="h5"
               gutterBottom
