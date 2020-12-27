@@ -1,7 +1,7 @@
 /*eslint-disable */
 
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   MenuItem,
@@ -12,20 +12,14 @@ import {
   TextField,
   CssBaseline,
   Button,
-  Select,
-  Chip,
-  InputLabel,
 } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object, number } from 'yup';
-import {
-  UserDataFormResponse,
-  UserDataInterface,
-} from '../../interfaces/userData';
+import { UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
-import axios from 'axios';
 import network from '../../utils/network';
-import WrappedMap from '../../components/Map';
+import Map from '../../components/Map';
+import { withScriptjs, withGoogleMap } from 'react-google-maps';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -71,6 +65,11 @@ const UserDataForm: React.FC = () => {
   const history = useHistory();
   const context = React.useContext(UserContext);
   const [user, setUser] = React.useState<UserDataInterface>();
+  const [cities, setCities] = React.useState<any>([]);
+
+  const WrappedMap: any = withScriptjs(
+    withGoogleMap(() => Map(cities, setCities))
+  );
 
   const validationSchema = object({
     age: number()
@@ -98,8 +97,8 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    console.log(context);
     values.fullName = context.name;
+    values.cities = cities;    
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
   };
 
@@ -109,6 +108,7 @@ const UserDataForm: React.FC = () => {
     );
     if (data[0]) {
       setUser(data[0]);
+      setCities(data[0].cities);
     } else {
       setUser(initialValues);
     }
@@ -176,30 +176,6 @@ const UserDataForm: React.FC = () => {
                         label='age'
                         type='number'
                         data-test='userdata-age'
-                        helperText={
-                          touched || value !== initialValue ? error : ''
-                        }
-                        {...field}
-                      />
-                    )}
-                  </Field>
-                  <Field name='rentLocation'>
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        id='rentLocation'
-                        label='Rent Location'
-                        type='text'
-                        data-test='form-full-name'
-                        error={
-                          (touched || value !== initialValue) && Boolean(error)
-                        }
                         helperText={
                           touched || value !== initialValue ? error : ''
                         }

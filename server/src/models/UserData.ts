@@ -15,6 +15,7 @@ export interface UserDataInterface extends Document {
   employed?: boolean;
   numOfRoomates?: number;
   religion?: boolean;
+  cities?: JSON;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
@@ -31,7 +32,7 @@ const UserDataSchema = new Schema({
   },
   fullName: { type: String, required: true },
   aboutMe: { type: String, required: true },
-  rentLocation: { type: String, required: true },
+  // rentLocation: { type: String, required: true },
   age: { type: Number, required: true },
   gender: { type: String, required: true },
   smoke: { type: String, required: true },
@@ -40,6 +41,7 @@ const UserDataSchema = new Schema({
   employed: { type: Boolean },
   numOfRoomates: Number,
   religion: Boolean,
+  cities: Object,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date

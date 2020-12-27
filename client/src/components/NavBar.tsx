@@ -202,8 +202,8 @@ const NavBar: React.FC<navbarProps> = ({
             <Badge badgeContent={numberOfNewMesseges} color="secondary">
               <MailIcon />
             </Badge>
-            <p>Messeges</p>
           </IconButton>
+          <p>Messeges</p>
         </MenuItem>
         <MenuItem onClick={handleNotificationClick}>
           <IconButton aria-label="notifications" color="inherit">
@@ -258,13 +258,11 @@ const NavBar: React.FC<navbarProps> = ({
             {openChatRooms[0] && openChatRooms.map((chatroom) => (
               <ChatRoom chatroom={chatroom} closeChatRoom={closeChatRoom} />
             ))}
-            <MenuItem>
-              <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
-                <Badge badgeContent={numberOfNewMesseges} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-            </MenuItem>
+            <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+              <Badge badgeContent={numberOfNewMesseges} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
             <IconButton
               aria-label="show notifications"
               color="inherit"
