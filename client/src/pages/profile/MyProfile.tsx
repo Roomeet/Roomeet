@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -56,6 +57,7 @@ const useStyles = makeStyles({
     display: 'flex',
     marginBottom: '2vh',
     flexDirection: 'column',
+
   },
   editButton: {
     display: 'flex',
@@ -66,16 +68,20 @@ const useStyles = makeStyles({
 const MyProfile: React.FC = () => {
   const [userInformation, setUserInformation] = useState<UserDataInterface>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [image, setImage] = useState<any>();
   const history = useHistory();
   const context = useContext(UserContext);
   const classes = useStyles();
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
-    setUserInformation(data[0]);
+    const profilePicture = Buffer.from(data.profilePicture[0].file.data.data);
+    const base64String = profilePicture.toString('base64');
+    setUserInformation(data.userData[0]);
+    setImage(base64String);
     setLoading(false);
   };
-
+  console.log(image);
   useEffect(() => {
     fetchData();
   }, []);
@@ -95,9 +101,11 @@ const MyProfile: React.FC = () => {
                 <div className={classes.titleAndPic}>
                   <h1>My Profile</h1>
                   <img
+                    width='250'
+                    height='250'
                     alt="profilePic"
                     className={classes.profilePic}
-                    src="https://picsum.photos/150/150"
+                    src={`data:image/jpg;base64,${image}`}
                   />
                 </div>
                 <TextField

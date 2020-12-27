@@ -3,16 +3,22 @@ import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Match from '../../models/Match';
 import Like from '../../models/Like';
+import ProfilePicture from '../../models/ProfilePicture';
 
 // mongoDB models:
 import User from '../../models/user';
 import UserData, { UserDataInterface } from '../../models/UserData';
+import user from '../../models/user';
 
 const router = Router();
 
 const crypto = require('crypto');
-// const UserData = require('../../../models/userData');
+const multer = require('multer');
+const fileUpLoader = require('express-fileupload');
 
+const upload = multer();
+
+// const UserData = require('../../../models/userData');
 // Routes
 
 // Get all users
@@ -74,7 +80,8 @@ router.get(
 
     try {
       const userData = await UserData.find({ userId: id });
-      res.json(userData);
+      const profilePicture = await ProfilePicture.find({ userId: id });
+      res.json({ userData, profilePicture });
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -82,13 +89,20 @@ router.get(
 );
 
 // update user data form
-router.post('/user-data/:id', async (req: Request, res: Response) => {
+router.post('/user-data/:id', async (req: any, res: Response) => {
   const { id } = req.params;
   try {
     const { body: rawUserData } = req;
     const userData = new UserData({
       ...rawUserData
     });
+    // console.log(req.files.values);
+    // const { data, mimeType } = req.files.file;
+    // console.log('DATA ----', data);
+    // console.log('mimeType ----', mimeType);
+    // userData.image.data = data;
+    // userData.image.ContentType = mimeType;
+    // console.log(userData);
     await UserData.findOneAndUpdate(
       { userId: id },
       userData,
@@ -121,6 +135,46 @@ router.post('/user-data/:id', async (req: Request, res: Response) => {
         }
       }
     );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
+router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { file } = req.files;
+
+    let profilePicture = await ProfilePicture.findOneAndUpdate({ userId }, { file }, { new: true });
+    // If like doesn't exist
+    if (!profilePicture) {
+      // Create it
+      const newProfilePicture = new ProfilePicture({
+        _id: new ObjectId(),
+        userId,
+        file: {
+          data: file.data,
+          ContentType: file.mimeType
+        },
+        createdAt: new Date(),
+        updatedAt: null,
+        deletedAt: null
+      });
+      profilePicture = await newProfilePicture.save();
+    }
+    // Save the document
+    res.status(200).json(profilePicture);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/user-data/profile/picture/:userId', async (req: any, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const data = await ProfilePicture.find({ userId });
+    res.status(200).send({ data });
   } catch (error) {
     res.status(500).json({ error });
   }

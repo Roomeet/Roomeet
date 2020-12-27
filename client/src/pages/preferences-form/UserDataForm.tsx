@@ -70,6 +70,9 @@ const UserDataForm: React.FC = () => {
   const history = useHistory();
   const context = React.useContext(UserContext);
   const [user, setUser] = React.useState<UserDataInterface>();
+  const [file, setFile] = React.useState<any>();
+
+
 
   const validationSchema = object({
     age: number()
@@ -98,9 +101,14 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    console.log(context);
     values.fullName = context.name;
+    const data = new FormData();
+    // data.append('userId', context.id);
+    data.append('file', file);
+    console.log(data);
+    console.log(values);
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
+    await network.post(`/api/v1/users/user-data/profile/picture/${context.id}`, data);
   };
 
   const fetchUserData = async () => {
@@ -125,6 +133,13 @@ const UserDataForm: React.FC = () => {
           <CssBaseline />
           <div className={classes.paper}>
             <div className={classes.logo}>Let Us Know More About You</div>
+              <label htmlFor="file">Profile picture</label>
+              <input type="file" className="image" accept=".jpg" onChange={event => {
+                if(event.target.files){
+                  const image = event.target.files[0];
+                  setFile(image);
+                }
+              }} />
             <Formik
               // @ts-ignore
               initialValues={user}
@@ -135,6 +150,13 @@ const UserDataForm: React.FC = () => {
                 history.push("/home");
               }}
             >
+              {/* <input
+                type="file"
+                name="file"
+                onChange={(event: any) =>{
+                  setFieldValue("photo1", event.currentTarget.files[0]);
+                }}
+              /> */}
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
                   <Field name="gender">
@@ -268,6 +290,26 @@ const UserDataForm: React.FC = () => {
                         fullWidth
                         id="numOfRoomates"
                         label="Number Of Roomates"
+                        type="number"
+                        data-test="userdata-age"
+                        helperText={
+                          touched || value !== initialValue ? error : ""
+                        }
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name="age">
+                    {({
+                      field,
+                      meta: { error, value, initialValue, touched },
+                    }: FieldProps) => (
+                      <TextField
+                        variant="outlined"
+                        style={{ margin: "5px" }}
+                        fullWidth
+                        id="age"
+                        label="age"
                         type="number"
                         data-test="userdata-age"
                         helperText={
