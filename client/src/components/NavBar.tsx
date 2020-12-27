@@ -212,15 +212,15 @@ const NavBar: React.FC<navbarProps> = ({
           My profile
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
-          <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+          <IconButton aria-label="messeges" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
             <Badge badgeContent={numberOfNewMesseges} color="secondary">
               <MailIcon />
             </Badge>
-            <p>Messeges</p>
           </IconButton>
+          <p>Messeges</p>
         </MenuItem>
         <MenuItem onClick={handleNotificationClick}>
-          <IconButton aria-label="show 11 new notifications" color="inherit">
+          <IconButton aria-label="notifications" color="inherit">
             <Badge badgeContent={numberOfNewNotifications} color="secondary">
               <NotificationsIcon />
             </Badge>
@@ -229,7 +229,7 @@ const NavBar: React.FC<navbarProps> = ({
         </MenuItem>
         <MenuItem onClick={handleLogoutOpen}>
           <IconButton
-            aria-label="account of current user"
+            aria-label="logout"
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
@@ -277,13 +277,11 @@ const NavBar: React.FC<navbarProps> = ({
                 openChatroomOnClick={openChatroomOnClick}
               />
             ))}
-            <MenuItem>
-              <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
-                <Badge badgeContent={numberOfNewMesseges} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-            </MenuItem>
+            <IconButton aria-label="show messenger" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
+              <Badge badgeContent={numberOfNewMesseges} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
             <IconButton
               aria-label="show notifications"
               color="inherit"

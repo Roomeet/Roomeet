@@ -1,22 +1,21 @@
 /* eslint-disable no-console */
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import Match from '../../models/match';
+import Match from '../../models/Match';
 import Like from '../../models/Like';
 
 // mongoDB models:
 import User from '../../models/user';
 import UserData, { UserDataInterface } from '../../models/UserData';
-import user from '../../models/user';
+
+const { readFileSync } = require('fs');
+const path = require('path');
 
 const router = Router();
 
 const crypto = require('crypto');
-const multer = require('multer');
-
-const upload = multer();
-
 // const UserData = require('../../../models/userData');
+
 // Routes
 
 // Get all users
@@ -86,7 +85,7 @@ router.get(
 );
 
 // update user data form
-router.post('/user-data/:id', async (req: any, res: Response) => {
+router.post('/user-data/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const { body: rawUserData } = req;
@@ -126,20 +125,6 @@ router.post('/user-data/:id', async (req: any, res: Response) => {
       }
     );
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error });
-  }
-});
-
-router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
-  try {
-    const { userId } = req.params;
-    const { file } = req;
-    const image = file.buffer;
-    const userData = await UserData.findOneAndUpdate({ userId }, { image }, { new: true });
-    res.status(200).json(userData);
-  } catch (error) {
-    console.log(error);
     res.status(500).json({ error });
   }
 });
@@ -234,6 +219,19 @@ router.get('/all-cards', async (req: Request, res: Response) => {
     res.status(200).json(allcards);
   } catch (error) {
     res.status(500).json({ error });
+  }
+});
+
+// get all cities
+router.get('/cities', async (req, res) => {
+  try {
+    const data = readFileSync(path.resolve(__dirname, './backup.json'));
+    const dataJson = JSON.parse(data);
+    res.send(dataJson.Sheet1);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).send({ message: error.message });
   }
 });
 
