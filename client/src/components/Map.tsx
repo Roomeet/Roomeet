@@ -14,14 +14,13 @@ function Map(cities : any[], setCities : any): any {
   const handleClick = (e : any) => {
     setCities((prev : any) => [...prev, { lat: e.latLng.lat(), lng: e.latLng.lng() }]);
   };
-
   const map = (
     <GoogleMap
       defaultZoom={10}
       defaultCenter={{ lat: 31.771959, lng: 35.217018 }}
       onClick={handleClick}
     >
-      {cities.length && cities.map((city: any, index:Number) => (
+      {cities?.length && cities.map((city: any, index:Number) => (
         <Marker
           key={city.lat + city.lng}
           position={{

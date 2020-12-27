@@ -108,7 +108,7 @@ const UserDataForm: React.FC = () => {
     );
     if (data[0]) {
       setUser(data[0]);
-      setCities(data[0].cities);
+      setCities(data[0].cities ? data[0].cities : []);
     } else {
       setUser(initialValues);
     }
