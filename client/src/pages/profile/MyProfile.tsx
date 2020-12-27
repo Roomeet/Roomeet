@@ -75,10 +75,10 @@ const MyProfile: React.FC = () => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
-    const profilePicture = Buffer.from(data.profilePicture[0].file.data.data);
-    const base64String = profilePicture.toString('base64');
-    setUserInformation(data.userData[0]);
-    setImage(base64String);
+    // const profilePicture = Buffer.from(data.profilePicture[0].file.data.data);
+    // const base64String = profilePicture.toString('base64');
+    setUserInformation(data.userData);
+    setImage('base64String');
     setLoading(false);
   };
   console.log(image);

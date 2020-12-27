@@ -103,6 +103,7 @@ const UserDataForm: React.FC = () => {
   const submit = async (values: any) => {
     values.fullName = context.name;
     const data = new FormData();
+    delete values.image;
     // data.append('userId', context.id);
     data.append('file', file);
     console.log(data);

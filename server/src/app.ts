@@ -4,7 +4,6 @@ import path from 'path';
 
 const cors = require('cors');
 require('dotenv').config();
-const fileUpLoader = require('express-fileupload');
 
 const app: express.Application = express();
 const URI = process.env.MONGODB_URI;
@@ -23,7 +22,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use('/', express.static('./build/'));
 app.use(express.json());
-app.use(fileUpLoader());
+
 app.set('view engine', 'ejs');
 
 mongoose

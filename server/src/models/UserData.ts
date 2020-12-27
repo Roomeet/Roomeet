@@ -4,6 +4,10 @@ import { ObjectId } from 'mongodb';
 export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
+  image: {
+    data: Buffer,
+    ContentType: string,
+  }
   fullName: string;
   aboutMe: string;
   rentLocation: string;
@@ -28,6 +32,10 @@ const UserDataSchema = new Schema({
   userId: {
     type: ObjectId,
     required: true
+  },
+  image: {
+    data: Buffer,
+    ContentType: String
   },
   fullName: { type: String, required: true },
   aboutMe: { type: String, required: true },

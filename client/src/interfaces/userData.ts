@@ -5,6 +5,10 @@ export type UserDataFormResponse = {
   age: number;
   gender: string;
   smoke: Smoke;
+  image: {
+    data: Buffer,
+    ContentType: string,
+  };
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
@@ -21,6 +25,10 @@ export interface UserDataInterface extends Document {
   userId: string,
   fullName: string,
   aboutMe: string,
+  image: {
+    data: Buffer,
+    ContentType: string,
+  },
   rentLocation: string,
   age: number,
   gender: string,
