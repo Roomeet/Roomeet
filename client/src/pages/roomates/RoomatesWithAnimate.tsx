@@ -145,7 +145,6 @@ const Roomates: React.FC = () => {
         </div>
       ) : (
         <div className={classes.loading}>
-          {" "}
           <CircularProgress size={50} />
           Waiting for more cards...
         </div>

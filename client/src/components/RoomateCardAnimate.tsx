@@ -47,19 +47,22 @@ const useStyles = makeStyles({
     height: '15vh',
     marginRight: 'auto',
     marginLeft: 'auto',
+    '&:hover':
+{ transform: 'scale(1.02)' },
   },
   cardDiv: {
     cursor: 'grab',
     height: '100%',
     width: '80%',
     maxWidth: '500px',
+    minWidth: '300px',
     marginTop: '4.5vh',
     marginBottom: '3vh',
     marginRight: 'auto',
     marginLeft: 'auto',
   },
   profilePic: {
-    borderRadius: '50%',
+    // borderRadius: '50%',
     // border: '7px solid black',
     pointerEvents: 'none',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
@@ -73,6 +76,7 @@ const useStyles = makeStyles({
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
+      transform: 'scale(1.05)',
     },
   },
   unlike: {
@@ -82,6 +86,7 @@ const useStyles = makeStyles({
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
+      transform: 'scale(1.05)',
     },
   },
 });
