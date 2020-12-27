@@ -11,6 +11,7 @@ export interface UserDataInterface extends Document {
   age: number;
   gender: string;
   smoke: string;
+  budget: number;
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
@@ -37,6 +38,7 @@ const UserDataSchema = new Schema({
   age: { type: Number, required: true },
   gender: { type: String, required: true },
   smoke: { type: String, required: true },
+  budget: { type: Number },
   pet: { type: Boolean, required: true },
   relationship: { type: Boolean },
   employed: { type: Boolean },

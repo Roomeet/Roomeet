@@ -30,6 +30,7 @@ export interface UserDataInterface extends Document {
   age: number,
   gender: string,
   smoke: boolean,
+  budget: number,
   pet: boolean,
   relationship?: boolean,
   employed?: boolean,

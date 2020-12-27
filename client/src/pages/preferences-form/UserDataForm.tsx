@@ -12,9 +12,8 @@ import {
   TextField,
   CssBaseline,
   Button,
-  Select,
-  Chip,
-  InputLabel,
+  Slider,
+  Typography 
 } from "@material-ui/core";
 import { Formik, Form, Field, FieldProps } from "formik";
 import { string, object, number } from "yup";
@@ -71,7 +70,7 @@ const UserDataForm: React.FC = () => {
   const context = React.useContext(UserContext);
   const [user, setUser] = React.useState<UserDataInterface>();
   const [file, setFile] = React.useState<any>();
-
+  const [budget, setBudget] = React.useState<number>(500);
 
 
   const validationSchema = object({
@@ -94,6 +93,7 @@ const UserDataForm: React.FC = () => {
         aboutMe: "",
         smoke: "",
         numOfRoomates: 0,
+        budget: 500,
         pet: false,
         relationship: false,
         employed: false,
@@ -101,7 +101,10 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
+    console.log(budget);
     values.fullName = context.name;
+    values.budget = budget;
+    console.log(values);
     const data = new FormData();
     delete values.image;
     // data.append('userId', context.id);
@@ -120,7 +123,6 @@ const UserDataForm: React.FC = () => {
       setUser(initialValues);
     }
   };
-
   React.useEffect(() => {
     fetchUserData();
   }, []);
@@ -298,26 +300,18 @@ const UserDataForm: React.FC = () => {
                       />
                     )}
                   </Field>
-                  <Field name="age">
-                    {({
-                      field,
-                      meta: { error, value, initialValue, touched },
-                    }: FieldProps) => (
-                      <TextField
-                        variant="outlined"
-                        style={{ margin: "5px" }}
-                        fullWidth
-                        id="age"
-                        label="age"
-                        type="number"
-                        data-test="userdata-age"
-                        helperText={
-                          touched || value !== initialValue ? error : ""
-                        }
-                        {...field}
+                  <Typography gutterBottom>Range of Budget</Typography>
+                  <Slider
+                      key={`slider-${context.id}`}
+                      defaultValue={initialValues.budget}
+                      aria-labelledby="discrete-slider"
+                      valueLabelDisplay="auto"
+                      step={100}
+                      marks
+                      min={500}
+                      max={10000}
+                      onChange={(event: any) => setBudget(Number(event.target.innerText))}
                       />
-                    )}
-                  </Field>
                   <FormControlLabel
                     control={
                       <Field name="pet">
