@@ -32,20 +32,21 @@ const validationSchema = object({
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     background: 'white',
     padding: '20px',
     borderRadius: '10px/12px',
+    'overflow-y': 'auto',
+    height: '79vh',
   },
   logo: {
     color: theme.palette.primary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -59,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     margin: 2,
+  },
+  pic: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 }));
 
@@ -112,9 +118,12 @@ const UserDataForm: React.FC = () => {
     // data.append('userId', context.id);
     data.append('file', file);
     values.fullName = context.name;
-    values.cities = cities;    
+    values.cities = cities;
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
-    await network.post(`/api/v1/users/user-data/profile/picture/${context.id}`, data);
+    await network.post(
+      `/api/v1/users/user-data/profile/picture/${context.id}`,
+      data
+    );
   };
 
   const fetchUserData = async () => {
@@ -139,13 +148,20 @@ const UserDataForm: React.FC = () => {
           <CssBaseline />
           <div className={classes.paper}>
             <div className={classes.logo}>Let Us Know More About You</div>
-              <label htmlFor="file">Profile picture</label>
-              <input type="file" className="image" accept=".jpg" onChange={event => {
-                if(event.target.files){
-                  const image = event.target.files[0];
-                  setFile(image);
-                }
-              }} />
+            <div className={classes.pic}>
+              <label htmlFor='file'>Profile picture</label>
+              <input
+                type='file'
+                className='image'
+                accept='.jpg'
+                onChange={(event) => {
+                  if (event.target.files) {
+                    const image = event.target.files[0];
+                    setFile(image);
+                  }
+                }}
+              />
+            </div>
             <Formik
               // @ts-ignore
               initialValues={user}
@@ -290,16 +306,18 @@ const UserDataForm: React.FC = () => {
                   </Field>
                   <Typography gutterBottom>Range of Budget</Typography>
                   <Slider
-                      key={`slider-${context.id}`}
-                      defaultValue={initialValues.budget}
-                      aria-labelledby="discrete-slider"
-                      valueLabelDisplay="auto"
-                      step={100}
-                      marks
-                      min={500}
-                      max={10000}
-                      onChange={(event: any) => setBudget(Number(event.target.innerText))}
-                      />
+                    key={`slider-${context.id}`}
+                    defaultValue={initialValues.budget}
+                    aria-labelledby='discrete-slider'
+                    valueLabelDisplay='auto'
+                    step={100}
+                    marks
+                    min={500}
+                    max={10000}
+                    onChange={(event: any) =>
+                      setBudget(Number(event.target.innerText))
+                    }
+                  />
                   <FormControlLabel
                     control={
                       <Field name='pet'>

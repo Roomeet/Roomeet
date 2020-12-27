@@ -26,7 +26,10 @@ const useStyles = makeStyles({
     width: '50%',
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginBottom: '5vh',
+    // maxWidth: '500px',
+    'overflow-y': 'auto',
+    height: '85vh',
+    minWidth: '300px',
   },
   noProfileDiv: {
     backgroundColor: '#BFB4AB',
@@ -60,7 +63,6 @@ const useStyles = makeStyles({
     display: 'flex',
     marginBottom: '2vh',
     flexDirection: 'column',
-
   },
   editButton: {
     display: 'flex',
@@ -90,7 +92,7 @@ const MyProfile: React.FC = () => {
       <div className={classes.root}>
         {!loading ? (
           <>
-            { userInformation ? (
+            {userInformation ? (
               <div className={classes.myProfileDiv}>
                 <div className={classes.editButton}>
                   <Button onClick={() => history.push('/edit')}>
@@ -102,16 +104,21 @@ const MyProfile: React.FC = () => {
                   <img
                     // width='250'
                     // height='250'
-                    alt="profilePic"
+                    alt='profilePic'
                     className={classes.profilePic}
-                    src={userInformation.image ? `data:image/jpg;base64,${getImageBase64String(userInformation.image)}` :
-                    `https://picsum.photos/seed/${userInformation.userId}/150/150`}
+                    src={
+                      userInformation.image
+                        ? `data:image/jpg;base64,${getImageBase64String(
+                            userInformation.image
+                          )}`
+                        : `https://picsum.photos/seed/${userInformation.userId}/150/150`
+                    }
                   />
                 </div>
                 <TextField
-                  id="standard-disabled"
+                  id='standard-disabled'
                   disabled
-                  label="Full Name:"
+                  label='Full Name:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.fullName}
@@ -119,8 +126,8 @@ const MyProfile: React.FC = () => {
                 <div className={classes.textArea}>
                   <TextField
                     disabled
-                    id="standard-disabled"
-                    label="About Me:"
+                    id='standard-disabled'
+                    label='About Me:'
                     multiline
                     fullWidth
                     InputProps={{ readOnly: true }}
@@ -129,48 +136,48 @@ const MyProfile: React.FC = () => {
                 </div>
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Rent Location:"
+                  id='standard-disabled'
+                  label='Rent Location:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.rentLocation}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Age:"
+                  id='standard-disabled'
+                  label='Age:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.age}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Gender:"
+                  id='standard-disabled'
+                  label='Gender:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.gender}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Smoke:"
+                  id='standard-disabled'
+                  label='Smoke:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.smoke}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Pet:"
+                  id='standard-disabled'
+                  label='Pet:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.pet ? 'Yes' : 'No'}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Status:"
+                  id='standard-disabled'
+                  label='Status:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={
@@ -179,24 +186,24 @@ const MyProfile: React.FC = () => {
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Employed:"
+                  id='standard-disabled'
+                  label='Employed:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.employed ? 'Yes' : 'No'}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Number of Roomates:"
+                  id='standard-disabled'
+                  label='Number of Roomates:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.numOfRoomates}
                 />
                 <TextField
                   disabled
-                  id="standard-disabled"
-                  label="Religion:"
+                  id='standard-disabled'
+                  label='Religion:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
                   value={userInformation.religion ? 'Yes' : 'No'}
@@ -215,8 +222,9 @@ const MyProfile: React.FC = () => {
               </div>
             )}
           </>
-        )
-          : <div>were loading...</div>}
+        ) : (
+          <div>were loading...</div>
+        )}
       </div>
     </>
   );
