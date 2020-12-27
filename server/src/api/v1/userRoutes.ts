@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import Match from '../../models/Match';
+import Match from '../../models/match';
 import Like from '../../models/Like';
 
 // mongoDB models:
@@ -134,11 +134,12 @@ router.post('/user-data/:id', async (req: any, res: Response) => {
 router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
   try {
     const { userId } = req.params;
-    const { file: image } = req.files;
-
+    const { file } = req;
+    const image = file.buffer;
     const userData = await UserData.findOneAndUpdate({ userId }, { image }, { new: true });
     res.status(200).json(userData);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error });
   }
 });

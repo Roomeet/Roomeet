@@ -9,6 +9,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { UserContext } from '../../context/UserContext';
 import { UserDataInterface } from '../../interfaces/userData';
 import network from '../../utils/network';
+import { getImageBase64String } from '../../utils/image';
 
 const useStyles = makeStyles({
   root: {
@@ -52,6 +53,8 @@ const useStyles = makeStyles({
   profilePic: {
     borderRadius: '50%',
     border: '7px solid black',
+    height: 'auto',
+    width: 'auto',
   },
   titleAndPic: {
     display: 'flex',
@@ -68,20 +71,15 @@ const useStyles = makeStyles({
 const MyProfile: React.FC = () => {
   const [userInformation, setUserInformation] = useState<UserDataInterface>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [image, setImage] = useState<any>();
   const history = useHistory();
   const context = useContext(UserContext);
   const classes = useStyles();
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
-    // const profilePicture = Buffer.from(data.profilePicture[0].file.data.data);
-    // const base64String = profilePicture.toString('base64');
-    setUserInformation(data.userData);
-    setImage('base64String');
+    setUserInformation(data[0]);
     setLoading(false);
   };
-  console.log(image);
   useEffect(() => {
     fetchData();
   }, []);
@@ -101,11 +99,11 @@ const MyProfile: React.FC = () => {
                 <div className={classes.titleAndPic}>
                   <h1>My Profile</h1>
                   <img
-                    width='250'
-                    height='250'
+                    // width='250'
+                    // height='250'
                     alt="profilePic"
                     className={classes.profilePic}
-                    src={`data:image/jpg;base64,${image}`}
+                    src={`data:image/jpg;base64,${getImageBase64String(userInformation.image)}`}
                   />
                 </div>
                 <TextField

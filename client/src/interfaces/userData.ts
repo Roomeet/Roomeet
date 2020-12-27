@@ -25,10 +25,7 @@ export interface UserDataInterface extends Document {
   userId: string,
   fullName: string,
   aboutMe: string,
-  image: {
-    data: Buffer,
-    ContentType: string,
-  },
+  image: Buffer,
   rentLocation: string,
   age: number,
   gender: string,

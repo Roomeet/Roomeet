@@ -106,8 +106,6 @@ const UserDataForm: React.FC = () => {
     delete values.image;
     // data.append('userId', context.id);
     data.append('file', file);
-    console.log(data);
-    console.log(values);
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
     await network.post(`/api/v1/users/user-data/profile/picture/${context.id}`, data);
   };
