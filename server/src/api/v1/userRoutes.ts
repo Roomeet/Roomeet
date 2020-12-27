@@ -231,7 +231,7 @@ router.get('/all-cards', async (req: Request, res: Response) => {
         $nin: [...usersLike, userId]
       }
     });
-    res.status(200).json({ allcards });
+    res.status(200).json(allcards);
   } catch (error) {
     res.status(500).json({ error });
   }

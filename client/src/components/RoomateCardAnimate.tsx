@@ -11,6 +11,7 @@ import { motion, Variants } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 import { UserDataInterface } from '../interfaces/userData';
+import { getImageBase64String } from '../utils/image';
 // import { UserDataInterface } from '../../../server/models/UserData';
 
 export interface CardProps {
@@ -62,6 +63,8 @@ const useStyles = makeStyles({
     // border: '7px solid black',
     pointerEvents: 'none',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
+    height: '150px',
+    width: '150px',
   },
   like: {
     fill: 'green',
@@ -154,7 +157,8 @@ const RoomateCard = ({
             <img
               alt="profilePic"
               className={classes.profilePic}
-              src={`https://picsum.photos/seed/${userInfo.userId}/150/150`}
+              src={userInfo.image ? `data:image/jpg;base64,${getImageBase64String(userInfo.image)}`
+                : `https://picsum.photos/seed/${userInfo.userId}/150/150`}
             />
           </Typography>
           <Typography variant="h5" component="h2">

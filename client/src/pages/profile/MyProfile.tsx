@@ -53,8 +53,8 @@ const useStyles = makeStyles({
   profilePic: {
     borderRadius: '50%',
     border: '7px solid black',
-    height: 'auto',
-    width: 'auto',
+    height: '150px',
+    width: '150px',
   },
   titleAndPic: {
     display: 'flex',
@@ -77,6 +77,7 @@ const MyProfile: React.FC = () => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
+    console.log(data[0]);
     setUserInformation(data[0]);
     setLoading(false);
   };
@@ -103,7 +104,8 @@ const MyProfile: React.FC = () => {
                     // height='250'
                     alt="profilePic"
                     className={classes.profilePic}
-                    src={`data:image/jpg;base64,${getImageBase64String(userInformation.image)}`}
+                    src={userInformation.image ? `data:image/jpg;base64,${getImageBase64String(userInformation.image)}` :
+                    `https://picsum.photos/seed/${userInformation.userId}/150/150`}
                   />
                 </div>
                 <TextField

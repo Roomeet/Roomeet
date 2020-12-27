@@ -114,15 +114,15 @@ const Roomates: React.FC = () => {
      `/api/v1/users/user-data/${context.id}`
     );
     if (isExist.length === 0) {
-      console.log('dadsadas',isExist)
      history.push("/edit");
     }
     const { data } = await network.get(
      `/api/v1/users/all-cards?userId=${context.id}`
     );
+    console.log(data)
     setAllUsersInfo(data);
    };
-  
+  console.log(allUsersInfo[0]);
    useEffect(() => {
     fetchData();
    }, []);
