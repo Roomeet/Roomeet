@@ -69,7 +69,7 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
     setFilters({ ...filters, ageRange: newValue as number[] });
   };
 
-  const handleRefreshSearch = () => {
+  const handleRefreshSearch = async () => {
     setFilters({
       gender: '',
       smoke: false,
@@ -80,6 +80,10 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
       budgetRange: [500, 6000],
       ageRange: [16, 60],
     });
+    const { data } = await network.get(
+      `/api/v1/users/all-cards?userId=${userId}`,
+    );
+    setAllUsersInfo(data);
   };
 
   const handleGenderChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -91,7 +95,7 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
     const filteredSearchObj = Object.fromEntries(objEntries.filter((filter) => filter[1] === true || typeof filter[1] !== 'boolean'));
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
-    const { data } = await network.get('/api/v1/users/all-cards/filtered',filteredSearchObj);
+    const { data } = await network.post('/api/v1/users/all-cards/filtered', filteredSearchObj);
     setAllUsersInfo(data);
   };
 

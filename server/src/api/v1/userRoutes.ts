@@ -222,21 +222,22 @@ router.get('/all-cards', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/all-cards/filtered', async (req: Request, res: Response) => {
+router.post('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const filters: filterInterface = req.body;
+    console.log(filters);
     const likes = await Like.find({ activeUserId: filters.userId });
     const usersLike: string[] = likes.map((like) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
       userId: {
-        $nin: [...usersLike, filters.userId],
+        $nin: [...usersLike, filters.userId]
       },
       age: {
         $gt: filters.ageRange[0] - 1,
-        $lt: filters.ageRange[1] + 1,
-      },
-      //keep it untill all users have budget.
+        $lt: filters.ageRange[1] + 1
+      }
+      // keep it untill all users have budget.
       // budget: {
       //   $gt: filters.budgetRange[0],
       //   $lt: filters.budgetRange[1],
@@ -261,8 +262,8 @@ router.get('/all-cards/filtered', async (req: Request, res: Response) => {
     if (filters.employed) {
       allcards = allcards.filter((person) => person.employed === true);
     }
-    if (filters.smoke){
-      allcards = allcards.filter(person=> person.smoke !== 'Allways')
+    if (filters.smoke) {
+      allcards = allcards.filter((person) => person.smoke !== 'Allways');
     }
     res.status(200).json(allcards);
   } catch (error) {
