@@ -119,10 +119,8 @@ const Roomates: React.FC = () => {
     const { data } = await network.get(
      `/api/v1/users/all-cards?userId=${context.id}`
     );
-    console.log(data)
     setAllUsersInfo(data);
    };
-  console.log(allUsersInfo[0]);
    useEffect(() => {
     fetchData();
    }, []);

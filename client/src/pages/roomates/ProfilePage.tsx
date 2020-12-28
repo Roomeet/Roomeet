@@ -21,18 +21,21 @@ const useStyles = makeStyles({
   },
   modalDiv: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
+    alignItems: 'center',
     border: '3px solid black',
     textAlign: 'center',
-    height: '70%',
+    height: '80%',
     overflowY: 'auto',
-    width: '40%',
+    minWidth: '300px',
+    maxWidth: '500px',
+    width: '70%',
     marginTop: '5%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: 'white',
     color: 'black',
+    backgroundColor: '#BFB4AB',
   },
   rows: {
     display: 'flex',
@@ -47,12 +50,12 @@ const useStyles = makeStyles({
 
   },
   profilePic: {
-
-    borderRadius: '50%',
-    border: '3px solid black',
+    pointerEvents: 'none',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     height: '30%',
-    maxWidth: '50%',
-    maxHeight: '30%',
+    maxWidth: '200px',
+    maxHeight: '200px',
+    marginTop: '5px',
     marginLeft: 'auto',
     marginRight: 'auto',
   },
@@ -71,7 +74,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     width: '60%',
-    backgroundColor: '#BFB4AB',
   },
   titleInfoDiv: {
     display: 'flex',
@@ -85,12 +87,10 @@ const useStyles = makeStyles({
 
 const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
   const [userInformation, setUserInformation] = useState<UserDataInterface>();
-  const context = useContext(UserContext);
   const classes = useStyles();
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${userId}`);
-    console.log(data);
     setUserInformation(data[0]);
   };
 
