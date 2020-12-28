@@ -6,10 +6,7 @@ import Like from '../../models/Like';
 
 // mongoDB models:
 import User from '../../models/user';
-import UserData, {
-  UserDataInterface,
-  filterStateInterface,
-} from "../../models/UserData";
+import UserData, { UserDataInterface, filterInterface } from '../../models/UserData';
 
 const { readFileSync } = require('fs');
 const path = require('path');
@@ -229,7 +226,7 @@ router.get('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const { userId }: { userId: string } = req.query;
-    const { filters }: { filters: filterStateInterface } = req.query;
+    const { filters }: { filters: filterInterface } = req.query;
     const likes = await Like.find({ activeUserId: userId });
     const usersLike: string[] = likes.map((like) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
