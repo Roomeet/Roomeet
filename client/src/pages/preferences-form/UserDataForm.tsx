@@ -20,8 +20,9 @@ import { string, object, number } from 'yup';
 import { UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import network from '../../utils/network';
-import Map from '../../components/Map';
+import WrappedMap from '../../components/Map';
 import { withScriptjs, withGoogleMap } from 'react-google-maps';
+import { CitiesContext } from '../../context/CitiesContext';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -72,15 +73,10 @@ const UserDataForm: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
   const context = React.useContext(UserContext);
+  const citiesContext = React.useContext(CitiesContext);
   const [user, setUser] = React.useState<UserDataInterface>();
   const [file, setFile] = React.useState<any>();
   const [budget, setBudget] = React.useState<number>(500);
-
-  const [cities, setCities] = React.useState<any>([]);
-
-  const WrappedMap: any = withScriptjs(
-    withGoogleMap(() => Map(cities, setCities))
-  );
 
   const validationSchema = object({
     age: number()
@@ -109,16 +105,13 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    console.log(budget);
     values.fullName = context.name;
     values.budget = budget;
-    console.log(values);
     const data = new FormData();
     delete values.image;
-    // data.append('userId', context.id);
     data.append('file', file);
     values.fullName = context.name;
-    values.cities = cities;
+    values.cities = citiesContext.cities;
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
     await network.post(
       `/api/v1/users/user-data/profile/picture/${context.id}`,
@@ -132,7 +125,7 @@ const UserDataForm: React.FC = () => {
     );
     if (data[0]) {
       setUser(data[0]);
-      setCities(data[0].cities ? data[0].cities : []);
+      citiesContext.set({ cities: data[0].cities ? data[0].cities : [] });
     } else {
       setUser(initialValues);
     }

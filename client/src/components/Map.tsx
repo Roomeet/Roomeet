@@ -3,16 +3,22 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useState } from 'react';
 import {
-  GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow,
+  GoogleMap,
+  withScriptjs,
+  withGoogleMap,
+  Marker,
+  InfoWindow,
 } from 'react-google-maps';
+import { CitiesContext } from '../context/CitiesContext';
 
 // @ts-ignore
-function Map(cities : any[], setCities : any): any {
+function Map(): any {
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [indexCity, setIndexCity] = useState<any>(null);
+  const citiesContext = React.useContext(CitiesContext);
 
-  const handleClick = (e : any) => {
-    setCities((prev : any) => [...prev, { lat: e.latLng.lat(), lng: e.latLng.lng() }]);
+  const handleClick = (e: any) => {
+    citiesContext.setCities(e);
   };
   const map = (
     <GoogleMap
@@ -20,19 +26,20 @@ function Map(cities : any[], setCities : any): any {
       defaultCenter={{ lat: 31.771959, lng: 35.217018 }}
       onClick={handleClick}
     >
-      {cities?.length && cities.map((city: any, index:Number) => (
-        <Marker
-          key={city.lat + city.lng}
-          position={{
-            lat: city.lat,
-            lng: city.lng,
-          }}
-          onClick={() => {
-            setIndexCity(index);
-            setSelectedCity(city);
-          }}
-        />
-      ))}
+      {citiesContext.cities?.length
+        && citiesContext.cities.map((city: any, index: Number) => (
+          <Marker
+            key={city.lat + city.lng}
+            position={{
+              lat: city.lat,
+              lng: city.lng,
+            }}
+            onClick={() => {
+              setIndexCity(index);
+              setSelectedCity(city);
+            }}
+          />
+        ))}
       {selectedCity && (
         <InfoWindow
           position={{
@@ -45,17 +52,14 @@ function Map(cities : any[], setCities : any): any {
           }}
         >
           <div className="city-action">
-            <button onClick={() => {
-              setCities((prev :any) => {
-                prev.splice(indexCity, 1);
-                return prev.slice();
-              });
-              setSelectedCity(null);
-              setIndexCity(null);
-            }}
+            <button
+              onClick={() => {
+                citiesContext.removeCity(indexCity);
+                setSelectedCity(null);
+                setIndexCity(null);
+              }}
             >
               Remove Marker
-
             </button>
           </div>
         </InfoWindow>
@@ -64,8 +68,6 @@ function Map(cities : any[], setCities : any): any {
   );
   return map;
 }
-export default Map;
+const WrappedMap: any = withScriptjs(withGoogleMap(Map));
 
-// const WrappedMap: any = withScriptjs(withGoogleMap(Map));
-
-// export default WrappedMap;
+export default WrappedMap;

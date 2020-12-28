@@ -9,6 +9,8 @@ import AboutPage from '../pages/footers/AboutPage';
 import TermsConditionPage from '../pages/footers/TermsConditionPage';
 import ContactUsPage from '../pages/footers/ContactUsPage';
 import MyProfile from '../pages/profile/MyProfile';
+import CitiesContextProvider from '../context/CitiesContext';
+
 // import Messenger from './Messenger';
 
 const PrivateRoutesContainer: React.FC = () => (
@@ -28,9 +30,11 @@ const PrivateRoutesContainer: React.FC = () => (
     </PrivateRoute>
     <PrivateRoute exact path="/edit">
       {/* <div id="private-routes"> */}
-      <div>
-        <UserDataForm />
-      </div>
+      <CitiesContextProvider>
+        <div>
+          <UserDataForm />
+        </div>
+      </CitiesContextProvider>
       {/* </div> */}
     </PrivateRoute>
     <Route path="/*">
