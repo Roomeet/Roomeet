@@ -90,12 +90,8 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
     const objEntries = Object.entries(filters);
     const filteredSearchObj = Object.fromEntries(objEntries.filter((filter) => filter[1] === true || typeof filter[1] !== 'boolean'));
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
-    const { data } = await network.get('/api/v1/users/all-cards/filtered', {
-      query: {
-        userId,
-        filteredSearchObj,
-      },
-    });
+    filteredSearchObj.userId = userId;
+    const { data } = await network.get('/api/v1/users/all-cards/filtered',filteredSearchObj);
     console.log(data);
   };
 

@@ -2,6 +2,7 @@ import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 export interface filterInterface {
+  userId: string
   gender?: string;
   smoke?: boolean;
   pet?: boolean;

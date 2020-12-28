@@ -225,41 +225,44 @@ router.get('/all-cards', async (req: Request, res: Response) => {
 router.get('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
-    const { userId }: { userId: string } = req.query;
-    const { filters }: { filters: filterInterface } = req.query;
-    const likes = await Like.find({ activeUserId: userId });
+    const filters: filterInterface = req.body;
+    const likes = await Like.find({ activeUserId: filters.userId });
     const usersLike: string[] = likes.map((like) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
       userId: {
-        $nin: [...usersLike, userId],
+        $nin: [...usersLike, filters.userId],
       },
       age: {
-        $gt: filters.ageRange[0],
-        $lt: filters.ageRange[1],
+        $gt: filters.ageRange[0] - 1,
+        $lt: filters.ageRange[1] + 1,
       },
-      budget: {
-        $gt: filters.budgetRange[0],
-        $lt: filters.budgetRange[1],
-      },
+      //keep it untill all users have budget.
+      // budget: {
+      //   $gt: filters.budgetRange[0],
+      //   $lt: filters.budgetRange[1],
+      // },
     });
     // @ts-ignore
     delete filters.ageRange;
     // @ts-ignore
     delete filters.budgetRange;
-    if(filters.gender){
-      allcards = allcards.filter(person => person.gender === filters.gender)
+    if (filters.gender) {
+      allcards = allcards.filter((person) => person.gender === filters.gender);
     }
-    if(filters.pet){
-      allcards = allcards.filter(person=> person.pet === false)
+    if (filters.pet) {
+      allcards = allcards.filter((person) => person.pet === false);
     }
-    if(filters.relationship){
-      allcards = allcards.filter(person=> person.relationship === false)
+    if (filters.relationship) {
+      allcards = allcards.filter((person) => person.relationship === false);
     }
-    if(filters.religion){
-      allcards = allcards.filter(person=> person.religion === true)
+    if (filters.religion) {
+      allcards = allcards.filter((person) => person.religion === true);
     }
-    if(filters.employed){
-      allcards = allcards.filter(person=> person.employed === true)
+    if (filters.employed) {
+      allcards = allcards.filter((person) => person.employed === true);
+    }
+    if (filters.smoke){
+      allcards = allcards.filter(person=> person.smoke !== 'Allways')
     }
     res.status(200).json(allcards);
   } catch (error) {
