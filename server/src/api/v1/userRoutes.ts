@@ -6,7 +6,10 @@ import Like from '../../models/Like';
 
 // mongoDB models:
 import User from '../../models/user';
-import UserData, { UserDataInterface, filterState } from '../../models/UserData';
+import UserData, {
+  UserDataInterface,
+  filterStateInterface,
+} from "../../models/UserData";
 
 const { readFileSync } = require('fs');
 const path = require('path');
@@ -226,15 +229,41 @@ router.get('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const { userId }: { userId: string } = req.query;
-    const { filterBy }: { filterBy:  }
+    const { filters }: { filters: filterStateInterface } = req.query;
     const likes = await Like.find({ activeUserId: userId });
     const usersLike: string[] = likes.map((like) => like.passiveUserId);
-    const allcards: UserDataInterface[] = await UserData.find({
+    let allcards: UserDataInterface[] = await UserData.find({
       userId: {
-        $nin: [...usersLike, userId]
-      }
+        $nin: [...usersLike, userId],
+      },
+      age: {
+        $gt: filters.ageRange[0],
+        $lt: filters.ageRange[1],
+      },
+      budget: {
+        $gt: filters.budgetRange[0],
+        $lt: filters.budgetRange[1],
+      },
     });
-
+    // @ts-ignore
+    delete filters.ageRange;
+    // @ts-ignore
+    delete filters.budgetRange;
+    if(filters.gender){
+      allcards = allcards.filter(person => person.gender === filters.gender)
+    }
+    if(filters.pet){
+      allcards = allcards.filter(person=> person.pet === false)
+    }
+    if(filters.relationship){
+      allcards = allcards.filter(person=> person.relationship === false)
+    }
+    if(filters.religion){
+      allcards = allcards.filter(person=> person.religion === true)
+    }
+    if(filters.employed){
+      allcards = allcards.filter(person=> person.employed === true)
+    }
     res.status(200).json(allcards);
   } catch (error) {
     res.status(500).json({ error });

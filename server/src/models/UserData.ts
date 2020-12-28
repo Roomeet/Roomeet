@@ -1,7 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-export interface filterState {
+export interface filterStateInterface {
   gender: string;
   smoke: boolean;
   pet: boolean;
