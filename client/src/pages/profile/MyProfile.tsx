@@ -54,8 +54,8 @@ const useStyles = makeStyles({
     width: '15vw',
   },
   profilePic: {
-    borderRadius: '50%',
-    border: '7px solid black',
+    pointerEvents: 'none',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     height: '150px',
     width: '150px',
   },
@@ -79,7 +79,6 @@ const MyProfile: React.FC = () => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
-    console.log(data[0]);
     setUserInformation(data[0]);
     setLoading(false);
   };
