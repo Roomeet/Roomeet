@@ -6,7 +6,7 @@ import Like from '../../models/Like';
 
 // mongoDB models:
 import User from '../../models/user';
-import UserData, { UserDataInterface } from '../../models/UserData';
+import UserData, { UserDataInterface, filterState } from '../../models/UserData';
 
 const { readFileSync } = require('fs');
 const path = require('path');
@@ -216,6 +216,25 @@ router.get('/all-cards', async (req: Request, res: Response) => {
         $nin: [...usersLike, userId]
       }
     });
+    res.status(200).json(allcards);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get('/all-cards/filtered', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    const { userId }: { userId: string } = req.query;
+    const { filterBy }: { filterBy:  }
+    const likes = await Like.find({ activeUserId: userId });
+    const usersLike: string[] = likes.map((like) => like.passiveUserId);
+    const allcards: UserDataInterface[] = await UserData.find({
+      userId: {
+        $nin: [...usersLike, userId]
+      }
+    });
+
     res.status(200).json(allcards);
   } catch (error) {
     res.status(500).json({ error });

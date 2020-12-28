@@ -14,6 +14,7 @@ import { UserContext } from '../../context/UserContext';
 import SocketContext from "../../context/socketContext";
 import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import FilterBar from '../../components/FilterBar';
 
 
 
@@ -128,6 +129,13 @@ const Roomates: React.FC = () => {
     <div className="cards-page">
       {allUsersInfo[0] ? (
         <div className={classes.root}>
+          <Paper square elevation={0} className={classes.header}>
+            <FilterBar
+              className={classes.headerText}
+              setAllUsersInfo={setAllUsersInfo}
+              userId={context.id}
+              />
+          </Paper>
           <Paper square elevation={0} className={classes.header}>
             <Typography className={classes.headerText}>
               Choose Your Next Roomate!
