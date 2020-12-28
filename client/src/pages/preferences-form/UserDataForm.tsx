@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '10px/12px',
     'overflow-y': 'auto',
     height: '79vh',
+    boxShadow: '0 2px 5px 1px rgba(0,0,0,0.7)',
   },
   logo: {
     color: theme.palette.primary.main,
