@@ -7,11 +7,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import network from '../utils/network';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import { filterData } from '../utils/filter';
+import network from '../utils/network';
 
 export type Props = {
     [key: string]: any;
@@ -89,13 +88,13 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
 
   const handleSubmit = async () => {
     const objEntries = Object.entries(filters);
-    const filteredSearchObj = objEntries.filter((filter) => filter[1] === true || typeof filter[1] !== 'boolean');
-    console.log(filteredSearchObj);
-    const { data } = await network.get(`/api/v1/users/all-cards/filtered`, {
-        query: {
-            userId,
-            filteredSearchObj
-        }
+    const filteredSearchObj = Object.fromEntries(objEntries.filter((filter) => filter[1] === true || typeof filter[1] !== 'boolean'));
+    if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
+    const { data } = await network.get('/api/v1/users/all-cards/filtered', {
+      query: {
+        userId,
+        filteredSearchObj,
+      },
     });
     console.log(data);
   };

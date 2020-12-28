@@ -1,13 +1,13 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
-export interface filterState {
-  gender: string;
-  smoke: boolean;
-  pet: boolean;
-  relationship: boolean;
-  religion: boolean;
-  employed: boolean;
+export interface filterInterface {
+  gender?: string;
+  smoke?: boolean;
+  pet?: boolean;
+  relationship?: boolean;
+  religion?: boolean;
+  employed?: boolean;
   budgetRange: number[];
   ageRange: number[];
 }
