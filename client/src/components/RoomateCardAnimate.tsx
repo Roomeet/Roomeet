@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignContent: 'center',
     alignItems: 'center',
-    border: '5px solid #2E2019',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     color: '#2E2019',
     width: '100%',
     marginBottom: '15%',
