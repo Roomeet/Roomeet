@@ -286,6 +286,7 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 });
+
 router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
   try {
     console.log(req.file);

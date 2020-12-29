@@ -137,6 +137,10 @@ const Roomates: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  function closeMenu (){
+    setOpenFil(false)
+  } 
   return allUsersInfo[0] ? (
     <div>
       <Paper square elevation={0} className={classes.header}>
@@ -149,21 +153,23 @@ const Roomates: React.FC = () => {
         >
           <SearchIcon />
         </IconButton>
-        <Drawer
-          open={openFil}
-          anchor="left"
-          onClose={handleOpenFilter}
-          variant="persistent"
-        >
-          <FilterBar
-            className={classes.headerText}
-            setAllUsersInfo={setAllUsersInfo}
-            userId={context.id}
-          />
-          <button onClick={handleOpenFilter}>Close Filter</button>
-        </Drawer>
+        
       </Paper>
       <div className={classes.cardsContainer}>
+      <Drawer
+        open={openFil}
+        anchor="left"
+        onClose={handleOpenFilter}
+        // variant="persistent"
+      >
+        <FilterBar
+          className={classes.headerText}
+          setAllUsersInfo={setAllUsersInfo}
+          userId={context.id}
+          closeMenu={closeMenu}
+        />
+        <button onClick={handleOpenFilter}>Close Filter</button>
+      </Drawer>
         <AnimatePresence exitBeforeEnter initial={false}>
           <RoomateCard
             key={firstCard.id}
