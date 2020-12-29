@@ -5,10 +5,8 @@ import { UserContext } from '../context/UserContext';
 import network from '../utils/network';
 import {
   AppBar,
-  Avatar,
   createStyles,
   CssBaseline,
-  Fab,
   IconButton,
   List,
   makeStyles,
@@ -17,13 +15,12 @@ import {
   Toolbar,
   Typography
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/More';
-import { AddIcCallOutlined } from '@material-ui/icons';
 import InlineChatRoom from '../components/InlineChatRoom';
 import { chatRoomI } from '../interfaces/chat';
 import SocketContext from '../context/socketContext';
+import useDetectOutside from '../hooks/useDetectOutside';
+
 
 type messengerProps = {
   messengerOpen: boolean;
@@ -77,6 +74,9 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom, setM
   const context = useContext(UserContext);
   const classes = useStyles();
   const socket = useContext(SocketContext)
+  const wrapperRef = React.useRef(null);
+
+  useDetectOutside(wrapperRef, setMessengerOpen);
 
   const getChatrooms = async () => {
     try {
@@ -97,14 +97,14 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom, setM
           getChatrooms();
         });
       }
-  }, []);
+  }, []);  
 
   return (
     <>
       {
         messengerOpen
           && (
-            <div className={classes.messenger}>
+            <div className={classes.messenger} ref={wrapperRef}>
               <React.Fragment>
                 <CssBaseline />
                 <Paper square className={classes.paper}>
