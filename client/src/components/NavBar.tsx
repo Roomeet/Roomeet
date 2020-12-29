@@ -74,7 +74,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
   },
   background: {
-    background: 'linear-gradient(45deg, #a16254 30%, #5f413a 90%)',
+    background: 'linear-gradient(45deg, #293241 30%, #ee6c4d 20%)',
+    // background: '#493894',
+    // background: '#aca0e2',
   },
   colorTextRoo: {
     color: '#5AFF3D',

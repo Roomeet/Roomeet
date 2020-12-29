@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     height: 50,
     paddingLeft: theme.spacing(4),
-    backgroundColor: '#8f7967',
+    backgroundColor: '#98c1d9',
     fontFamily: 'fantasy',
   },
   headerText: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   footer: {
-    backgroundColor: '#8f7967',
+    backgroundColor: '#3d5a80',
     bottom: 0,
     fontFamily: 'fantasy',
   },
@@ -53,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
     fill: 'green',
     bottom: 0,
     '&:hover': {
-      backgroundColor: '#BFB4AB',
+      backgroundColor: '#3d5a80',
     },
   },
   unlike: {
     fill: 'red',
     bottom: 0,
     '&:hover': {
-      backgroundColor: '#BFB4AB',
+      backgroundColor: '#3d5a80',
     },
   },
   loading: {
