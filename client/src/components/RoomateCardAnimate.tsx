@@ -22,7 +22,7 @@ const screenWidth = window.screen.availWidth;
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: '#BFB4AB',
+    backgroundColor: '#e0fbfc',
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'center',
