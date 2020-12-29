@@ -1,6 +1,6 @@
 /*eslint-disable */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import network from '../utils/network';
 import {
@@ -24,6 +24,7 @@ import InlineNotification from '../components/InlineNotification';
 type notificationsProps = {
   notificationsOpen: boolean;
   allNotifications: NotificationI[] | null;
+  setUnseenNotificationsLength: Dispatch<SetStateAction<number>>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -67,7 +68,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const Messenger: React.FC<notificationsProps> = ({ notificationsOpen, allNotifications }) => {
+const Messenger: React.FC<notificationsProps> = ({
+  notificationsOpen,
+  allNotifications,
+  setUnseenNotificationsLength,
+}) => {
   const classes = useStyles();
 
   return (
@@ -86,6 +91,7 @@ const Messenger: React.FC<notificationsProps> = ({ notificationsOpen, allNotific
                     {allNotifications?.length ? allNotifications?.map((notification: NotificationI) => (
                       <InlineNotification
                         notification={notification}
+                        setUnseenNotificationsLength={setUnseenNotificationsLength}
                       />
                       )) : <div>No notifications for you buddy</div>}
                   </List>

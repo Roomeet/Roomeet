@@ -40,6 +40,7 @@ function App(): JSX.Element {
   const [openChatRooms, setOpenChatrooms] = useState<chatRoomI[]>([]);
   const [allNotifications, setAllNotifications] = React.useState<NotificationI[] | null>(null);
   const [notificationsOpen, setNotificationsOpen] = React.useState<boolean>(false);
+  const [unseenNotificationsLength, setUnseenNotificationsLength] = React.useState<number>(0);
   const context = React.useContext(UserContext);
 
   const setupSocket = () => {
@@ -92,6 +93,7 @@ function App(): JSX.Element {
     try {
       const { data } = await network.get(`http://localhost:3002/api/v1/notifications/userId/${context.id}`);
       setAllNotifications(data);
+      setUnseenNotificationsLength(getUnseenNotificationsLength(data))
     } catch (err) {
       setTimeout(fetchAllNotifications, 3000);
     }
@@ -155,7 +157,7 @@ function App(): JSX.Element {
                     openChatRooms={openChatRooms}
                     closeChatRoom={closeChatRoom}
                     setNotificationsOpen={setNotificationsOpen}
-                    unseenNotificationsLength={getUnseenNotificationsLength(allNotifications)}
+                    unseenNotificationsLength={unseenNotificationsLength}
                   />
                   <Messenger
                     messengerOpen={messengerOpen}
@@ -165,6 +167,7 @@ function App(): JSX.Element {
                   <Notifications
                     notificationsOpen={notificationsOpen}
                     allNotifications={allNotifications}
+                    setUnseenNotificationsLength={setUnseenNotificationsLength}
                   />
                   <Switch>
                     <Route exact path='/about'>

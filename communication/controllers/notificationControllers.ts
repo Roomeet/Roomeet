@@ -46,8 +46,9 @@ exports.deleteAllNotifications = async (req: Request, res: Response) => {
 
 exports.seeNotification = async (req: Request, res: Response) => {
   try{
-    const { NotificationId: id } = req.params
-    await Notification.findOneAndUpdate({ id }, {seen: false}, { new: true })
+    const { notificationId: id } = req.params
+    const notificationUpdated = await Notification.findByIdAndUpdate(id, {seen: true}, { new: true });
+    res.send({notificationUpdated});
   } catch(error) {
     console.log(error)
   }

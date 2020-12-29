@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   Badge,
   ListItem,
@@ -10,25 +10,33 @@ import network from '../utils/network';
 
 type chatRoomProps = {
   notification: NotificationI;
+  setUnseenNotificationsLength: Dispatch<SetStateAction<number>>;
 }
 
-const InlineNotification: React.FC<chatRoomProps> = ({ notification }) => {
+const InlineNotification: React.FC<chatRoomProps> = ({
+  notification,
+  setUnseenNotificationsLength,
+}) => {
   const [seen, setSeen] = useState<boolean>(notification?.seen);
 
   const seeNotification = async (notificationId: string) => {
-    await network.get(`http://localhost:3002/api/v1/notifications/${notificationId}/seen`);
-    setSeen(false);
+    await network.put(`http://localhost:3002/api/v1/notifications/${notificationId}/seen`);
+    setSeen(true);
+    setUnseenNotificationsLength((prev) => prev - 1);
   };
 
   return (
     <React.Fragment key={notification.id}>
-      <ListItem button onClick={() => { seeNotification(notification.id); }}>
-        {/* </Badge> */}
+      <ListItem
+        button
+        onClick={() => { seeNotification(notification.id); }}
+        style={{ backgroundColor: !seen ? 'rgba(157,168,233,0.4)' : 'white' }}
+      >
         <ListItemText
-          primary="New Notification"
+          primary={!seen ? `new ${notification.topic}!` : `${notification.topic}`}
           secondary={notification.content}
         />
-        { seen && <Badge color="secondary" badgeContent="" variant="dot" />}
+        { !seen && <Badge color="primary" badgeContent="" variant="dot" />}
       </ListItem>
     </React.Fragment>
   );
