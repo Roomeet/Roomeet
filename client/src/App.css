@@ -12,25 +12,6 @@
   min-width: 100vw;
 }
 
-.cards-page {
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  overflow-y: scroll;
-}
-
-/* .user-data-form {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  overflow-y: scroll;
-} */
-
 .footer {
   /* max-width: 700; */
   display: flex;

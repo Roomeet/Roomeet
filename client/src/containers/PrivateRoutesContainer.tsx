@@ -16,24 +16,17 @@ import CitiesContextProvider from '../context/CitiesContext';
 const PrivateRoutesContainer: React.FC = () => (
   <>
     <PrivateRoute exact path="/home">
-      <div>
-        <RoomatesWithAnimate />
-        {/* <Roomates /> */}
-      </div>
+      <RoomatesWithAnimate />
+      {/* <Roomates /> */}
     </PrivateRoute>
     <PrivateRoute exact path="/myProfile">
       {/* <div id="private-routes"> */}
-      <div>
-        <MyProfile />
-      </div>
-      {/* </div> */}
+      <MyProfile />
     </PrivateRoute>
     <PrivateRoute exact path="/edit">
       {/* <div id="private-routes"> */}
       <CitiesContextProvider>
-        <div>
-          <UserDataForm />
-        </div>
+        <UserDataForm />
       </CitiesContextProvider>
       {/* </div> */}
     </PrivateRoute>

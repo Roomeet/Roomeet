@@ -30,7 +30,6 @@ const useStyles = makeStyles({
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     color: '#2E2019',
     width: '100%',
-    marginBottom: '15%',
   },
   bullet: {
     display: 'inline-block',
@@ -52,18 +51,13 @@ const useStyles = makeStyles({
   },
   cardDiv: {
     cursor: 'grab',
-    // height: '100%',
-    // width: '80%',
     maxWidth: '500px',
     minWidth: '300px',
-    // marginTop: '4.5vh',
-    // marginBottom: '3vh',
     marginRight: 'auto',
     marginLeft: 'auto',
+    marginTop: '100px',
   },
   profilePic: {
-    // borderRadius: '50%',
-    // border: '7px solid black',
     pointerEvents: 'none',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     height: '150px',
@@ -71,8 +65,6 @@ const useStyles = makeStyles({
   },
   like: {
     fill: 'green',
-    // backgroundColor: "green",
-    // color: "black",
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
@@ -81,8 +73,6 @@ const useStyles = makeStyles({
   },
   unlike: {
     fill: 'red',
-    // backgroundColor: "red",
-    // color: "black",
     bottom: 0,
     '&:hover': {
       backgroundColor: '#BFB4AB',
