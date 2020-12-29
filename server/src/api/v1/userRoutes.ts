@@ -14,6 +14,10 @@ const path = require('path');
 const router = Router();
 
 const crypto = require('crypto');
+const multer = require('multer');
+
+const upload = multer();
+
 // const UserData = require('../../../models/userData');
 
 // Routes
@@ -267,6 +271,18 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
       allcards = allcards.filter((person) => person.smoke !== 'Allways');
     }
     res.status(200).json(allcards);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
+  try {
+    console.log(req.file);
+    const { userId } = req.params;
+    const { buffer: image } = req.file;
+
+    const userData = await UserData.findOneAndUpdate({ userId }, { image }, { new: true });
+    res.status(200).json(userData);
   } catch (error) {
     res.status(500).json({ error });
   }
