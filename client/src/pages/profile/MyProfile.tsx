@@ -14,6 +14,7 @@ import { getImageBase64String } from '../../utils/image';
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    marginTop: '1%'
   },
   myProfileDiv: {
     backgroundColor: '#BFB4AB',
@@ -23,13 +24,13 @@ const useStyles = makeStyles({
     alignItems: 'center',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     color: '#2E2019',
-    width: '50%',
+    width: '80%',
     marginRight: 'auto',
     marginLeft: 'auto',
-    // maxWidth: '500px',
     'overflow-y': 'auto',
     height: '85vh',
     minWidth: '300px',
+    maxWidth: '500px'
   },
   noProfileDiv: {
     backgroundColor: '#BFB4AB',

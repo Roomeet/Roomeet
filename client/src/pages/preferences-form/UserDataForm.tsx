@@ -1,5 +1,4 @@
 /*eslint-disable */
-
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,19 +20,11 @@ import { UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import network from '../../utils/network';
 import WrappedMap from '../../components/Map';
-import { withScriptjs, withGoogleMap } from 'react-google-maps';
 import { CitiesContext } from '../../context/CitiesContext';
-
-const validationSchema = object({
-  email: string().email().required('email is required'),
-  password: string()
-    .min(4, 'Password must contain at least 4 characters')
-    .required('Enter your password'),
-});
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(2),
+    marginTop: '1%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -41,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     borderRadius: '10px/12px',
     'overflow-y': 'auto',
-    height: '79vh',
+    height: '85vh',
     boxShadow: '0 2px 5px 1px rgba(0,0,0,0.7)',
   },
   logo: {
@@ -166,13 +157,6 @@ const UserDataForm: React.FC = () => {
                 history.push('/home');
               }}
             >
-              {/* <input
-                type="file"
-                name="file"
-                onChange={(event: any) =>{
-                  setFieldValue("photo1", event.currentTarget.files[0]);
-                }}
-              /> */}
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
                   <Field name='gender'>
