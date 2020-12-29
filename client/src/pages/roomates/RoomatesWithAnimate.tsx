@@ -64,17 +64,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   loading: {
-    backgroundColor: 'white',
-    border: '1px solid black',
-    width: '40vw',
-    marginRight: 'auto',
-    marginLeft: 'auto',
+    height: 'auto',
+    margin: 'auto',
+    padding: '10px',
+    position: 'relative',
+    top: '40%',
   },
   cardsContainer: {
     height: '80.5vh',
     width: '100vw',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 }));
 
@@ -141,7 +141,7 @@ const Roomates: React.FC = () => {
     </div>
   ) : (
     <div className={classes.loading}>
-      <CircularProgress size={50} />
+      <CircularProgress size={50}/>
       Waiting for more cards...
     </div>
   );

@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
     marginRight: 'auto',
     color: 'black',
-    backgroundColor: '#BFB4AB',
+    backgroundColor: '#e0fbfc',
   },
   rows: {
     display: 'flex',
