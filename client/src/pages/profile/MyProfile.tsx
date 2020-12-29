@@ -164,7 +164,7 @@ const MyProfile: React.FC = () => {
                   label='Amount of Budget:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
-                  value={userInformation.budgetRange ? `${userInformation?.budgetRange[0]} - ${userInformation?.budgetRange[1]}` : 'No Specific Amount'}
+                  value={userInformation.minBudget ? `${userInformation?.minBudget} - ${userInformation?.maxBudget}` : 'No Specific Amount'}
                 />
                 <TextField
                   disabled

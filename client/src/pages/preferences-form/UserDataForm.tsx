@@ -114,7 +114,8 @@ const UserDataForm: React.FC = () => {
   const submit = async (values: any) => {
     console.log(budgetRange);
     values.fullName = context.name;
-    values.budgetRange = budgetRange;
+    values.minBudget = budgetRange[0];
+    values.maxBudget = budgetRange[1];
     console.log(values);
     const data = new FormData();
     delete values.image;

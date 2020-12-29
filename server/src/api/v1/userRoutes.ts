@@ -241,13 +241,24 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
       age: {
         $gt: filters.ageRange[0] - 1,
         $lt: filters.ageRange[1] + 1
-      }
+      },
       // keep it untill all users have budget.
-      // budget: {
-      //   $gt: filters.budgetRange[0],
-      //   $lt: filters.budgetRange[1],
-      // },
+      $or: [
+        {
+          maxBudget: {
+            $gt: filters.budgetRange[0] - 1,
+            $lt: filters.budgetRange[1] + 1
+          }
+        },
+        {
+          minBudget: {
+            $gt: filters.budgetRange[0] - 1,
+            $lt: filters.budgetRange[1] + 1
+          }
+        }
+      ]
     });
+    console.log(allcards, 'all cards==========');
     // @ts-ignore
     delete filters.ageRange;
     // @ts-ignore
