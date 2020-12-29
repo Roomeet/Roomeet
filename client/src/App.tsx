@@ -31,6 +31,7 @@ import makeToast from './utils/Toaster';
 import SocketContext from './context/socketContext';
 import { chatRoomI } from './interfaces/chat';
 import { NotificationI } from './interfaces/notification';
+import { getUnseenNotificationsLength } from './utils/notifications';
 
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
@@ -57,12 +58,8 @@ function App(): JSX.Element {
         });
 
         newSocket.on('connect',  () => {
+          console.log('checkkkkkkkk' + context.id);
           makeToast('success', 'Connected!');
-        });
-
-        newSocket.on('match', () => {
-          makeToast('info', 'You got a new match!');
-          fetchAllNotifications();
         });
 
         setSocket(newSocket);
@@ -134,6 +131,17 @@ function App(): JSX.Element {
     isLoggedIn();
   }, []);
 
+
+  useEffect(() => {
+    if (socket) {
+        // define the new message event
+        socket.on(`matchNotification${context.id}`, () => {
+          makeToast('info', 'You got a new match!');
+          fetchAllNotifications();
+        });
+      }
+  }, [socket]);
+
   return (
     <div className="App">
       <Router>
@@ -147,6 +155,7 @@ function App(): JSX.Element {
                     openChatRooms={openChatRooms}
                     closeChatRoom={closeChatRoom}
                     setNotificationsOpen={setNotificationsOpen}
+                    unseenNotificationsLength={getUnseenNotificationsLength(allNotifications)}
                   />
                   <Messenger
                     messengerOpen={messengerOpen}
