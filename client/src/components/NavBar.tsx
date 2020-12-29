@@ -98,6 +98,7 @@ type navbarProps = {
   openChatRooms: chatRoomI[];
   closeChatRoom: (roomId: chatRoomI) => void;
   setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
+  unseenNotificationsLength: number | undefined;
 };
 
 const NavBar: React.FC<navbarProps> = ({
@@ -105,13 +106,13 @@ const NavBar: React.FC<navbarProps> = ({
   openChatRooms,
   closeChatRoom,
   setNotificationsOpen,
+  unseenNotificationsLength,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
   const [openLogout, setOpenLogout] = React.useState<boolean>(false);
   const [numberOfNewMesseges, setNumberOfNewMesseges] = React.useState<number | null>(0);
-  const [numberOfNewNotifications, setNumberOfNewNotifications] = React.useState<number | null>(0);
   const [openChatroom, setOpenChatroom] = useState('');
   const context = React.useContext(UserContext);
   const history = useHistory();
@@ -222,7 +223,7 @@ const NavBar: React.FC<navbarProps> = ({
         </MenuItem>
         <MenuItem onClick={handleNotificationClick}>
           <IconButton aria-label="notifications" color="inherit">
-            <Badge badgeContent={numberOfNewNotifications} color="secondary">
+            <Badge badgeContent={unseenNotificationsLength} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -288,7 +289,7 @@ const NavBar: React.FC<navbarProps> = ({
               color="inherit"
               onClick={() => { setNotificationsOpen((prev) => !prev); }}
             >
-              <Badge badgeContent={numberOfNewNotifications} color="secondary">
+              <Badge badgeContent={unseenNotificationsLength} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>

@@ -93,7 +93,7 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom, setM
     getChatrooms();
     if (socket) {
         // define the new message event
-        socket.on('match', () => {
+        socket.on(`matchNotification${context.id}`, () => {
           getChatrooms();
         });
       }

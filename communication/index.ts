@@ -110,8 +110,8 @@ io.on("connect", (socket: any) => {
       await chatroomController.createChatRoom(matchUsers);
       await notificationControllers.createNotification(activeUser.id, 'match', 'you have a new match with ' + passiveUser.name);
       await notificationControllers.createNotification(passiveUser.id, 'match', 'you have a new match with ' + activeUser.name);
-      io.to(activeUser.id).emit('match');
-      io.to(passiveUser.id).emit('match');
+      io.emit(`matchNotification${activeUser.id}`);
+      io.emit(`matchNotification${passiveUser.id}`);
     } catch (err) {
       console.log(err);
     }
