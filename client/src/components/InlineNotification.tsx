@@ -16,7 +16,7 @@ const InlineNotification: React.FC<chatRoomProps> = ({ notification }) => {
   const [seen, setSeen] = useState<boolean>(notification?.seen);
 
   const seeNotification = async (notificationId: string) => {
-    await network.get(`http://localhost:3002/api/v1/notifications/${notificationId}/seen`);
+    await network.put(`http://localhost:3002/api/v1/notifications/${notificationId}/seen`);
     setSeen(false);
   };
 

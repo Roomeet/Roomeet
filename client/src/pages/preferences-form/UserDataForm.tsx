@@ -1,5 +1,4 @@
 /*eslint-disable */
-
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,19 +19,12 @@ import { string, object, number } from 'yup';
 import { UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import network from '../../utils/network';
-import Map from '../../components/Map';
-import { withScriptjs, withGoogleMap } from 'react-google-maps';
-
-const validationSchema = object({
-  email: string().email().required('email is required'),
-  password: string()
-    .min(4, 'Password must contain at least 4 characters')
-    .required('Enter your password'),
-});
+import WrappedMap from '../../components/Map';
+import { CitiesContext } from '../../context/CitiesContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(2),
+    marginTop: '1%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -40,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     borderRadius: '10px/12px',
     'overflow-y': 'auto',
-    height: '79vh',
+    height: '85vh',
+    boxShadow: '0 2px 5px 1px rgba(0,0,0,0.7)',
   },
   logo: {
     color: theme.palette.primary.main,
@@ -75,15 +68,10 @@ const UserDataForm: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
   const context = React.useContext(UserContext);
+  const citiesContext = React.useContext(CitiesContext);
   const [user, setUser] = React.useState<UserDataInterface>();
   const [file, setFile] = React.useState<any>();
   const [budgetRange, setBudgetRange] = React.useState<number[]>([500, 6000]);
-
-  const [cities, setCities] = React.useState<any>([]);
-
-  const WrappedMap: any = withScriptjs(
-    withGoogleMap(() => Map(cities, setCities))
-  );
 
   const validationSchema = object({
     age: number()
@@ -119,10 +107,9 @@ const UserDataForm: React.FC = () => {
     console.log(values);
     const data = new FormData();
     delete values.image;
-    // data.append('userId', context.id);
     data.append('file', file);
     values.fullName = context.name;
-    values.cities = cities;
+    values.cities = citiesContext.cities;
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
     await network.post(
       `/api/v1/users/user-data/profile/picture/${context.id}`,
@@ -140,8 +127,9 @@ const UserDataForm: React.FC = () => {
     );
     if (data[0]) {
       setUser(data[0]);
-      setCities(data[0].cities ? data[0].cities : []);
-      data[0].budgetRange && setBudgetRange( data[0].budgetRange);
+      citiesContext.set({ cities: data[0].cities ? data[0].cities : [] });
+      data[0].minBudget &&
+        setBudgetRange([data[0].minBudget, data[0].maxBudget]);
     } else {
       setUser(initialValues);
     }
@@ -182,13 +170,6 @@ const UserDataForm: React.FC = () => {
                 history.push('/home');
               }}
             >
-              {/* <input
-                type="file"
-                name="file"
-                onChange={(event: any) =>{
-                  setFieldValue("photo1", event.currentTarget.files[0]);
-                }}
-              /> */}
               {({ isValid, isSubmitting }) => (
                 <Form className={classes.form}>
                   <Field name='gender'>

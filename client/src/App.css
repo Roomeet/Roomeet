@@ -7,28 +7,8 @@
 }
 
 #private-routes {
-  background-size: cover;
   min-height: 100vh;
   min-width: 100vw;
-}
-
-.cards-page {
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  overflow-y: scroll;
-}
-
-.user-data-form {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  overflow-y: scroll;
 }
 
 .footer {
@@ -41,7 +21,7 @@
   text-align: center;
   position: absolute;
   bottom: 0;
-  background: linear-gradient(45deg, #a16254 30%, #5f413a 90%);
+  background: #293241;
 }
 
 a,

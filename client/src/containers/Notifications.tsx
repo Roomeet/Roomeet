@@ -15,16 +15,18 @@ import {
   Paper,
   Theme,
   Toolbar,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { NotificationI } from '../interfaces/notification';
 import InlineNotification from '../components/InlineNotification';
+import useDetectOutside from '../hooks/useDetectOutside';
 
 type notificationsProps = {
   notificationsOpen: boolean;
   allNotifications: NotificationI[] | null;
-}
+  setNotificationsOpen: any;
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,8 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       top: 0,
     },
-    paper: {
-    },
+    paper: {},
     list: {
       overflowY: 'scroll',
       maxHeight: '400px',
@@ -64,44 +65,49 @@ const useStyles = makeStyles((theme: Theme) =>
       right: 0,
       margin: '0 auto',
     },
-  }),
+  })
 );
 
-const Messenger: React.FC<notificationsProps> = ({ notificationsOpen, allNotifications }) => {
+const Messenger: React.FC<notificationsProps> = ({
+  notificationsOpen,
+  allNotifications,
+  setNotificationsOpen,
+}) => {
   const classes = useStyles();
+  const wrapperRef = React.useRef(null);
 
+  useDetectOutside(wrapperRef, setNotificationsOpen);
   return (
     <>
-      {
-        notificationsOpen
-          && (
-            <div className={classes.messenger}>
-              <React.Fragment>
-                <CssBaseline />
-                <Paper square className={classes.paper}>
-                  <Typography className={classes.header} variant="h5" gutterBottom>
-                    Notifications
-                  </Typography>
-                  <List className={classes.list}>
-                    {allNotifications?.length ? allNotifications?.map((notification: NotificationI) => (
-                      <InlineNotification
-                        notification={notification}
-                      />
-                      )) : <div>No notifications for you buddy</div>}
-                  </List>
-                <AppBar color="primary" className={classes.appBar}>
-                  <Toolbar>
-                    <div className={classes.grow} />
-                    <IconButton color="inherit">
-                      <SearchIcon />
-                    </IconButton>
-                  </Toolbar>
-                </AppBar>
-                </Paper>
-              </React.Fragment>
-            </div>
-          )
-      }
+      {notificationsOpen && (
+        <div className={classes.messenger} ref={wrapperRef}>
+          <React.Fragment>
+            <CssBaseline />
+            <Paper square className={classes.paper}>
+              <Typography className={classes.header} variant='h5' gutterBottom>
+                Notifications
+              </Typography>
+              <List className={classes.list}>
+                {allNotifications?.length ? (
+                  allNotifications?.map((notification: NotificationI) => (
+                    <InlineNotification notification={notification} />
+                  ))
+                ) : (
+                  <div>No notifications for you buddy</div>
+                )}
+              </List>
+              <AppBar color='primary' className={classes.appBar}>
+                <Toolbar>
+                  <div className={classes.grow} />
+                  <IconButton color='inherit'>
+                    <SearchIcon />
+                  </IconButton>
+                </Toolbar>
+              </AppBar>
+            </Paper>
+          </React.Fragment>
+        </div>
+      )}
     </>
   );
 };

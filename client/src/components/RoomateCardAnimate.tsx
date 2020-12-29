@@ -6,13 +6,11 @@ import {
 // import blueDoor from '../images/blueDoor.png';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import { Link } from 'react-router-dom';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 import { UserDataInterface } from '../interfaces/userData';
 import { getImageBase64String } from '../utils/image';
-// import { UserDataInterface } from '../../../server/models/UserData';
 
 export interface CardProps {
   userInfo:UserDataInterface,
@@ -22,15 +20,16 @@ const screenWidth = window.screen.availWidth;
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: '#BFB4AB',
+    backgroundColor: '#e0fbfc',
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'center',
     alignItems: 'center',
-    border: '5px solid #2E2019',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     color: '#2E2019',
     width: '100%',
-    marginBottom: '15%',
+    maxHeight: '600px',
+    height: '70vh',
   },
   bullet: {
     display: 'inline-block',
@@ -52,18 +51,12 @@ const useStyles = makeStyles({
   },
   cardDiv: {
     cursor: 'grab',
-    // height: '100%',
-    // width: '80%',
     maxWidth: '500px',
     minWidth: '300px',
-    // marginTop: '4.5vh',
-    // marginBottom: '3vh',
     marginRight: 'auto',
     marginLeft: 'auto',
   },
   profilePic: {
-    // borderRadius: '50%',
-    // border: '7px solid black',
     pointerEvents: 'none',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     height: '150px',
@@ -71,21 +64,17 @@ const useStyles = makeStyles({
   },
   like: {
     fill: 'green',
-    // backgroundColor: "green",
-    // color: "black",
     bottom: 0,
     '&:hover': {
-      backgroundColor: '#BFB4AB',
+      backgroundColor: '#bbc8df',
       transform: 'scale(1.05)',
     },
   },
   unlike: {
     fill: 'red',
-    // backgroundColor: "red",
-    // color: "black",
     bottom: 0,
     '&:hover': {
-      backgroundColor: '#BFB4AB',
+      backgroundColor: '#bbc8df',
       transform: 'scale(1.05)',
     },
   },
@@ -144,10 +133,7 @@ const RoomateCard = ({
       dragConstraints={{ left: 0, right: 0 }}
       style={{
         margin: 'auto',
-        // marginTop: '20vh',
-        height: '30vh',
         width: '30vw',
-        backgroundColor: 'red',
       }}
       dragElastic={0.9}
     >

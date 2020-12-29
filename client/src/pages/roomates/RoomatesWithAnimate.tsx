@@ -1,15 +1,12 @@
 /*eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
 // import RoomateCard from '../../components/cardnomui';
-import {motion,AnimatePresence,} from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion';
 import { UserContext } from '../../context/UserContext';
 import SocketContext from "../../context/socketContext";
 import { useHistory } from "react-router-dom";
@@ -20,142 +17,137 @@ import FilterBar from '../../components/FilterBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    width: "100%",
-    overflowX:'hidden',
-    // overflowY:'hidden',
-    height:"90vh",
+
+    width: '100%',
+    height: '90vh',
   },
   header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 50,
     paddingLeft: theme.spacing(4),
-    backgroundColor: "#8f7967",
-    fontFamily: "fantasy",
+    backgroundColor: '#98c1d9',
+    fontFamily: 'fantasy',
   },
   headerText: {
-    fontFamily: "fantasy",
+    fontFamily: 'fantasy',
   },
   img: {
     height: 255,
-    display: "block",
+    display: 'block',
     maxWidth: 400,
-    overflow: "hidden",
-    width: "100%",
+    overflow: 'hidden',
+    width: '100%',
   },
   item: {
-    display: "block",
-    top: "50%",
-    overflow: "hidden",
-    width: "100%",
+    display: 'block',
+    top: '50%',
+    overflow: 'hidden',
+    width: '100%',
   },
   footer: {
-    backgroundColor: "#8f7967",
+    backgroundColor: '#3d5a80',
     bottom: 0,
-    fontFamily: "fantasy",
+    fontFamily: 'fantasy',
   },
   like: {
-    fill: "green",
+    fill: 'green',
     bottom: 0,
-    "&:hover": {
-      backgroundColor: "#BFB4AB",
+    '&:hover': {
+      backgroundColor: '#3d5a80',
     },
   },
   unlike: {
-    fill: "red",
+    fill: 'red',
     bottom: 0,
-    "&:hover": {
-      backgroundColor: "#BFB4AB",
+    '&:hover': {
+      backgroundColor: '#3d5a80',
     },
   },
   loading: {
-    backgroundColor: 'white',
-    border: '1px solid black',
-    width: '40vw',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-  }
+    height: 'auto',
+    margin: 'auto',
+    padding: '10px',
+    position: 'relative',
+    top: '40%',
+  },
+  cardsContainer: {
+    flexGrow: 1,
+    overflowX: 'hidden',
+    height: '90vh',
+    width: '100vw',
+    display: 'flex',
+    alignItems: 'center',
+  },
 }));
 
 const Roomates: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
   const classes = useStyles();
-  const theme = useTheme();
 
-  const firstCard = allUsersInfo[0]
+  const firstCard = allUsersInfo[0];
 
-  const handleSwipe = (liked:boolean)=>{
+  const handleSwipe = (liked: boolean) => {
     socket?.emit(
-      "like",
+      'like',
       {
-       liked,
-       activeUser: {id: context.id, name: context.name},
-       passiveUser: {id: firstCard.userId, name: firstCard.fullName},
+        liked,
+        activeUser: { id: context.id, name: context.name },
+        passiveUser: { id: firstCard.userId, name: firstCard.fullName },
       },
       (matchUsers: any) => {
-       if (matchUsers) {
-        socket?.emit("match", matchUsers);
-       }
+        if (matchUsers) {
+          socket?.emit('match', matchUsers);
+        }
       }
-     );
-     const removedFirstCard = allUsersInfo.slice(1)
-     setAllUsersInfo(removedFirstCard)
-  }
-  
+    );
+    const removedFirstCard = allUsersInfo.slice(1);
+    setAllUsersInfo(removedFirstCard);
+  };
+
   const fetchData = async () => {
     const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
-    context.name = user[0].name + " " + user[0].lastName;
+    context.name = user[0].name + ' ' + user[0].lastName;
     const { data: isExist } = await network.get(
-     `/api/v1/users/user-data/${context.id}`
+      `/api/v1/users/user-data/${context.id}`
     );
     if (isExist.length === 0) {
-     history.push("/edit");
+      history.push('/edit');
     }
     const { data } = await network.get(
-     `/api/v1/users/all-cards?userId=${context.id}`
+      `/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
-   };
-   useEffect(() => {
+  };
+  useEffect(() => {
     fetchData();
-   }, []);
-  return (
-    <div className="cards-page">
-      {allUsersInfo[0] ? (
-        <div className={classes.root}>
-          <Paper square elevation={0} className={classes.header}>
+  }, []);
+  return allUsersInfo[0] ? (
+      <div className={classes.cardsContainer}>
+        <Paper square elevation={0} className={classes.header}>
             <FilterBar
               className={classes.headerText}
               setAllUsersInfo={setAllUsersInfo}
               userId={context.id}
               />
-          </Paper>
-          <Paper square elevation={0} className={classes.header}>
-            <Typography className={classes.headerText}>
-              Choose Your Next Roomate!
-            </Typography>
-          </Paper>
-          <AnimatePresence exitBeforeEnter initial={false}>
-            <RoomateCard
-              key={firstCard.id}
-              userInfo={firstCard}
-              handleSwipe={handleSwipe}
-            />
-          </AnimatePresence>
-        </div>
-      ) : (
-        <div className={classes.loading}>
-          <CircularProgress size={50} />
-          Waiting for more cards...
-        </div>
-      )}
+        </Paper>
+        <AnimatePresence exitBeforeEnter initial={false}>
+          <RoomateCard
+            key={firstCard.id}
+            userInfo={firstCard}
+            handleSwipe={handleSwipe}
+          />
+        </AnimatePresence>
+      </div>
+  ) : (
+    <div className={classes.loading}>
+      <CircularProgress size={50}/>
+      Waiting for more cards...
     </div>
   );
-}
+};
 export default Roomates;
