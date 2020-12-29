@@ -101,6 +101,9 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
 
   return (
     <FormGroup className={classes.searchBar}>
+      <Typography variant="h4">
+        Filter Roomates
+      </Typography>
       <FormControl variant="filled" className={classes.formControl}>
         <InputLabel id="demo-simple-select-filled-label">Gender</InputLabel>
         <Select
@@ -213,7 +216,7 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
         </div>
         <div>
           <Button variant="contained" color="primary" onClick={handleRefreshSearch} size="small">
-            All Roomates
+            Clean Filters
           </Button>
         </div>
       </div>
