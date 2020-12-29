@@ -212,7 +212,7 @@ const NavBar: React.FC<navbarProps> = ({
           </IconButton>
           My profile
         </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem onClick={() => { setMessengerOpen((prev) => !prev); handleMenuClose(); }}>
           <IconButton aria-label="messeges" color="inherit" onClick={() => setMessengerOpen((prev) => !prev)}>
             <Badge badgeContent={numberOfNewMesseges} color="secondary">
               <MailIcon />
