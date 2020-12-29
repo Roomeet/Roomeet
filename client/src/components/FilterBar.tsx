@@ -75,18 +75,21 @@ const FilterBar: React.FC<Props> = ({
   setAllUsersInfo,
   userId,
   closeMenu,
+  setFilters,
+  filters,
+  setOverTime
 }) => {
   const classes = useStyles();
-  const [filters, setFilters] = useState({
-    gender: '',
-    smoke: false,
-    pet: false,
-    relationship: false,
-    religion: false,
-    employed: false,
-    budgetRange: [500, 6000],
-    ageRange: [16, 60],
-  });
+  // const [filters, setFilters] = useState({
+  //   gender: '',
+  //   smoke: false,
+  //   pet: false,
+  //   relationship: false,
+  //   religion: false,
+  //   employed: false,
+  //   budgetRange: [500, 6000],
+  //   ageRange: [16, 60],
+  // });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, [event.target.name]: event.target.checked });
   };
@@ -130,12 +133,14 @@ const FilterBar: React.FC<Props> = ({
     );
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
+    console.log(filteredSearchObj);
     const { data } = await network.post(
       '/api/v1/users/all-cards/filtered',
       filteredSearchObj,
     );
     console.log(data);
     setAllUsersInfo(data);
+    setOverTime(false);
     closeMenu();
   };
 
@@ -257,7 +262,7 @@ const FilterBar: React.FC<Props> = ({
               onClick={handleSubmit}
               size="small"
             >
-              Search
+              Search Potential Roomates
             </Button>
           </div>
           <div>
@@ -268,16 +273,21 @@ const FilterBar: React.FC<Props> = ({
               onClick={handleRefreshSearch}
               size="small"
             >
-              Clean Filters
+              Get all the Roomates
             </Button>
           </div>
+          <Button
+            className={classes.cleanFilter}
+            onClick={closeMenu}
+            variant="contained"
+            color="secondary"
+            size="small"
+          >
+            Cancel
+          </Button>
         </div>
       </FormGroup>
-      <Button
-        onClick={closeMenu}
-      >
-        Cancel
-      </Button>
+
       {/* <FormGroup className={classes.searchBarMobile}>
         <Button
           variant="contained"

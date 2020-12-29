@@ -1,7 +1,7 @@
 /*eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Drawer } from '@material-ui/core';
+import { Paper, Drawer, Button, Typography } from '@material-ui/core';
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
@@ -91,6 +91,17 @@ const useStyles = makeStyles((theme) => ({
 const Roomates: React.FC = () => {
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
   const [openFil, setOpenFil] = useState<boolean>(false)
+  const [filters, setFilters] = useState({
+    gender: '',
+    smoke: false,
+    pet: false,
+    relationship: false,
+    religion: false,
+    employed: false,
+    budgetRange: [500, 6000],
+    ageRange: [16, 60],
+  });
+  const [overTime, setOverTime] = useState<boolean>(false);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
@@ -120,6 +131,24 @@ const Roomates: React.FC = () => {
     setOpenFil((prev)=> !prev);
   }
 
+  const handleRefreshSearch = async () => {
+    setFilters({
+      gender: '',
+      smoke: false,
+      pet: false,
+      relationship: false,
+      religion: false,
+      employed: false,
+      budgetRange: [500, 6000],
+      ageRange: [16, 60],
+    });
+    const { data } = await network.get(
+      `/api/v1/users/all-cards?userId=${context.id}`,
+    );
+    setAllUsersInfo(data);
+    setOverTime(false);
+  };
+
   const fetchData = async () => {
     const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
     context.name = user[0].name + ' ' + user[0].lastName;
@@ -134,10 +163,16 @@ const Roomates: React.FC = () => {
     );
     setAllUsersInfo(data);
   };
+  console.log(overTime);
   useEffect(() => {
     fetchData();
   }, []);
-
+  useEffect(() => {
+    setTimeout(() => {
+      if(allUsersInfo.length === 0) setOverTime(true);
+      return () => clearTimeout();
+    }, 7000);
+  }, [overTime]);
   function closeMenu (){
     setOpenFil(false)
   } 
@@ -167,8 +202,10 @@ const Roomates: React.FC = () => {
           setAllUsersInfo={setAllUsersInfo}
           userId={context.id}
           closeMenu={closeMenu}
+          filters={filters}
+          setFilters={setFilters}
+          setOverTime={setOverTime}
         />
-        <button onClick={handleOpenFilter}>Close Filter</button>
       </Drawer>
         <AnimatePresence exitBeforeEnter initial={false}>
           <RoomateCard
@@ -181,8 +218,26 @@ const Roomates: React.FC = () => {
     </div>
   ) : (
     <div className={classes.loading}>
-      <CircularProgress size={50} />
-      Waiting for more cards...
+      {overTime ? (
+        <div>
+              <Typography>
+                Sorry we didn't find potential roomates for you, you can refresh your search here:
+              </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleRefreshSearch}
+              size="small"
+            >
+              Get all the Roomates
+            </Button>
+            </div>
+      ) : (
+        <div>
+          <CircularProgress size={50} />
+          Searching for more cards...
+        </div> 
+      )}  
     </div>
   );
 };

@@ -114,7 +114,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
               <div className={classes.titleInfoDiv}>
                 <Typography className={classes.nameTitle}>
                   {' '}
-                  {userInformation?.gender === 'Female' ? (
+                  {userInformation?.gender === 'female' ? (
                     <ImWoman style={{ fill: 'red', fontSize: '3vh' }} />
                   ) : (
                     <ImMan style={{ fill: 'green', fontSize: '3vh' }} />
