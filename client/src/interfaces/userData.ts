@@ -9,6 +9,7 @@ export type UserDataFormResponse = {
     data: Buffer,
     ContentType: string,
   };
+  budgetRange?: number[],
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
@@ -30,7 +31,7 @@ export interface UserDataInterface extends Document {
   age: number,
   gender: string,
   smoke: boolean,
-  budget: number,
+  budgetRange?: number[],
   pet: boolean,
   relationship?: boolean,
   employed?: boolean,

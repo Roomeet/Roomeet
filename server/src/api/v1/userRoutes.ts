@@ -92,6 +92,7 @@ router.post('/user-data/:id', async (req: Request, res: Response) => {
     const userData = new UserData({
       ...rawUserData
     });
+    console.log(rawUserData);
     await UserData.findOneAndUpdate(
       { userId: id },
       userData,
