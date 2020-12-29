@@ -55,7 +55,6 @@ const useStyles = makeStyles({
     minWidth: '300px',
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginTop: '100px',
   },
   profilePic: {
     pointerEvents: 'none',
@@ -135,9 +134,8 @@ const RoomateCard = ({
       style={{
         margin: 'auto',
         // marginTop: '20vh',
-        height: '30vh',
+        // height: '30vh',
         width: '30vw',
-        backgroundColor: 'red',
       }}
       dragElastic={0.9}
     >

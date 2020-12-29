@@ -20,15 +20,12 @@ const PrivateRoutesContainer: React.FC = () => (
       {/* <Roomates /> */}
     </PrivateRoute>
     <PrivateRoute exact path="/myProfile">
-      {/* <div id="private-routes"> */}
       <MyProfile />
     </PrivateRoute>
     <PrivateRoute exact path="/edit">
-      {/* <div id="private-routes"> */}
       <CitiesContextProvider>
         <UserDataForm />
       </CitiesContextProvider>
-      {/* </div> */}
     </PrivateRoute>
     <Route path="/*">
       <Redirect

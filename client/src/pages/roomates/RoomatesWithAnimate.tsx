@@ -71,8 +71,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
   },
   cardsContainer: {
-    height: '80vh',
+    height: '80.5vh',
     width: '100vw',
+    display: 'flex',
+    alignItems: 'center'
   },
 }));
 
