@@ -25,6 +25,7 @@ import useDetectOutside from '../hooks/useDetectOutside';
 type notificationsProps = {
   notificationsOpen: boolean;
   allNotifications: NotificationI[] | null;
+  setNotificationsOpen: any;
 };
 
 const useStyles = makeStyles((theme: Theme) =>

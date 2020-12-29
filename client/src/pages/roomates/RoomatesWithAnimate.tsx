@@ -14,9 +14,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+
     width: '100%',
-    overflowX: 'hidden',
     height: '90vh',
   },
   header: {
@@ -71,7 +70,9 @@ const useStyles = makeStyles((theme) => ({
     top: '40%',
   },
   cardsContainer: {
-    height: '80.5vh',
+    flexGrow: 1,
+    overflowX: 'hidden',
+    height: '90vh',
     width: '100vw',
     display: 'flex',
     alignItems: 'center',
@@ -123,12 +124,6 @@ const Roomates: React.FC = () => {
     fetchData();
   }, []);
   return allUsersInfo[0] ? (
-    <div className={classes.root}>
-      <Paper square elevation={0} className={classes.header}>
-        <Typography className={classes.headerText}>
-          Choose Your Next Roomate!
-        </Typography>
-      </Paper>
       <div className={classes.cardsContainer}>
         <AnimatePresence exitBeforeEnter initial={false}>
           <RoomateCard
@@ -138,7 +133,6 @@ const Roomates: React.FC = () => {
           />
         </AnimatePresence>
       </div>
-    </div>
   ) : (
     <div className={classes.loading}>
       <CircularProgress size={50}/>
