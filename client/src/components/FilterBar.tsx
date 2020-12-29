@@ -25,12 +25,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   range_root: {
     width: 150,
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+    marginLeft: '10px',
+    marginTop: '10px',
   },
   searchBarMobile: {
     display: 'none',
@@ -43,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     flexDirection: 'row',
     marginTop: '10px',
     margin: 'auto',
+    position: 'relative',
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
@@ -52,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     flexDirection: 'column',
     marginLeft: '30px',
     margin: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
 
     },
   },
@@ -63,14 +60,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
     },
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
   header: {
     margin: 'auto',
     [theme.breakpoints.down('sm')]: {
 
     },
+  },
+  cleanFilter: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -247,7 +244,7 @@ const FilterBar: React.FC<Props> = ({ setAllUsersInfo, userId }) => {
             </Button>
           </div>
           <div>
-            <Button variant="contained" color="primary" onClick={handleRefreshSearch} size="small">
+            <Button className={classes.cleanFilter} variant="contained" color="primary" onClick={handleRefreshSearch} size="small">
               Clean Filters
             </Button>
           </div>
