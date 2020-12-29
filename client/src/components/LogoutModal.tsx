@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    border: '3px solid #2E2019',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     textAlign: 'center',
     height: '15vh',
     overflowY: 'auto',
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     marginTop: '5%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#BFB4AB',
+    backgroundColor: '#f1f1f1',
     color: 'black',
   },
   buttonsDiv: {

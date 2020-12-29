@@ -19,17 +19,24 @@ const InlineNotification: React.FC<chatRoomProps> = ({
 }) => {
   const [seen, setSeen] = useState<boolean>(notification?.seen);
 
-  const seeNotification = async (notificationId: string) => {
-    await network.put(`http://localhost:3002/api/v1/notifications/${notificationId}/seen`);
-    setSeen(true);
-    setUnseenNotificationsLength((prev) => prev - 1);
+  const seeNotification = async (notificationToSee: NotificationI) => {
+    if (!notificationToSee.seen) {
+      await network.put(`http://localhost:3002/api/v1/notifications/${notificationToSee.id}/seen`);
+      setSeen(true);
+      setUnseenNotificationsLength((prev) => {
+        if (prev > 0) {
+          return prev - 1;
+        }
+        return prev;
+      });
+    }
   };
 
   return (
     <React.Fragment key={notification.id}>
       <ListItem
         button
-        onClick={() => { seeNotification(notification.id); }}
+        onClick={() => { seeNotification(notification); }}
         style={{ backgroundColor: !seen ? 'rgba(157,168,233,0.4)' : 'white' }}
       >
         <ListItemText

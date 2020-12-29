@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     maxWidth: '500px',
   },
   noProfileDiv: {
-    backgroundColor: '#BFB4AB',
+    backgroundColor: '#e0fbfc',
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'center',

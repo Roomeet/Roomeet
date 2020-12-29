@@ -24,7 +24,7 @@ import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
 // import BGImage from './images/woodBG.jpg';
 import BGImage from './images/woodBG.svg';
-import Animtest from './components/SwipeTest'
+import Animtest from './components/SwipeTest';
 import Messenger from './containers/Messenger';
 import Notifications from './containers/Notifications';
 import makeToast from './utils/Toaster';
@@ -35,7 +35,9 @@ import { getUnseenNotificationsLength } from './utils/notifications';
 
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
-  const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(undefined);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>(
+    undefined
+  );
   const [messengerOpen, setMessengerOpen] = useState<boolean>(false);
   const [openChatRooms, setOpenChatrooms] = useState<chatRoomI[]>([]);
   const [allNotifications, setAllNotifications] = React.useState<NotificationI[] | null>(null);
@@ -58,8 +60,7 @@ function App(): JSX.Element {
           makeToast('error', 'Disconnected!');
         });
 
-        newSocket.on('connect',  () => {
-          console.log('checkkkkkkkk' + context.id);
+        newSocket.on('connect', () => {
           makeToast('success', 'Connected!');
         });
 
@@ -72,17 +73,21 @@ function App(): JSX.Element {
 
   const openChatRoom = (chatroom: chatRoomI) => {
     setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
-      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(
+        (chatroom) => chatroom.id
+      );
       if (!prevOpenChatroomsIds.includes(chatroom.id)) {
         return [...prevOpenChatRooms, chatroom];
       }
       return prevOpenChatRooms;
     });
   };
-  
+
   const closeChatRoom = (chatroom: chatRoomI) => {
     setOpenChatrooms((prevOpenChatRooms: chatRoomI[]) => {
-      const prevOpenChatroomsIds = prevOpenChatRooms.map(chatroom => chatroom.id)
+      const prevOpenChatroomsIds = prevOpenChatRooms.map(
+        (chatroom) => chatroom.id
+      );
       const index = prevOpenChatroomsIds.indexOf(chatroom.id);
       prevOpenChatRooms.splice(index, 1);
       return [...prevOpenChatRooms];
@@ -91,13 +96,16 @@ function App(): JSX.Element {
 
   const fetchAllNotifications = async () => {
     try {
-      const { data } = await network.get(`http://localhost:3002/api/v1/notifications/userId/${context.id}`);
+      const { data } = await network.get(
+        `http://localhost:3002/api/v1/notifications/userId/${context.id}`
+      );
+
       setAllNotifications(data);
       setUnseenNotificationsLength(getUnseenNotificationsLength(data))
     } catch (err) {
       setTimeout(fetchAllNotifications, 3000);
     }
-  }
+  };
 
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
@@ -133,23 +141,25 @@ function App(): JSX.Element {
     isLoggedIn();
   }, []);
 
-
   useEffect(() => {
     if (socket) {
-        // define the new message event
-        socket.on(`matchNotification${context.id}`, () => {
-          makeToast('info', 'You got a new match!');
-          fetchAllNotifications();
-        });
-      }
+      // define the new message event
+      socket.on(`matchNotification${context.id}`, () => {
+        makeToast('info', 'You got a new match!');
+        fetchAllNotifications();
+      });
+    }
   }, [socket]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Router>
         {!loading ? (
           context.success ? (
-            <div id="private-routes" style={{ backgroundImage: `url(${BGImage})` }}>
+            <div
+              id='private-routes'
+              style={{ backgroundImage: `url(${BGImage})` }}
+            >
               <SocketContext.Provider value={socket}>
                 <Logged.Provider value={context.success}>
                   <NavBar
@@ -166,6 +176,7 @@ function App(): JSX.Element {
                   />
                   <Notifications
                     notificationsOpen={notificationsOpen}
+                    setNotificationsOpen={setNotificationsOpen}
                     allNotifications={allNotifications}
                     setUnseenNotificationsLength={setUnseenNotificationsLength}
                   />
@@ -221,10 +232,10 @@ function App(): JSX.Element {
               </Switch>
             </Logged.Provider>
           )
-        ) 
-        :<div>We're Loading...</div>
-        }
-      <Footer />
+        ) : (
+          <div>We're Loading...</div>
+        )}
+        <Footer />
       </Router>
     </div>
   );
