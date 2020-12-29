@@ -161,6 +161,14 @@ const MyProfile: React.FC = () => {
                 <TextField
                   disabled
                   id='standard-disabled'
+                  label='Amount of Budget:'
+                  className={classes.textFiled}
+                  InputProps={{ readOnly: true }}
+                  value={userInformation.budgetRange ? `${userInformation?.budgetRange[0]} - ${userInformation?.budgetRange[1]}` : 'No Specific Amount'}
+                />
+                <TextField
+                  disabled
+                  id='standard-disabled'
                   label='Smoke:'
                   className={classes.textFiled}
                   InputProps={{ readOnly: true }}
