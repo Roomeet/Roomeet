@@ -6,13 +6,11 @@ import {
 // import blueDoor from '../images/blueDoor.png';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import { Link } from 'react-router-dom';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 import { UserDataInterface } from '../interfaces/userData';
 import { getImageBase64String } from '../utils/image';
-// import { UserDataInterface } from '../../../server/models/UserData';
 
 export interface CardProps {
   userInfo:UserDataInterface,
@@ -30,6 +28,8 @@ const useStyles = makeStyles({
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     color: '#2E2019',
     width: '100%',
+    maxHeight: '600px',
+    height: '70vh',
   },
   bullet: {
     display: 'inline-block',
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
     fill: 'green',
     bottom: 0,
     '&:hover': {
-      backgroundColor: '#BFB4AB',
+      backgroundColor: '#bbc8df',
       transform: 'scale(1.05)',
     },
   },
@@ -74,7 +74,7 @@ const useStyles = makeStyles({
     fill: 'red',
     bottom: 0,
     '&:hover': {
-      backgroundColor: '#BFB4AB',
+      backgroundColor: '#bbc8df',
       transform: 'scale(1.05)',
     },
   },
@@ -133,8 +133,6 @@ const RoomateCard = ({
       dragConstraints={{ left: 0, right: 0 }}
       style={{
         margin: 'auto',
-        // marginTop: '20vh',
-        // height: '30vh',
         width: '30vw',
       }}
       dragElastic={0.9}
