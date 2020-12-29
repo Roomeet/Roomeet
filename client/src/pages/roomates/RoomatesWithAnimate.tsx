@@ -1,7 +1,7 @@
 /*eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Typography } from '@material-ui/core';
+import { Paper, Drawer } from '@material-ui/core';
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
@@ -12,6 +12,9 @@ import SocketContext from "../../context/socketContext";
 import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import FilterBar from '../../components/FilterBar';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+
 
 
 
@@ -80,10 +83,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  filterButton: {
+    marginRight: 'auto',
+  },
 }));
 
 const Roomates: React.FC = () => {
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
+  const [openFil, setOpenFil] = useState<boolean>(false)
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
@@ -109,6 +116,10 @@ const Roomates: React.FC = () => {
     setAllUsersInfo(removedFirstCard);
   };
 
+  const handleOpenFilter = () => {
+    setOpenFil((prev)=> !prev);
+  }
+
   const fetchData = async () => {
     const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
     context.name = user[0].name + ' ' + user[0].lastName;
@@ -127,14 +138,32 @@ const Roomates: React.FC = () => {
     fetchData();
   }, []);
   return allUsersInfo[0] ? (
+    <div>
+      <Paper square elevation={0} className={classes.header}>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          className={classes.filterButton}
+          onClick={handleOpenFilter}
+        >
+          <SearchIcon />
+        </IconButton>
+        <Drawer
+          open={openFil}
+          anchor="left"
+          onClose={handleOpenFilter}
+          variant="persistent"
+        >
+          <FilterBar
+            className={classes.headerText}
+            setAllUsersInfo={setAllUsersInfo}
+            userId={context.id}
+          />
+          <button onClick={handleOpenFilter}>Close Filter</button>
+        </Drawer>
+      </Paper>
       <div className={classes.cardsContainer}>
-        <Paper square elevation={0} className={classes.header}>
-            <FilterBar
-              className={classes.headerText}
-              setAllUsersInfo={setAllUsersInfo}
-              userId={context.id}
-              />
-        </Paper>
         <AnimatePresence exitBeforeEnter initial={false}>
           <RoomateCard
             key={firstCard.id}
@@ -143,9 +172,10 @@ const Roomates: React.FC = () => {
           />
         </AnimatePresence>
       </div>
+    </div>
   ) : (
     <div className={classes.loading}>
-      <CircularProgress size={50}/>
+      <CircularProgress size={50} />
       Waiting for more cards...
     </div>
   );
