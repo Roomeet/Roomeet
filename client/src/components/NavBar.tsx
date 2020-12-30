@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   chatrooms: {
     position: 'fixed',
     display: 'flex',
-    left: '60px',
+    right: '60px',
   },
 }));
 
