@@ -1,7 +1,8 @@
 {
-  "name": "client",
+  "name": "Roomeet",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://roomeet.github.io/Roomeet/",
   "proxy": "http://localhost:3001",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -40,12 +41,21 @@
     "sweetalert2": "^10.12.5",
     "typescript": "^4.0.5",
     "web-vitals": "^0.2.4",
+    "workbox-core": "^6.0.2",
+    "workbox-expiration": "^6.0.2",
+    "workbox-precaching": "^6.0.2",
+    "workbox-routing": "^6.0.2",
+    "workbox-strategies": "^6.0.2",
     "yup": "^0.29.3"
   },
   "scripts": {
+    "predeploy": "npm run build:deploy",
+    "deploy": "gh-pages -d build",
+    "just-deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "lint": "eslint ./src --ext .tsx,.ts --fix",
     "build": "react-scripts build && rm -rf ../server/build && mv build ../server",
+    "build:deploy": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -68,6 +78,7 @@
     ]
   },
   "devDependencies": {
-    "@types/yup": "^0.29.9"
+    "@types/yup": "^0.29.9",
+    "gh-pages": "^3.1.0"
   }
 }
