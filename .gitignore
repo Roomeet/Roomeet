@@ -2,3 +2,4 @@
 secrets.yml
 secrets/
 .env
+**node_modules
