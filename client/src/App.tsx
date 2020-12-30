@@ -23,7 +23,7 @@ import TermsConditionPage from './pages/footers/TermsConditionPage';
 import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
 // import BGImage from './images/woodBG.jpg';
-import BGImage from './images/woodBG.svg';
+import BGImage from './images/Pattern-Randomized.svg';
 import Animtest from './components/SwipeTest';
 import Messenger from './containers/Messenger';
 import Notifications from './containers/Notifications';

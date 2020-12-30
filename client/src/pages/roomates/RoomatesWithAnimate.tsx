@@ -69,8 +69,12 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     margin: 'auto',
     padding: '10px',
-    position: 'relative',
-    top: '40%',
+    background: ' #b7c3e9',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
+    alignSelf: 'center',
+    justifySelf: 'center',
+    width: '50%',
+    marginTop: '15vh',
   },
   cardsContainer: {
     flexGrow: 1,
@@ -187,23 +191,18 @@ const Roomates: React.FC = () => {
   }
   return allUsersInfo[0] ? (
     <div>
-        <IconButton
-          style={{}}
-          edge='start'
-          color='inherit'
-          aria-label='open drawer'
-          className={classes.filterButton}
-          onClick={handleOpenFilter}
-        >
-          <SearchIcon className={classes.searchIconRestile} />
-        </IconButton>
+      <IconButton
+        style={{}}
+        edge='start'
+        color='inherit'
+        aria-label='open drawer'
+        className={classes.filterButton}
+        onClick={handleOpenFilter}
+      >
+        <SearchIcon className={classes.searchIconRestile} />
+      </IconButton>
       <div className={classes.cardsContainer}>
-        <Drawer
-          open={openFil}
-          anchor='left'
-          onClose={handleOpenFilter}
-          // variant="persistent"
-        >
+        <Drawer open={openFil} anchor='left' onClose={handleOpenFilter}>
           <FilterBar
             className={classes.headerText}
             setAllUsersInfo={setAllUsersInfo}
@@ -228,7 +227,7 @@ const Roomates: React.FC = () => {
       {overTime ? (
         <div>
           <Typography>
-            Sorry we didn't find potential roomates for you, you can refresh
+            Sorry we didn't find any potential roomates for you, you can refresh
             your search here:
           </Typography>
           <Button
