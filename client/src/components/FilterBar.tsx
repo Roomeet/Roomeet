@@ -39,9 +39,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     marginTop: '10px',
     margin: 'auto',
     position: 'relative',
-    // [theme.breakpoints.down('sm')]: {
-    //   display: 'none',
-    // },
   },
 
   buttons: {
@@ -80,16 +77,7 @@ const FilterBar: React.FC<Props> = ({
   setOverTime,
 }) => {
   const classes = useStyles();
-  // const [filters, setFilters] = useState({
-  //   gender: '',
-  //   smoke: false,
-  //   pet: false,
-  //   relationship: false,
-  //   religion: false,
-  //   employed: false,
-  //   budgetRange: [500, 6000],
-  //   ageRange: [16, 60],
-  // });
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, [event.target.name]: event.target.checked });
   };
@@ -133,12 +121,10 @@ const FilterBar: React.FC<Props> = ({
     );
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
-    console.log(filteredSearchObj);
     const { data } = await network.post(
       '/api/v1/users/all-cards/filtered',
       filteredSearchObj,
     );
-    console.log(data);
     setAllUsersInfo(data);
     setOverTime(false);
     closeMenu();

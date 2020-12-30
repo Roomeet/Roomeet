@@ -8,96 +8,97 @@ import RoomateCard from '../../components/RoomateCardAnimate';
 // import RoomateCard from '../../components/cardnomui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserContext } from '../../context/UserContext';
-import SocketContext from "../../context/socketContext";
-import { useHistory } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import SocketContext from '../../context/socketContext';
+import { useHistory } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FilterBar from '../../components/FilterBar';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
-
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    height: "90vh",
+    width: '100%',
+    height: '90vh',
   },
   header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 50,
     paddingLeft: theme.spacing(4),
-    backgroundColor: "#3d5a80",
-    fontFamily: "fantasy",
+    backgroundColor: '#3d5a80',
+    fontFamily: 'fantasy',
     opacity: 0.8,
   },
   headerText: {
-    fontFamily: "fantasy",
+    fontFamily: 'fantasy',
   },
   img: {
     height: 255,
-    display: "block",
+    display: 'block',
     maxWidth: 400,
-    overflow: "hidden",
-    width: "100%",
+    overflow: 'hidden',
+    width: '100%',
   },
   item: {
-    display: "block",
-    top: "50%",
-    overflow: "hidden",
-    width: "100%",
+    display: 'block',
+    top: '50%',
+    overflow: 'hidden',
+    width: '100%',
   },
   footer: {
-    backgroundColor: "#3d5a80",
+    backgroundColor: '#3d5a80',
     bottom: 0,
-    fontFamily: "fantasy",
+    fontFamily: 'fantasy',
   },
   like: {
-    fill: "green",
+    fill: 'green',
     bottom: 0,
-    "&:hover": {
-      backgroundColor: "#3d5a80",
+    '&:hover': {
+      backgroundColor: '#3d5a80',
     },
   },
   unlike: {
-    fill: "red",
+    fill: 'red',
     bottom: 0,
-    "&:hover": {
-      backgroundColor: "#3d5a80",
+    '&:hover': {
+      backgroundColor: '#3d5a80',
     },
   },
   loading: {
-    height: "auto",
-    margin: "auto",
-    padding: "10px",
-    position: "relative",
-    top: "40%",
+    height: 'auto',
+    margin: 'auto',
+    padding: '10px',
+    position: 'relative',
+    top: '40%',
   },
   cardsContainer: {
     flexGrow: 1,
-    overflowX: "hidden",
-    height: "90vh",
-    width: "100vw",
-    display: "flex",
-    alignItems: "center",
+    overflowX: 'hidden',
+    height: '90vh',
+    width: '100vw',
+    display: 'flex',
+    alignItems: 'center',
   },
   filterButton: {
-    marginRight: "auto",
-    border: "2px solid #293241",
-    marginTop: "2vh",
-    backgroundColor: "#293241",
+    marginRight: 'auto',
+    border: '2px solid #293241',
+    marginTop: '2vh',
+    backgroundColor: '#293241',
+    position: 'fixed',
+    left: '20px',
+    width: '40px',
+    height: '40px',
   },
   searchIconRestile: {
-    fill: "white",
-    fontSize: "1.2em",
+    fill: 'white',
+    fontSize: '1.2em',
   },
 }));
 
 const Roomates: React.FC = () => {
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
-  const [openFil, setOpenFil] = useState<boolean>(false)
+  const [openFil, setOpenFil] = useState<boolean>(false);
   const [filters, setFilters] = useState({
     gender: '',
     smoke: false,
@@ -135,8 +136,8 @@ const Roomates: React.FC = () => {
   };
 
   const handleOpenFilter = () => {
-    setOpenFil((prev)=> !prev);
-  }
+    setOpenFil((prev) => !prev);
+  };
 
   const handleRefreshSearch = async () => {
     setFilters({
@@ -150,7 +151,7 @@ const Roomates: React.FC = () => {
       ageRange: [16, 60],
     });
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${context.id}`,
+      `/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
     setOverTime(false);
@@ -173,35 +174,33 @@ const Roomates: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     setTimeout(() => {
-      if(allUsersInfo.length === 0) setOverTime(true);
+      if (allUsersInfo.length === 0) setOverTime(true);
       clearTimeout();
     }, 7000);
   }, [allUsersInfo]);
 
-  function closeMenu (){
-    setOpenFil(false)
-  } 
+  function closeMenu() {
+    setOpenFil(false);
+  }
   return allUsersInfo[0] ? (
     <div>
-      <Paper square elevation={0} className={classes.header}>
         <IconButton
           style={{}}
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
+          edge='start'
+          color='inherit'
+          aria-label='open drawer'
           className={classes.filterButton}
           onClick={handleOpenFilter}
         >
           <SearchIcon className={classes.searchIconRestile} />
         </IconButton>
-      </Paper>
       <div className={classes.cardsContainer}>
         <Drawer
           open={openFil}
-          anchor="left"
+          anchor='left'
           onClose={handleOpenFilter}
           // variant="persistent"
         >
@@ -233,10 +232,10 @@ const Roomates: React.FC = () => {
             your search here:
           </Typography>
           <Button
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             onClick={handleRefreshSearch}
-            size="small"
+            size='small'
           >
             Get all the Roomates
           </Button>

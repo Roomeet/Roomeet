@@ -140,7 +140,6 @@ const FilterModal: React.FC<Props> = ({
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
     const { data } = await network.post('/api/v1/users/all-cards/filtered', filteredSearchObj);
-    console.log(data);
     setAllUsersInfo(data);
     SetOpenFilter((prev: boolean) => !prev);
   };

@@ -96,7 +96,6 @@ router.post('/user-data/:id', async (req: Request, res: Response) => {
     const userData = new UserData({
       ...rawUserData
     });
-    console.log(rawUserData);
     await UserData.findOneAndUpdate(
       { userId: id },
       userData,
@@ -231,7 +230,6 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const filters: filterInterface = req.body;
-    console.log(filters);
     const likes = await Like.find({ activeUserId: filters.userId });
     const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
@@ -258,7 +256,6 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
         }
       ]
     });
-    console.log(allcards, 'all cards==========');
     // @ts-ignore
     delete filters.ageRange;
     // @ts-ignore
@@ -289,7 +286,6 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
 
 router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
   try {
-    console.log(req.file);
     const { userId } = req.params;
     const { buffer: image } = req.file;
 
@@ -307,8 +303,6 @@ router.get('/cities', async (req, res) => {
     const dataJson = JSON.parse(data);
     res.send(dataJson.Sheet1);
   } catch (error) {
-    console.log(error);
-
     res.status(500).send({ message: error.message });
   }
 });
