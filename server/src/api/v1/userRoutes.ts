@@ -6,7 +6,7 @@ import Like from '../../models/Like';
 
 // mongoDB models:
 import User from '../../models/user';
-import UserData, { UserDataInterface } from '../../models/UserData';
+import UserData, { UserDataInterface, filterInterface } from '../../models/UserData';
 
 const { readFileSync } = require('fs');
 const path = require('path');
@@ -14,6 +14,10 @@ const path = require('path');
 const router = Router();
 
 const crypto = require('crypto');
+const multer = require('multer');
+
+const upload = multer();
+
 // const UserData = require('../../../models/userData');
 
 // Routes
@@ -210,13 +214,83 @@ router.get('/all-cards', async (req: Request, res: Response) => {
     // @ts-ignore
     const { userId }: { userId: string } = req.query;
     const likes = await Like.find({ activeUserId: userId });
-    const usersLike: string[] = likes.map((like) => like.passiveUserId);
+    const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     const allcards: UserDataInterface[] = await UserData.find({
       userId: {
         $nin: [...usersLike, userId]
       }
     });
     res.status(200).json(allcards);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.post('/all-cards/filtered', async (req: Request, res: Response) => {
+  try {
+    // @ts-ignore
+    const filters: filterInterface = req.body;
+    const likes = await Like.find({ activeUserId: filters.userId });
+    const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
+    let allcards: UserDataInterface[] = await UserData.find({
+      userId: {
+        $nin: [...usersLike, filters.userId]
+      },
+      age: {
+        $gt: filters.ageRange[0] - 1,
+        $lt: filters.ageRange[1] + 1
+      },
+      // keep it untill all users have budget.
+      $or: [
+        {
+          maxBudget: {
+            $gt: filters.budgetRange[0] - 1,
+            $lt: filters.budgetRange[1] + 1
+          }
+        },
+        {
+          minBudget: {
+            $gt: filters.budgetRange[0] - 1,
+            $lt: filters.budgetRange[1] + 1
+          }
+        }
+      ]
+    });
+    // @ts-ignore
+    delete filters.ageRange;
+    // @ts-ignore
+    delete filters.budgetRange;
+    if (filters.gender) {
+      allcards = allcards.filter((person) => person.gender === filters.gender);
+    }
+    if (filters.pet) {
+      allcards = allcards.filter((person) => person.pet === false);
+    }
+    if (filters.relationship) {
+      allcards = allcards.filter((person) => person.relationship === false);
+    }
+    if (filters.religion) {
+      allcards = allcards.filter((person) => person.religion === true);
+    }
+    if (filters.employed) {
+      allcards = allcards.filter((person) => person.employed === true);
+    }
+    if (filters.smoke) {
+      allcards = allcards.filter((person) => person.smoke !== 'Allways');
+    }
+    res.status(200).json(allcards);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.post('/user-data/profile/picture/:userId', upload.single('file'), async (req: any, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const { buffer: image } = req.file;
+
+    const userData = await UserData.findOneAndUpdate({ userId }, { image }, { new: true });
+    res.status(200).json(userData);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -229,8 +303,6 @@ router.get('/cities', async (req, res) => {
     const dataJson = JSON.parse(data);
     res.send(dataJson.Sheet1);
   } catch (error) {
-    console.log(error);
-
     res.status(500).send({ message: error.message });
   }
 });
