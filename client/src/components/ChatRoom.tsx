@@ -23,6 +23,7 @@ import { UserContext } from '../context/UserContext';
 import { messageI, chatRoomI } from '../interfaces/chat';
 import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
+import useDetectOutside from '../hooks/useDetectOutside';
 
 type chatRoomProps = {
   chatroom: chatRoomI;
@@ -92,6 +93,9 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
+  const wrapperRef = React.useRef(null);
+
+  useDetectOutside(wrapperRef, () => openChatroomOnClick(chatroom), true);
 
   const sendMessage = () => {
     // console.log('socket....', socket, 'reffff', messageRef);
@@ -195,7 +199,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       {open && (
         <React.Fragment>
           <CssBaseline />
-          <Paper square className={classes.paper}>
+          <Paper square className={classes.paper} ref={wrapperRef}>
             <Typography
               className={classes.header}
               variant="h5"
