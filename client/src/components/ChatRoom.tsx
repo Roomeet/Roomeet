@@ -105,8 +105,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
   const wrapperRef = React.useRef(null);
-  console.log(chatroom);
-  useDetectOutside(wrapperRef, () => openChatroomOnClick(chatroom), true);
+  useDetectOutside(wrapperRef, () => openChatroomOnClick(chatroom.id), true);
 
   const sendMessage = () => {
     // console.log('socket....', socket, 'reffff', messageRef);
@@ -141,17 +140,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (socket) {
-      socket.on(`newMessage${chatroom.id}`, (message: messageI) => {
-        if (chatroom.participants.includes(message.userId)) {
-          const newMessages = [...messages, message];
-          setMessages(newMessages);
-        }
-      });
-    }
-  }, [messages]);
-
   const getProfilePicture = async () => {
     const { data } = await network.get(`api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
     setImage(data);
@@ -163,6 +151,13 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     // trig the enteredRoom event
       socket.emit('EnteredRoom', {
         chatroomId: chatroom.id,
+      });
+
+      socket.on(`newMessage${chatroom.id}`, (message: messageI) => {
+        if (chatroom.participants.includes(message.userId)) {
+          console.log(message, 'hapeningggg');
+          setMessages((prev) => [...prev, message]);
+        }
       });
       getProfilePicture();
 
@@ -181,6 +176,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       }
     };
   }, []);
+
   useEffect(scrollToBottom, [messages]);
 
   return (
