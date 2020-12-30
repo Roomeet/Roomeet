@@ -48,12 +48,10 @@ function App(): JSX.Element {
   const setupSocket = () => {
     if (!socket && context.id) {
       try {
-        const newSocket = io({
+        const newSocket = io('http://localhost:3002', {
           query: {
             userId: context.id,
           },
-          // path: '/socket',
-          // transports: ['websocket'],
         });
 
         newSocket.on('disconnect', () => {
@@ -99,7 +97,7 @@ function App(): JSX.Element {
   const fetchAllNotifications = async () => {
     try {
       const { data } = await network.get(
-        `/api/v1/notifications/userId/${context.id}`
+        `http://localhost:3002/api/v1/notifications/userId/${context.id}`
       );
 
       setAllNotifications(data);
@@ -112,7 +110,7 @@ function App(): JSX.Element {
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
-        const { data } = await network.get('/server/api/v1/auth/validateToken');
+        const { data } = await network.get('api/v1/auth/validateToken');
         const id = Cookies.get('id');
         const dataCookie = {
           id,

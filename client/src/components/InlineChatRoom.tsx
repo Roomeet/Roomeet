@@ -39,7 +39,7 @@ const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMe
 
   const fetchFirstMessage = async () => {
     try {
-      const { data } = await network.get(`/api/v1/messenger/chatrooms/${chatroom.id}/lastMessage`);
+      const { data } = await network.get(`http://localhost:3002/api/v1/messenger/chatrooms/${chatroom.id}/lastMessage`);
       setLastMessage(data);
     } catch (err) {
       setTimeout(fetchFirstMessage, 3000);
@@ -52,7 +52,7 @@ const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMe
   };
 
   const getProfilePicture = async () => {
-    const { data } = await network.get(`/server/api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
+    const { data } = await network.get(`api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
     setImage(data);
   };
 
