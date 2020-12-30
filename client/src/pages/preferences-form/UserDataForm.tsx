@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     borderRadius: '10px/12px',
     'overflow-y': 'auto',
+    'overflow-x': 'hidden',
     height: '85vh',
     boxShadow: '0 2px 5px 1px rgba(0,0,0,0.7)',
   },
@@ -59,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  range_root: {
+    width: 150,
+  },
 }));
 
 const UserDataForm: React.FC = () => {
@@ -68,7 +72,7 @@ const UserDataForm: React.FC = () => {
   const citiesContext = React.useContext(CitiesContext);
   const [user, setUser] = React.useState<UserDataInterface>();
   const [file, setFile] = React.useState<any>();
-  const [budget, setBudget] = React.useState<number>(500);
+  const [budgetRange, setBudgetRange] = React.useState<number[]>([500, 6000]);
 
   const validationSchema = object({
     age: number()
@@ -89,7 +93,7 @@ const UserDataForm: React.FC = () => {
         aboutMe: '',
         smoke: '',
         numOfRoomates: 0,
-        budget: 500,
+        budgetRange: [500, 6000],
         pet: false,
         relationship: false,
         employed: false,
@@ -97,8 +101,11 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
+    console.log(budgetRange);
     values.fullName = context.name;
-    values.budget = budget;
+    values.minBudget = budgetRange[0];
+    values.maxBudget = budgetRange[1];
+    console.log(values);
     const data = new FormData();
     delete values.image;
     data.append('file', file);
@@ -111,6 +118,10 @@ const UserDataForm: React.FC = () => {
     );
   };
 
+  const handleBudjetRangeChange = (event: any, newValue: number | number[]) => {
+    setBudgetRange(newValue as number[]);
+  };
+
   const fetchUserData = async () => {
     const { data } = await network.get(
       `/api/v1/users/basic-info?id=${context.id}`
@@ -118,10 +129,13 @@ const UserDataForm: React.FC = () => {
     if (data[0]) {
       setUser(data[0]);
       citiesContext.set({ cities: data[0].cities ? data[0].cities : [] });
+      data[0].minBudget &&
+        setBudgetRange([data[0].minBudget, data[0].maxBudget]);
     } else {
       setUser(initialValues);
     }
   };
+  console.log(user);
   React.useEffect(() => {
     fetchUserData();
   }, []);
@@ -195,7 +209,7 @@ const UserDataForm: React.FC = () => {
                         style={{ margin: '5px' }}
                         fullWidth
                         id='age'
-                        label='age'
+                        label='How Old Are You?'
                         type='number'
                         data-test='userdata-age'
                         helperText={
@@ -216,7 +230,7 @@ const UserDataForm: React.FC = () => {
                         required
                         fullWidth
                         id='aboutMe'
-                        label='About Me'
+                        label='Please Tell Us About You:'
                         type='text'
                         data-test='form-full-name'
                         error={
@@ -245,7 +259,7 @@ const UserDataForm: React.FC = () => {
                         variant='outlined'
                         style={{ margin: '5px' }}
                         fullWidth
-                        label='smoke'
+                        label='Do You Smoke?'
                         select
                         id='smoke'
                         data-test='userdata-smoke'
@@ -272,7 +286,7 @@ const UserDataForm: React.FC = () => {
                         style={{ margin: '5px' }}
                         fullWidth
                         id='numOfRoomates'
-                        label='Number Of Roomates'
+                        label='Number Of Roomates You Are Looking For:'
                         type='number'
                         data-test='userdata-age'
                         helperText={
@@ -282,20 +296,21 @@ const UserDataForm: React.FC = () => {
                       />
                     )}
                   </Field>
-                  <Typography gutterBottom>Range of Budget</Typography>
-                  <Slider
-                    key={`slider-${context.id}`}
-                    defaultValue={initialValues.budget}
-                    aria-labelledby='discrete-slider'
-                    valueLabelDisplay='auto'
-                    step={100}
-                    marks
-                    min={500}
-                    max={10000}
-                    onChange={(event: any) =>
-                      setBudget(Number(event.target.innerText))
-                    }
-                  />
+                  <div>
+                    <Typography id="range-slider" gutterBottom>
+                      What is your budget range?
+                    </Typography>
+                    <Slider
+                      value={budgetRange}
+                      onChange={handleBudjetRangeChange}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-slider"
+                      marks
+                      min={500}
+                      max={6000}
+                      step={500}
+                    />
+                  </div>
                   <FormControlLabel
                     control={
                       <Field name='pet'>
@@ -309,7 +324,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='pet'
+                    label='I Have A Pet'
                   />
                   <FormControlLabel
                     control={
@@ -324,7 +339,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='relationship'
+                    label='I Am In A Relationship'
                   />
                   <FormControlLabel
                     control={
@@ -339,7 +354,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='employed'
+                    label='I`m Employed'
                   />
                   <FormControlLabel
                     control={
@@ -354,7 +369,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='religion'
+                    label='I`m Religion'
                   />
                   <Button
                     type='submit'

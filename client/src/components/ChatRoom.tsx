@@ -13,23 +13,21 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import React, {
-  useContext,
-  useEffect,
-  useState,
-  useRef,
+  useContext, useEffect, useState, useRef,
 } from 'react';
 import SocketContext from '../context/socketContext';
 import { UserContext } from '../context/UserContext';
 import { messageI, chatRoomI } from '../interfaces/chat';
 import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
+import useDetectOutside from '../hooks/useDetectOutside';
 
 type chatRoomProps = {
   chatroom: chatRoomI;
   closeChatRoom: (roomId: chatRoomI) => void;
   open: boolean;
   openChatroomOnClick: (chatroomId: string) => void;
-}
+};
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   paper: {
@@ -72,18 +70,24 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   subheader: {
     backgroundColor: theme.palette.background.paper,
   },
-  input: {
-  },
+  input: {},
   sendButton: {
     flexGrow: 1,
   },
   submit: {
     flexGrow: 1,
   },
+  badge: {
+    marginLeft: '-15px',
+    '&:hover': { cursor: 'pointer' },
+  },
 }));
 
 const ChatRoom: React.FC<chatRoomProps> = ({
-  chatroom, closeChatRoom, open, openChatroomOnClick,
+  chatroom,
+  closeChatRoom,
+  open,
+  openChatroomOnClick,
 }) => {
   const classes = useStyles();
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
@@ -92,6 +96,9 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
+  const wrapperRef = React.useRef(null);
+
+  useDetectOutside(wrapperRef, () => openChatroomOnClick(chatroom), true);
 
   const sendMessage = () => {
     // console.log('socket....', socket, 'reffff', messageRef);
@@ -113,7 +120,9 @@ const ChatRoom: React.FC<chatRoomProps> = ({
 
   const getMessages = async () => {
     try {
-      const { data } = await network.get(`http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`);
+      const { data } = await network.get(
+        `http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`,
+      );
       setMessages(data);
     } catch (err) {
       setTimeout(getMessages, 3000);
@@ -140,15 +149,15 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   useEffect(() => {
     getMessages();
     if (socket) {
-    // trig the enteredRoom event
+      // trig the enteredRoom event
       socket.emit('EnteredRoom', {
         chatroomId: chatroom.id,
       });
 
       // define the new message event
-    //   socket.on('newMessage', (message: messageI) => {
-    //     setMessages(((prev) => [...prev, message]));
-    //   });
+      //   socket.on('newMessage', (message: messageI) => {
+      //     setMessages(((prev) => [...prev, message]));
+      //   });
     }
 
     // trig the exitedRoom event on unmount
@@ -171,6 +180,10 @@ const ChatRoom: React.FC<chatRoomProps> = ({
           onClick={() => {
             openChatroomOnClick(chatroom.id);
           }}
+          style={{
+            width: '40px',
+            height: '40px',
+          }}
         >
           <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
         </IconButton>
@@ -179,7 +192,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
           color="secondary"
-          style={{ marginLeft: '-15px' }}
+          className={classes.badge}
           onClick={() => {
             closeChatRoom(chatroom);
           }}
@@ -195,27 +208,27 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       {open && (
         <React.Fragment>
           <CssBaseline />
-          <Paper square className={classes.paper}>
-            <Typography
-              className={classes.header}
-              variant="h5"
-              gutterBottom
-            >
+          <Paper square className={classes.paper} ref={wrapperRef}>
+            <Typography className={classes.header} variant="h5" gutterBottom>
               {getChatroomName(chatroom.name, context.name)}
             </Typography>
             <List className={classes.list}>
-              {messages[0] ? messages.map((message) => (
-                <Paper
-                  key={message.userId}
-                  className={
-                    message.userId === context.id ? classes.ownMessage : classes.otherMessage
-                  }
-                >
-                  <Typography variant="body2">
-                    {message.message}
-                  </Typography>
-                </Paper>
-              )) : <div>no messages</div>}
+              {messages[0] ? (
+                messages.map((message) => (
+                  <Paper
+                    key={message.userId}
+                    className={
+                      message.userId === context.id
+                        ? classes.ownMessage
+                        : classes.otherMessage
+                    }
+                  >
+                    <Typography variant="body2">{message.message}</Typography>
+                  </Paper>
+                ))
+              ) : (
+                <div>no messages</div>
+              )}
               <div ref={messagesEndRef} />
             </List>
             <div className="chatroomActions">

@@ -76,15 +76,14 @@ const useStyles = makeStyles({
     width: '100%',
     position: 'absolute',
   },
-  data:{
+  data: {
     paddingTop: '10px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
     'overflow-y': 'auto',
-
-  }
+  },
 });
 
 const MyProfile: React.FC = () => {
@@ -172,6 +171,18 @@ const MyProfile: React.FC = () => {
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
                     value={userInformation.gender}
+                  />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Budget:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={
+                      userInformation.minBudget
+                        ? `${userInformation?.minBudget} - ${userInformation?.maxBudget}`
+                        : 'No Specific Amount'
+                    }
                   />
                   <TextField
                     disabled

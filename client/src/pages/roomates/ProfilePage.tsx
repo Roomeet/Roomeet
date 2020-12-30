@@ -91,6 +91,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/api/v1/users/user-data/${userId}`);
+    console.log(data[0]);
     setUserInformation(data[0]);
   };
 
@@ -113,7 +114,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
               <div className={classes.titleInfoDiv}>
                 <Typography className={classes.nameTitle}>
                   {' '}
-                  {userInformation?.gender === 'Female' ? (
+                  {userInformation?.gender === 'female' ? (
                     <ImWoman style={{ fill: 'red', fontSize: '3vh' }} />
                   ) : (
                     <ImMan style={{ fill: 'green', fontSize: '3vh' }} />
@@ -137,6 +138,14 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                 </Typography>
                 <Typography className={classes.aboutMe}>
                   {userInformation?.aboutMe}
+                </Typography>
+              </p>
+              <p>
+                <Typography variant="h6" className={classes.labels}>
+                  Range of Budget:
+                </Typography>
+                <Typography className={classes.aboutMe}>
+                  {(userInformation?.minBudget) ? `${userInformation?.minBudget} - ${userInformation?.maxBudget}` : 'No Amount'}
                 </Typography>
               </p>
             </div>

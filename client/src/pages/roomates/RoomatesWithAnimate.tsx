@@ -1,7 +1,7 @@
 /*eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Typography } from '@material-ui/core';
+import { Paper, Drawer, Button, Typography } from '@material-ui/core';
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
@@ -11,10 +11,12 @@ import { UserContext } from '../../context/UserContext';
 import SocketContext from '../../context/socketContext';
 import { useHistory } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FilterBar from '../../components/FilterBar';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
     width: '100%',
     height: '90vh',
   },
@@ -24,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     height: 50,
     paddingLeft: theme.spacing(4),
-    backgroundColor: '#98c1d9',
+    backgroundColor: '#3d5a80',
     fontFamily: 'fantasy',
+    opacity: 0.8,
   },
   headerText: {
     fontFamily: 'fantasy',
@@ -77,10 +80,36 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  filterButton: {
+    marginRight: 'auto',
+    border: '2px solid #293241',
+    marginTop: '2vh',
+    backgroundColor: '#293241',
+    position: 'fixed',
+    left: '20px',
+    width: '40px',
+    height: '40px',
+  },
+  searchIconRestile: {
+    fill: 'white',
+    fontSize: '1.2em',
+  },
 }));
 
 const Roomates: React.FC = () => {
   const [allUsersInfo, setAllUsersInfo] = useState<UserDataInterface[]>([]);
+  const [openFil, setOpenFil] = useState<boolean>(false);
+  const [filters, setFilters] = useState({
+    gender: '',
+    smoke: false,
+    pet: false,
+    relationship: false,
+    religion: false,
+    employed: false,
+    budgetRange: [500, 6000],
+    ageRange: [16, 60],
+  });
+  const [overTime, setOverTime] = useState<boolean>(false);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
@@ -106,6 +135,28 @@ const Roomates: React.FC = () => {
     setAllUsersInfo(removedFirstCard);
   };
 
+  const handleOpenFilter = () => {
+    setOpenFil((prev) => !prev);
+  };
+
+  const handleRefreshSearch = async () => {
+    setFilters({
+      gender: '',
+      smoke: false,
+      pet: false,
+      relationship: false,
+      religion: false,
+      employed: false,
+      budgetRange: [500, 6000],
+      ageRange: [16, 60],
+    });
+    const { data } = await network.get(
+      `/api/v1/users/all-cards?userId=${context.id}`
+    );
+    setAllUsersInfo(data);
+    setOverTime(false);
+  };
+
   const fetchData = async () => {
     const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
     context.name = user[0].name + ' ' + user[0].lastName;
@@ -123,8 +174,46 @@ const Roomates: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (allUsersInfo.length === 0) setOverTime(true);
+      clearTimeout();
+    }, 7000);
+  }, [allUsersInfo]);
+
+  function closeMenu() {
+    setOpenFil(false);
+  }
   return allUsersInfo[0] ? (
+    <div>
+        <IconButton
+          style={{}}
+          edge='start'
+          color='inherit'
+          aria-label='open drawer'
+          className={classes.filterButton}
+          onClick={handleOpenFilter}
+        >
+          <SearchIcon className={classes.searchIconRestile} />
+        </IconButton>
       <div className={classes.cardsContainer}>
+        <Drawer
+          open={openFil}
+          anchor='left'
+          onClose={handleOpenFilter}
+          // variant="persistent"
+        >
+          <FilterBar
+            className={classes.headerText}
+            setAllUsersInfo={setAllUsersInfo}
+            userId={context.id}
+            closeMenu={closeMenu}
+            filters={filters}
+            setFilters={setFilters}
+            setOverTime={setOverTime}
+          />
+        </Drawer>
         <AnimatePresence exitBeforeEnter initial={false}>
           <RoomateCard
             key={firstCard.id}
@@ -133,10 +222,30 @@ const Roomates: React.FC = () => {
           />
         </AnimatePresence>
       </div>
+    </div>
   ) : (
     <div className={classes.loading}>
-      <CircularProgress size={50}/>
-      Waiting for more cards...
+      {overTime ? (
+        <div>
+          <Typography>
+            Sorry we didn't find potential roomates for you, you can refresh
+            your search here:
+          </Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleRefreshSearch}
+            size='small'
+          >
+            Get all the Roomates
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <CircularProgress size={50} />
+          Searching for more cards...
+        </div>
+      )}
     </div>
   );
 };
