@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px',
     borderRadius: '10px/12px',
     'overflow-y': 'auto',
+    'overflow-x': 'hidden',
     height: '85vh',
     boxShadow: '0 2px 5px 1px rgba(0,0,0,0.7)',
   },
