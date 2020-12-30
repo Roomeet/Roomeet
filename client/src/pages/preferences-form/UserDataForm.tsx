@@ -324,7 +324,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='I Have A Pet'
+                    label='Owner of a Pet'
                   />
                   <FormControlLabel
                     control={
@@ -339,7 +339,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='I Am In A Relationship'
+                    label='In A Relationship'
                   />
                   <FormControlLabel
                     control={
@@ -354,7 +354,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='I`m Employed'
+                    label='Employed'
                   />
                   <FormControlLabel
                     control={
@@ -369,7 +369,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='I`m Religion'
+                    label='Religion'
                   />
                   <Button
                     type='submit'
