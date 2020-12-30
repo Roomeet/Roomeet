@@ -25,6 +25,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignContent: 'center',
     alignItems: 'center',
+    justifyContent: 'space-around',
     boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     color: '#2E2019',
     width: '100%',
@@ -170,16 +171,12 @@ const RoomateCard = ({
         </CardContent>
         <CardActions>
           <Button
-            onClick={handleOpen}
-            className={classes.goToProfile}
+            variant="contained"
+            color="primary"
             size="small"
-            // onClick={handleOpenProfile}
+            onClick={handleOpen}
           >
-            <img
-              className={classes.goToProfile}
-              alt="brownDoor"
-              src={brownDoor}
-            />
+            Read More
           </Button>
           <ProfilePage open={open} handleClose={handleClose} userId={userInfo.userId} />
         </CardActions>
