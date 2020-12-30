@@ -153,7 +153,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   }, [messages]);
 
   const getProfilePicture = async () => {
-    const { data } = await network.get(`api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
+    const { data } = await network.get(`/server/api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
     setImage(data);
   };
 

@@ -2,9 +2,10 @@
   "name": "proxy-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.ts -L"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
+    "nodemon": "^2.0.6",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
