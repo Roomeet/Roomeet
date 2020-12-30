@@ -24,6 +24,7 @@ import { messageI, chatRoomI } from '../interfaces/chat';
 import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
 import useDetectOutside from '../hooks/useDetectOutside';
+import { getImageBase64String } from '../utils/image';
 
 type chatRoomProps = {
   chatroom: chatRoomI;
@@ -86,6 +87,10 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     '&:hover':
 { cursor: 'pointer' },
   },
+  profilePic: {
+    height: '50px',
+    width: '50px',
+  },
 }));
 
 const ChatRoom: React.FC<chatRoomProps> = ({
@@ -94,12 +99,13 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   const classes = useStyles();
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
   const [messages, setMessages] = useState<messageI[]>([]);
+  const [image, setImage] = useState<Buffer>();
   const messageRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
   const wrapperRef = React.useRef(null);
-
+  console.log(chatroom);
   useDetectOutside(wrapperRef, () => openChatroomOnClick(chatroom), true);
 
   const sendMessage = () => {
@@ -146,6 +152,11 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     }
   }, [messages]);
 
+  const getProfilePicture = async () => {
+    const { data } = await network.get(`api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
+    setImage(data);
+  };
+
   useEffect(() => {
     getMessages();
     if (socket) {
@@ -153,6 +164,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       socket.emit('EnteredRoom', {
         chatroomId: chatroom.id,
       });
+      getProfilePicture();
 
       // define the new message event
     //   socket.on('newMessage', (message: messageI) => {
@@ -181,7 +193,19 @@ const ChatRoom: React.FC<chatRoomProps> = ({
             openChatroomOnClick(chatroom.id);
           }}
         >
-          <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
+          <Avatar>
+            <img
+              alt="profilePic"
+              className={classes.profilePic}
+              src={
+                image
+                  ? `data:image/jpg;base64,${getImageBase64String(
+                    image,
+                  )}`
+                  : `https://picsum.photos/seed/${chatroom.participants[0]}/150/150`
+              }
+            />
+          </Avatar>
         </IconButton>
         <Badge
           badgeContent="X"

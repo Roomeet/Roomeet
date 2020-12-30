@@ -53,6 +53,22 @@ router.get(
     }
   }
 );
+router.get(
+  '/basic-info/picture',
+  /* authenticateToken , */ async (req: Request, res: Response) => {
+    try {
+      const { id } = req.query;
+
+      const usersData: any[] = await UserData.find(
+        { userId: String(id) }
+      );
+
+      res.json(usersData[0].image);
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  }
+);
 
 // Get single user for client context
 router.get(

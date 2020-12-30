@@ -7,12 +7,15 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  makeStyles,
+  Theme,
 }
   from '@material-ui/core';
 import { chatRoomI, messageI } from '../interfaces/chat';
 import { UserContext } from '../context/UserContext';
 import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
+import { getImageBase64String } from '../utils/image';
 
 type chatRoomProps = {
   chatroom: chatRoomI;
@@ -20,9 +23,18 @@ type chatRoomProps = {
   setMessengerOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  profilePic: {
+    height: '50px',
+    width: '50px',
+  },
+}));
+
 const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMessengerOpen }) => {
+  const classes = useStyles();
   const context = useContext(UserContext);
   const [lastMessage, setLastMessage] = useState<messageI | null>(null);
+  const [image, setImage] = useState<Buffer>();
 
   const fetchFirstMessage = async () => {
     try {
@@ -38,15 +50,33 @@ const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMe
     setMessengerOpen(false);
   };
 
+  const getProfilePicture = async () => {
+    const { data } = await network.get(`api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
+    setImage(data);
+  };
+
   useEffect(() => {
     fetchFirstMessage();
+    getProfilePicture();
   }, []);
 
   return (
     <React.Fragment key={chatroom.id}>
       <ListItem button onClick={onInlineChatRoomClick}>
         <ListItemAvatar>
-          <Avatar alt="Profile Picture" src="https://picsum.photos/150/150" />
+          <Avatar>
+            <img
+              alt="profilePic"
+              className={classes.profilePic}
+              src={
+                image
+                  ? `data:image/jpg;base64,${getImageBase64String(
+                    image,
+                  )}`
+                  : `https://picsum.photos/seed/${chatroom.participants[0]}/150/150`
+              }
+            />
+          </Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={getChatroomName(chatroom.name, context.name)}
