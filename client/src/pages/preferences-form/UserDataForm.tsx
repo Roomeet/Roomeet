@@ -101,11 +101,9 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    console.log(budgetRange);
     values.fullName = context.name;
     values.minBudget = budgetRange[0];
     values.maxBudget = budgetRange[1];
-    console.log(values);
     const data = new FormData();
     delete values.image;
     data.append('file', file);
@@ -135,7 +133,6 @@ const UserDataForm: React.FC = () => {
       setUser(initialValues);
     }
   };
-  console.log(user);
   React.useEffect(() => {
     fetchUserData();
   }, []);

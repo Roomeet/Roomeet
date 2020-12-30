@@ -130,7 +130,6 @@ const MyProfile: React.FC = () => {
                     />
                   </div>
                   <TextField
-                    id='standard-disabled'
                     disabled
                     label='Full Name:'
                     className={classes.textFiled}
@@ -140,8 +139,7 @@ const MyProfile: React.FC = () => {
                   <div className={classes.textArea}>
                     <TextField
                       disabled
-                      id='standard-disabled'
-                      label='About Me:'
+                        label='About Me:'
                       multiline
                       fullWidth
                       InputProps={{ readOnly: true }}
@@ -150,7 +148,6 @@ const MyProfile: React.FC = () => {
                   </div>
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Rent Location:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -158,7 +155,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Age:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -166,7 +162,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Gender:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -174,7 +169,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Budget:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -186,7 +180,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Smoke:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -194,7 +187,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Pet:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -202,7 +194,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Status:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -214,7 +205,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Employed:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -222,7 +212,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Number of Roomates:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
@@ -230,7 +219,6 @@ const MyProfile: React.FC = () => {
                   />
                   <TextField
                     disabled
-                    id='standard-disabled'
                     label='Religion:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
