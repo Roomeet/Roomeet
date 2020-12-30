@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     position: 'absolute',
     maxWidth: '400px',
     top: '50px',
-    zIndex: 10,
+    zIndex: 15,
     padding: '5px',
   },
   ownMessage: {
