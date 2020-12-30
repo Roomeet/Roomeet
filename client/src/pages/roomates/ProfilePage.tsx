@@ -11,6 +11,7 @@ import { ImWoman, ImMan } from 'react-icons/im';
 import { UserContext } from '../../context/UserContext';
 import { UserDataInterface } from '../../interfaces/userData';
 import network from '../../utils/network';
+import { getImageBase64String } from '../../utils/image';
 
 export type Props = {
   [key: string]: any;
@@ -108,7 +109,12 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
               <img
                 alt="profilePic"
                 className={classes.profilePic}
-                src={`https://picsum.photos/seed/${userId}/150/150`}
+                src={
+                  userInformation?.image
+                  && `data:image/jpg;base64,${getImageBase64String(
+                    userInformation.image,
+                  )}`
+                }
               />
               <h1>{userInformation?.fullName}</h1>
               <div className={classes.titleInfoDiv}>
