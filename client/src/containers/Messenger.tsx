@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: 0,
     },
     paper: {
+      width: '300px',
     },
     list: {
       overflowY: 'scroll',
@@ -118,7 +119,7 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom, setM
                         openChatRoom={openChatRoom}
                         setMessengerOpen={setMessengerOpen}
                       />
-                      )) : <div>No chat rooms for you buddy</div>}
+                      )) : <div>Empty</div>}
                   </List>
                 <AppBar color="primary" className={classes.appBar}>
                   <Toolbar>

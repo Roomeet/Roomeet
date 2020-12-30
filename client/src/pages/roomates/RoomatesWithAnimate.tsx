@@ -227,7 +227,7 @@ const Roomates: React.FC = () => {
       {overTime ? (
         <div>
           <Typography>
-            Sorry we didn't find any potential roomates for you, you can refresh
+            Sorry, we didn't find any potential roomate, you can refresh
             your search here:
           </Typography>
           <Button
@@ -242,7 +242,7 @@ const Roomates: React.FC = () => {
       ) : (
         <div>
           <CircularProgress size={50} />
-          Searching for more cards...
+          Searching for your next roomate...
         </div>
       )}
     </div>
