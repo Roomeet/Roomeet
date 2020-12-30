@@ -22,6 +22,17 @@
   position: absolute;
   bottom: 0;
   background: #293241;
+  padding-top: 10px;
+}
+
+.footer a {
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  background: #4a576e;
 }
 
 a,
