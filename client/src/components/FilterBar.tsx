@@ -77,7 +77,7 @@ const FilterBar: React.FC<Props> = ({
   closeMenu,
   setFilters,
   filters,
-  setOverTime
+  setOverTime,
 }) => {
   const classes = useStyles();
   // const [filters, setFilters] = useState({

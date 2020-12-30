@@ -20,71 +20,78 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
-    width: '100%',
-    height: '90vh',
+    width: "100%",
+    height: "90vh",
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     height: 50,
     paddingLeft: theme.spacing(4),
-    backgroundColor: '#98c1d9',
-    fontFamily: 'fantasy',
+    backgroundColor: "#3d5a80",
+    fontFamily: "fantasy",
+    opacity: 0.8,
   },
   headerText: {
-    fontFamily: 'fantasy',
+    fontFamily: "fantasy",
   },
   img: {
     height: 255,
-    display: 'block',
+    display: "block",
     maxWidth: 400,
-    overflow: 'hidden',
-    width: '100%',
+    overflow: "hidden",
+    width: "100%",
   },
   item: {
-    display: 'block',
-    top: '50%',
-    overflow: 'hidden',
-    width: '100%',
+    display: "block",
+    top: "50%",
+    overflow: "hidden",
+    width: "100%",
   },
   footer: {
-    backgroundColor: '#3d5a80',
+    backgroundColor: "#3d5a80",
     bottom: 0,
-    fontFamily: 'fantasy',
+    fontFamily: "fantasy",
   },
   like: {
-    fill: 'green',
+    fill: "green",
     bottom: 0,
-    '&:hover': {
-      backgroundColor: '#3d5a80',
+    "&:hover": {
+      backgroundColor: "#3d5a80",
     },
   },
   unlike: {
-    fill: 'red',
+    fill: "red",
     bottom: 0,
-    '&:hover': {
-      backgroundColor: '#3d5a80',
+    "&:hover": {
+      backgroundColor: "#3d5a80",
     },
   },
   loading: {
-    height: 'auto',
-    margin: 'auto',
-    padding: '10px',
-    position: 'relative',
-    top: '40%',
+    height: "auto",
+    margin: "auto",
+    padding: "10px",
+    position: "relative",
+    top: "40%",
   },
   cardsContainer: {
     flexGrow: 1,
-    overflowX: 'hidden',
-    height: '90vh',
-    width: '100vw',
-    display: 'flex',
-    alignItems: 'center',
+    overflowX: "hidden",
+    height: "90vh",
+    width: "100vw",
+    display: "flex",
+    alignItems: "center",
   },
   filterButton: {
-    marginRight: 'auto',
+    marginRight: "auto",
+    border: "2px solid #293241",
+    marginTop: "2vh",
+    backgroundColor: "#293241",
+  },
+  searchIconRestile: {
+    fill: "white",
+    fontSize: "1.2em",
   },
 }));
 
@@ -163,16 +170,17 @@ const Roomates: React.FC = () => {
     );
     setAllUsersInfo(data);
   };
-  console.log(overTime);
   useEffect(() => {
     fetchData();
   }, []);
+  
   useEffect(() => {
     setTimeout(() => {
       if(allUsersInfo.length === 0) setOverTime(true);
-      return () => clearTimeout();
+      clearTimeout();
     }, 7000);
-  }, [overTime]);
+  }, [allUsersInfo]);
+
   function closeMenu (){
     setOpenFil(false)
   } 
@@ -180,33 +188,33 @@ const Roomates: React.FC = () => {
     <div>
       <Paper square elevation={0} className={classes.header}>
         <IconButton
+          style={{}}
           edge="start"
           color="inherit"
           aria-label="open drawer"
           className={classes.filterButton}
           onClick={handleOpenFilter}
         >
-          <SearchIcon />
+          <SearchIcon className={classes.searchIconRestile} />
         </IconButton>
-        
       </Paper>
       <div className={classes.cardsContainer}>
-      <Drawer
-        open={openFil}
-        anchor="left"
-        onClose={handleOpenFilter}
-        // variant="persistent"
-      >
-        <FilterBar
-          className={classes.headerText}
-          setAllUsersInfo={setAllUsersInfo}
-          userId={context.id}
-          closeMenu={closeMenu}
-          filters={filters}
-          setFilters={setFilters}
-          setOverTime={setOverTime}
-        />
-      </Drawer>
+        <Drawer
+          open={openFil}
+          anchor="left"
+          onClose={handleOpenFilter}
+          // variant="persistent"
+        >
+          <FilterBar
+            className={classes.headerText}
+            setAllUsersInfo={setAllUsersInfo}
+            userId={context.id}
+            closeMenu={closeMenu}
+            filters={filters}
+            setFilters={setFilters}
+            setOverTime={setOverTime}
+          />
+        </Drawer>
         <AnimatePresence exitBeforeEnter initial={false}>
           <RoomateCard
             key={firstCard.id}
@@ -220,24 +228,25 @@ const Roomates: React.FC = () => {
     <div className={classes.loading}>
       {overTime ? (
         <div>
-              <Typography>
-                Sorry we didn't find potential roomates for you, you can refresh your search here:
-              </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleRefreshSearch}
-              size="small"
-            >
-              Get all the Roomates
-            </Button>
-            </div>
+          <Typography>
+            Sorry we didn't find potential roomates for you, you can refresh
+            your search here:
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleRefreshSearch}
+            size="small"
+          >
+            Get all the Roomates
+          </Button>
+        </div>
       ) : (
         <div>
           <CircularProgress size={50} />
           Searching for more cards...
-        </div> 
-      )}  
+        </div>
+      )}
     </div>
   );
 };
