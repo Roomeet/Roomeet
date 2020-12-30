@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/Roomeet/static/css/main.ab7e297c.chunk.css",
+    "main.js": "/Roomeet/static/js/main.d2852ae9.chunk.js",
+    "main.js.map": "/Roomeet/static/js/main.d2852ae9.chunk.js.map",
+    "runtime-main.js": "/Roomeet/static/js/runtime-main.dc53f8d2.js",
+    "runtime-main.js.map": "/Roomeet/static/js/runtime-main.dc53f8d2.js.map",
+    "static/js/2.bd650de2.chunk.js": "/Roomeet/static/js/2.bd650de2.chunk.js",
+    "static/js/2.bd650de2.chunk.js.map": "/Roomeet/static/js/2.bd650de2.chunk.js.map",
+    "static/js/3.eff2acf1.chunk.js": "/Roomeet/static/js/3.eff2acf1.chunk.js",
+    "static/js/3.eff2acf1.chunk.js.map": "/Roomeet/static/js/3.eff2acf1.chunk.js.map",
+    "index.html": "/Roomeet/index.html",
+    "service-worker.js": "/Roomeet/service-worker.js",
+    "service-worker.js.map": "/Roomeet/service-worker.js.map",
+    "static/css/main.ab7e297c.chunk.css.map": "/Roomeet/static/css/main.ab7e297c.chunk.css.map",
+    "static/js/2.bd650de2.chunk.js.LICENSE.txt": "/Roomeet/static/js/2.bd650de2.chunk.js.LICENSE.txt",
+    "static/media/BGLanding.d0172375.jpg": "/Roomeet/static/media/BGLanding.d0172375.jpg",
+    "static/media/BGLogin.0e4ec947.jpg": "/Roomeet/static/media/BGLogin.0e4ec947.jpg",
+    "static/media/BGSignUpForm.7cb7062d.jpg": "/Roomeet/static/media/BGSignUpForm.7cb7062d.jpg",
+    "static/media/BGSignin.d959453f.jpg": "/Roomeet/static/media/BGSignin.d959453f.jpg",
+    "static/media/BGSignup.2df2902d.jpg": "/Roomeet/static/media/BGSignup.2df2902d.jpg",
+    "static/media/brownDoor.52c9ed6b.png": "/Roomeet/static/media/brownDoor.52c9ed6b.png",
+    "static/media/woodBG.c1c83b03.svg": "/Roomeet/static/media/woodBG.c1c83b03.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.dc53f8d2.js",
+    "static/js/2.bd650de2.chunk.js",
+    "static/css/main.ab7e297c.chunk.css",
+    "static/js/main.d2852ae9.chunk.js"
+  ]
+}
