@@ -76,15 +76,14 @@ const useStyles = makeStyles({
     width: '100%',
     position: 'absolute',
   },
-  data:{
+  data: {
     paddingTop: '10px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
     'overflow-y': 'auto',
-
-  }
+  },
 });
 
 const MyProfile: React.FC = () => {
@@ -176,89 +175,16 @@ const MyProfile: React.FC = () => {
                   <TextField
                     disabled
                     id='standard-disabled'
-                    label='Smoke:'
-                    className={classes.textFiled}
-                    InputProps={{ readOnly: true }}
-                    value={userInformation.smoke}
-                  />
-                  <TextField
-                    disabled
-                    id='standard-disabled'
-                    label='Pet:'
-                    className={classes.textFiled}
-                    InputProps={{ readOnly: true }}
-                    value={userInformation.pet ? 'Yes' : 'No'}
-                  />
-                  <TextField
-                    disabled
-                    id='standard-disabled'
-                    label='Status:'
+                    label='Budget:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
                     value={
-                      userInformation.relationship
-                        ? 'In Relationship'
-                        : 'Single'
+                      userInformation.minBudget
+                        ? `${userInformation?.minBudget} - ${userInformation?.maxBudget}`
+                        : 'No Specific Amount'
                     }
                   />
-                  <TextField
-                    disabled
-                    id='standard-disabled'
-                    label='Employed:'
-                    className={classes.textFiled}
-                    InputProps={{ readOnly: true }}
-                    value={userInformation.employed ? 'Yes' : 'No'}
-                  />
-                  <TextField
-                    disabled
-                    id='standard-disabled'
-                    label='Number of Roomates:'
-                    className={classes.textFiled}
-                    InputProps={{ readOnly: true }}
-                    value={userInformation.numOfRoomates}
-                  />
-                  <TextField
-                    disabled
-                    id='standard-disabled'
-                    label='Religion:'
-                    className={classes.textFiled}
-                    InputProps={{ readOnly: true }}
-                    value={userInformation.religion ? 'Yes' : 'No'}
-                  />
-                </div>
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Rent Location:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.rentLocation}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Age:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.age}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Gender:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.gender}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Amount of Budget:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.minBudget ? `${userInformation?.minBudget} - ${userInformation?.maxBudget}` : 'No Specific Amount'}
-                />
-                <TextField
+                                  <TextField
                   disabled
                   id='standard-disabled'
                   label='Smoke:'
@@ -308,6 +234,7 @@ const MyProfile: React.FC = () => {
                   InputProps={{ readOnly: true }}
                   value={userInformation.religion ? 'Yes' : 'No'}
                 />
+                </div>
               </div>
             ) : (
               <div className={classes.noProfileDiv}>
