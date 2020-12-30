@@ -80,6 +80,8 @@ const UserDataForm: React.FC = () => {
       .max(120, 'max age is 120')
       .required('must contain age'),
     aboutMe: string().max(300, 'Maximum 300 characters'),
+    numOfRoomates: number()
+    .min(0 ,'number of roomates cannot be neagetive ')
   });
   // @ts-ignore
   const initialValues: any = user

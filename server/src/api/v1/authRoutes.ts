@@ -12,6 +12,7 @@ const router = Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 // types:
 type InfoForCookie = {
   userId: string | undefined;
@@ -34,6 +35,13 @@ router.get(
     res.send(true);
   }
 );
+
+const UpperfirstLetter = (name: string) =>{
+  let firstLetter = name.slice(0,1).toUpperCase();
+  let restLetters = name.slice(1).toLowerCase();
+  return firstLetter+restLetters
+}
+
 
 // get new access token
 router.post('/token', async (req, res) => {
@@ -66,10 +74,12 @@ router.post('/register', async (req: Request, res: Response) => {
       10
     );
 
+    let firstName = UpperfirstLetter(userRegisterationData.name)
+    let lastName = UpperfirstLetter(userRegisterationData.lastName)
     const newUser = new User({
       _id: new ObjectId(),
-      name: userRegisterationData.name,
-      lastName: userRegisterationData.lastName,
+      name: firstName,
+      lastName: lastName,
       password: userRegisterationData.password,
       email: userRegisterationData.email,
       createdAt: new Date(),
