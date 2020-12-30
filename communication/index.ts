@@ -32,11 +32,14 @@ require("./models/Message");
 
 const port = process.env.PORT || 3002;
 
-const server = app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server listening on port ${port}`);
+// });
+
+const server = require('http').Server(app);
 
 const io = require("socket.io")(server);
+// io.connect('http://localhost:3000', { path: '/socket-io' })
 
 io.use(async (socket: any, next: any) => {
   try {
@@ -117,4 +120,8 @@ io.on("connect", (socket: any) => {
     }
   })
 
+});
+
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
