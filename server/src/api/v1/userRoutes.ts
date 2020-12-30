@@ -215,7 +215,7 @@ router.get('/all-cards', async (req: Request, res: Response) => {
     // @ts-ignore
     const { userId }: { userId: string } = req.query;
     const likes = await Like.find({ activeUserId: userId });
-    const usersLike: string[] = likes.map((like) => like.passiveUserId);
+    const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     const allcards: UserDataInterface[] = await UserData.find({
       userId: {
         $nin: [...usersLike, userId]
@@ -233,7 +233,7 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
     const filters: filterInterface = req.body;
     console.log(filters);
     const likes = await Like.find({ activeUserId: filters.userId });
-    const usersLike: string[] = likes.map((like) => like.passiveUserId);
+    const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
       userId: {
         $nin: [...usersLike, filters.userId]
