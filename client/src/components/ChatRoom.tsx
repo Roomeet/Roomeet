@@ -81,6 +81,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   submit: {
     flexGrow: 1,
   },
+  badge: {
+    marginLeft: '-15px',
+    '&:hover':
+{ cursor: 'pointer' },
+  },
 }));
 
 const ChatRoom: React.FC<chatRoomProps> = ({
@@ -183,7 +188,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
           onMouseEnter={() => setBadgeInvisible(false)}
           onMouseLeave={() => setBadgeInvisible(true)}
           color="secondary"
-          style={{ marginLeft: '-15px' }}
+          className={classes.badge}
           onClick={() => {
             closeChatRoom(chatroom);
           }}
