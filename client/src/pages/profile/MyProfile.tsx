@@ -184,56 +184,58 @@ const MyProfile: React.FC = () => {
                         : 'No Specific Amount'
                     }
                   />
-                                  <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Smoke:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.smoke}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Pet:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.pet ? 'Yes' : 'No'}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Status:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={
-                    userInformation.relationship ? 'In Relationship' : 'Single'
-                  }
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Employed:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.employed ? 'Yes' : 'No'}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Number of Roomates:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.numOfRoomates}
-                />
-                <TextField
-                  disabled
-                  id='standard-disabled'
-                  label='Religion:'
-                  className={classes.textFiled}
-                  InputProps={{ readOnly: true }}
-                  value={userInformation.religion ? 'Yes' : 'No'}
-                />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Smoke:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.smoke}
+                  />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Pet:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.pet ? 'Yes' : 'No'}
+                  />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Status:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={
+                      userInformation.relationship
+                        ? 'In Relationship'
+                        : 'Single'
+                    }
+                  />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Employed:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.employed ? 'Yes' : 'No'}
+                  />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Number of Roomates:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.numOfRoomates}
+                  />
+                  <TextField
+                    disabled
+                    id='standard-disabled'
+                    label='Religion:'
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.religion ? 'Yes' : 'No'}
+                  />
                 </div>
               </div>
             ) : (

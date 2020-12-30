@@ -90,6 +90,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     fontSize: '1.5rem',
     fontFamily: 'Nunito',
   },
+  chatrooms: {
+    position: 'fixed',
+    display: 'flex',
+    left: '60px',
+    marginTop: '18px',
+  },
 }));
 
 type navbarProps = {
@@ -184,14 +190,16 @@ const NavBar: React.FC<navbarProps> = ({
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <div className={classes.sectionMobile}>
-      {openChatRooms[0] && openChatRooms.map((chatroom) => (
-        <ChatRoom
-          chatroom={chatroom}
-          closeChatRoom={closeChatRoom}
-          open={openChatroom === chatroom.id}
-          openChatroomOnClick={openChatroomOnClick}
-        />
-      ))}
+      <div className={classes.chatrooms}>
+        {openChatRooms[0] && openChatRooms.map((chatroom) => (
+          <ChatRoom
+            chatroom={chatroom}
+            closeChatRoom={closeChatRoom}
+            open={openChatroom === chatroom.id}
+            openChatroomOnClick={openChatroomOnClick}
+          />
+        ))}
+      </div>
       <Menu
         anchorEl={mobileMoreAnchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
