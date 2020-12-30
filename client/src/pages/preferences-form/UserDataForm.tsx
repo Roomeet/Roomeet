@@ -294,14 +294,14 @@ const UserDataForm: React.FC = () => {
                     )}
                   </Field>
                   <div>
-                    <Typography id="range-slider" gutterBottom>
+                    <Typography id='range-slider' gutterBottom>
                       What is your budget range?
                     </Typography>
                     <Slider
                       value={budgetRange}
                       onChange={handleBudjetRangeChange}
-                      valueLabelDisplay="auto"
-                      aria-labelledby="range-slider"
+                      valueLabelDisplay='auto'
+                      aria-labelledby='range-slider'
                       marks
                       min={500}
                       max={6000}
