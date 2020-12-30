@@ -13,10 +13,7 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import React, {
-  useContext,
-  useEffect,
-  useState,
-  useRef,
+  useContext, useEffect, useState, useRef,
 } from 'react';
 import SocketContext from '../context/socketContext';
 import { UserContext } from '../context/UserContext';
@@ -30,7 +27,7 @@ type chatRoomProps = {
   closeChatRoom: (roomId: chatRoomI) => void;
   open: boolean;
   openChatroomOnClick: (chatroomId: string) => void;
-}
+};
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   paper: {
@@ -73,8 +70,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   subheader: {
     backgroundColor: theme.palette.background.paper,
   },
-  input: {
-  },
+  input: {},
   sendButton: {
     flexGrow: 1,
   },
@@ -83,13 +79,15 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   badge: {
     marginLeft: '-15px',
-    '&:hover':
-{ cursor: 'pointer' },
+    '&:hover': { cursor: 'pointer' },
   },
 }));
 
 const ChatRoom: React.FC<chatRoomProps> = ({
-  chatroom, closeChatRoom, open, openChatroomOnClick,
+  chatroom,
+  closeChatRoom,
+  open,
+  openChatroomOnClick,
 }) => {
   const classes = useStyles();
   const [badgeInvisible, setBadgeInvisible] = useState<boolean>(true);
@@ -122,7 +120,9 @@ const ChatRoom: React.FC<chatRoomProps> = ({
 
   const getMessages = async () => {
     try {
-      const { data } = await network.get(`http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`);
+      const { data } = await network.get(
+        `http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`,
+      );
       setMessages(data);
     } catch (err) {
       setTimeout(getMessages, 3000);
@@ -149,15 +149,15 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   useEffect(() => {
     getMessages();
     if (socket) {
-    // trig the enteredRoom event
+      // trig the enteredRoom event
       socket.emit('EnteredRoom', {
         chatroomId: chatroom.id,
       });
 
       // define the new message event
-    //   socket.on('newMessage', (message: messageI) => {
-    //     setMessages(((prev) => [...prev, message]));
-    //   });
+      //   socket.on('newMessage', (message: messageI) => {
+      //     setMessages(((prev) => [...prev, message]));
+      //   });
     }
 
     // trig the exitedRoom event on unmount
@@ -179,6 +179,10 @@ const ChatRoom: React.FC<chatRoomProps> = ({
           onMouseLeave={() => setBadgeInvisible(true)}
           onClick={() => {
             openChatroomOnClick(chatroom.id);
+          }}
+          style={{
+            width: '40px',
+            height: '40px',
           }}
         >
           <Avatar>{getChatroomName(chatroom.name, context.name)[0]}</Avatar>
@@ -205,26 +209,26 @@ const ChatRoom: React.FC<chatRoomProps> = ({
         <React.Fragment>
           <CssBaseline />
           <Paper square className={classes.paper} ref={wrapperRef}>
-            <Typography
-              className={classes.header}
-              variant="h5"
-              gutterBottom
-            >
+            <Typography className={classes.header} variant="h5" gutterBottom>
               {getChatroomName(chatroom.name, context.name)}
             </Typography>
             <List className={classes.list}>
-              {messages[0] ? messages.map((message) => (
-                <Paper
-                  key={message.userId}
-                  className={
-                    message.userId === context.id ? classes.ownMessage : classes.otherMessage
-                  }
-                >
-                  <Typography variant="body2">
-                    {message.message}
-                  </Typography>
-                </Paper>
-              )) : <div>no messages</div>}
+              {messages[0] ? (
+                messages.map((message) => (
+                  <Paper
+                    key={message.userId}
+                    className={
+                      message.userId === context.id
+                        ? classes.ownMessage
+                        : classes.otherMessage
+                    }
+                  >
+                    <Typography variant="body2">{message.message}</Typography>
+                  </Paper>
+                ))
+              ) : (
+                <div>no messages</div>
+              )}
               <div ref={messagesEndRef} />
             </List>
             <div className="chatroomActions">
