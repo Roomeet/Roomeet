@@ -110,9 +110,9 @@ const UserDataForm: React.FC = () => {
     data.append('file', file);
     values.fullName = context.name;
     values.cities = citiesContext.cities;
-    await network.post(`/server/api/v1/users/user-data/${context.id}`, values);
+    await network.post(`/api/v1/users/user-data/${context.id}`, values);
     await network.post(
-      `/server/api/v1/users/user-data/profile/picture/${context.id}`,
+      `/api/v1/users/user-data/profile/picture/${context.id}`,
       data
     );
   };
@@ -123,7 +123,7 @@ const UserDataForm: React.FC = () => {
 
   const fetchUserData = async () => {
     const { data } = await network.get(
-      `/server/api/v1/users/basic-info?id=${context.id}`
+      `/api/v1/users/basic-info?id=${context.id}`
     );
     if (data[0]) {
       setUser(data[0]);
@@ -323,7 +323,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='Owner of a Pet'
+                    label='I have a pet'
                   />
                   <FormControlLabel
                     control={
@@ -338,7 +338,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='In A Relationship'
+                    label='I am in a relationship'
                   />
                   <FormControlLabel
                     control={
@@ -353,7 +353,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='Employed'
+                    label='I`m employed'
                   />
                   <FormControlLabel
                     control={
@@ -368,7 +368,7 @@ const UserDataForm: React.FC = () => {
                         )}
                       </Field>
                     }
-                    label='Religion'
+                    label='I`m religious'
                   />
                   <Button
                     type='submit'

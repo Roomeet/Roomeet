@@ -86,7 +86,7 @@ const SignInForm: React.FC<any> = () => {
 
   const login = async (values: SignInUserData) => {
     try {
-      const { data } = await network.post('/server/api/v1/auth/login', values);
+      const { data } = await network.post('/api/v1/auth/login', values);
       context.logUserIn({ ...data, success: true });
       history.push('/home');
     } catch (error) {

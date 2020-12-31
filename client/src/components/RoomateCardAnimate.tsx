@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Card, CardActions, CardContent, Button, Typography, Modal,
+  Card, CardActions, CardContent, Button, Typography,
 } from '@material-ui/core/';
 // import blueDoor from '../images/blueDoor.png';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { motion } from 'framer-motion';
-import brownDoor from '../images/brownDoor.png';
+// import brownDoor from '../images/brownDoor.png';
 import ProfilePage from '../pages/roomates/ProfilePage';
 import { UserDataInterface } from '../interfaces/userData';
 import { getImageBase64String } from '../utils/image';

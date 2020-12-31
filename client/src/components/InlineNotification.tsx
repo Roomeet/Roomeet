@@ -21,7 +21,7 @@ const InlineNotification: React.FC<chatRoomProps> = ({
 
   const seeNotification = async (notificationToSee: NotificationI) => {
     if (!notificationToSee.seen) {
-      await network.put(`/api/v1/notifications/${notificationToSee.id}/seen`);
+      await network.put(`http://localhost:3002/api/v1/notifications/${notificationToSee.id}/seen`);
       setSeen(true);
       setUnseenNotificationsLength((prev) => {
         if (prev > 0) {
