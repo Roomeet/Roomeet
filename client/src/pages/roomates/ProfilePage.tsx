@@ -37,6 +37,7 @@ const useStyles = makeStyles({
     marginRight: 'auto',
     color: 'black',
     backgroundColor: '#e0fbfc',
+    '&:focus': { outline: 'none' },
   },
   rows: {
     display: 'flex',
@@ -69,7 +70,7 @@ const useStyles = makeStyles({
   advancedInfoDiv: {
     display: 'flex',
     flexDirection: 'column',
-    width: '90%',
+    width: '85%',
     justifyContent: 'space-between',
   },
   basicInfoDiv: {
@@ -222,7 +223,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
               </p>
               <p className={classes.rows}>
                 <Typography variant="h6" className={classes.labels}>
-                  Religion:
+                  Religious:
                 </Typography>
                 <Typography className={classes.infoData}>
                   {userInformation?.religion ? (
