@@ -110,9 +110,9 @@ const UserDataForm: React.FC = () => {
     data.append('file', file);
     values.fullName = context.name;
     values.cities = citiesContext.cities;
-    await network.post(`/api/v1/users/user-data/${context.id}`, values);
+    await network.post(`/server/api/v1/users/user-data/${context.id}`, values);
     await network.post(
-      `/api/v1/users/user-data/profile/picture/${context.id}`,
+      `/server/api/v1/users/user-data/profile/picture/${context.id}`,
       data
     );
   };
@@ -123,7 +123,7 @@ const UserDataForm: React.FC = () => {
 
   const fetchUserData = async () => {
     const { data } = await network.get(
-      `/api/v1/users/basic-info?id=${context.id}`
+      `/server/api/v1/users/basic-info?id=${context.id}`
     );
     if (data[0]) {
       setUser(data[0]);
