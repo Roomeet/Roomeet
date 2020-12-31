@@ -8,17 +8,20 @@ const app = express();
 //  }
  
 app.use('/api', createProxyMiddleware({
-    target: 'http://localhost:3002',
+    //@ts-ignore
+    target: `http://${ process.env.SOCKET || 'localhost'}:3002`,
     changeOrigin: true,
 }));
 app.use("/socket.io", createProxyMiddleware({
-    target: 'http://localhost:3002',
+    //@ts-ignore
+    target: `http://${ process.env.SOCKET || 'localhost'}:3002`,
     changeOrigin: true,
     ws: true,
     // pathRewrite: function (path, req) { return path.replace('^/socket', '') },
 }));
 app.use('/server', createProxyMiddleware({
-    target: 'http://localhost:3001',
+    //@ts-ignore
+    target: `http://${ process.env.SERVER || 'localhost'}:3001`,
     changeOrigin: true,
     pathRewrite: function (path, req) { return path.replace('/server', '') },
 }));
