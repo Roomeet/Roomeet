@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header: React.FC = () => {
+const LandingHeader: React.FC = () => {
   const classes = useStyles();
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -111,4 +111,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default LandingHeader;

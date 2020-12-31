@@ -12,17 +12,16 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import {
   Formik, Form, Field, FieldProps,
 } from 'formik';
 import { string, object } from 'yup';
-// import Alert from '@material-ui/lab/Alert';
 import { Grow } from '@material-ui/core';
 import BGImage from '../../images/BGSignin.jpg';
 import { SignInUserData } from '../../interfaces/authentication';
 import network from '../../utils/network';
 import { UserContext } from '../../context/UserContext';
+import makeToast from '../../utils/Toaster';
 
 const validationSchema = object({
   email: string().email().required('email is required'),
@@ -68,10 +67,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// interface Props {
-//   setLogged: React.Dispatch<React.SetStateAction<boolean>>;
-// }
-
 const SignInForm: React.FC<any> = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -90,9 +85,13 @@ const SignInForm: React.FC<any> = () => {
   };
 
   const login = async (values: SignInUserData) => {
-    const { data } = await network.post('/api/v1/auth/login', values);
-    context.logUserIn({ ...data, success: true });
-    history.push('/home');
+    try {
+      const { data } = await network.post('/server/api/v1/auth/login', values);
+      context.logUserIn({ ...data, success: true });
+      history.push('/home');
+    } catch (error) {
+      makeToast('error', 'Email or Password is incorrect!');
+    }
   };
 
   return (
@@ -109,14 +108,6 @@ const SignInForm: React.FC<any> = () => {
             {...(checked ? { timeout: 1000 } : {})}
           >
             <div className={classes.paper}>
-              {/* {authState.context?.message && (
-            <Alert data-test="signin-error" severity="error" className={classes.alertMessage}>
-              {authState.context.message}
-            </Alert>
-          )} */}
-              {/* <div className={classes.logo}>
-              Welcome To Roomeet
-            </div> */}
               <Avatar className={classes.avatar}>
                 <LockOutlinedIcon />
               </Avatar>
@@ -195,7 +186,6 @@ const SignInForm: React.FC<any> = () => {
                     </Button>
                     <Grid container>
                       <Grid item xs>
-                        {/* <Link to="/forgotpassword">Forgot password?</Link> */}
                         <div onClick={() => alert('need to go to the forgot password functionality')}>
                           Forgot password?
                         </div>

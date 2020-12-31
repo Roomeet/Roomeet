@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { userContext } from '../interfaces/authentication';
 import { logout } from '../utils/authUtils';
 
 export const Logged = React.createContext(false);

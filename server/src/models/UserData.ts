@@ -1,21 +1,35 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
+export interface filterInterface {
+  userId: string
+  gender?: string;
+  smoke?: boolean;
+  pet?: boolean;
+  relationship?: boolean;
+  religion?: boolean;
+  employed?: boolean;
+  budgetRange: number[];
+  ageRange: number[];
+}
 export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
+  image: Buffer,
+  fullName: string;
+  aboutMe: string;
+  rentLocation: string;
   age: number;
   gender: string;
-  smoke: boolean;
+  smoke: string;
+  maxBudget: number;
+  minBudget: number;
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
-  interests: string[];
-  languages: string[];
-  music: string[];
-  lookingFor?: { roomate: boolean; friend: boolean };
   numOfRoomates?: number;
-  religion?: string;
+  religion?: boolean;
+  cities?: JSON;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
@@ -30,18 +44,21 @@ const UserDataSchema = new Schema({
     type: ObjectId,
     required: true
   },
+  image: Buffer,
+  fullName: { type: String, required: true },
+  aboutMe: { type: String, required: true },
+  // rentLocation: { type: String, required: true },
+  cities: Object,
   age: { type: Number, required: true },
   gender: { type: String, required: true },
-  smoke: { type: Boolean, required: true },
+  smoke: { type: String, required: true },
+  maxBudget: { type: Number },
+  minBudget: { type: Number },
   pet: { type: Boolean, required: true },
   relationship: { type: Boolean },
   employed: { type: Boolean },
-  interests: [String],
-  languages: [String],
-  music: [String],
-  lookingFor: { type: Schema.Types.Mixed },
   numOfRoomates: Number,
-  religion: String,
+  religion: Boolean,
   createdAt: Date,
   updatedAt: Date,
   deletedAt: Date
@@ -55,4 +72,4 @@ UserDataSchema.set('toJSON', {
   }
 });
 
-module.exports = model<UserDataInterface>('UserData', UserDataSchema);
+export default model<UserDataInterface>('UserData', UserDataSchema);

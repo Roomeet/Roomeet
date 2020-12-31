@@ -5,6 +5,11 @@ export type UserDataFormResponse = {
   age: number;
   gender: string;
   smoke: Smoke;
+  image: {
+    data: Buffer,
+    ContentType: string,
+  };
+  budgetRange?: number[],
   pet: boolean;
   relationship?: boolean;
   employed?: boolean;
@@ -17,21 +22,23 @@ export type UserDataFormResponse = {
 }
 
 export interface UserDataInterface extends Document {
-  _id: string;
-  userId: string;
-  age: number;
-  gender: string;
-  smoke: boolean;
-  pet: boolean;
-  relationship?: boolean;
-  employed?: boolean;
-  interests: string[];
-  languages: string[];
-  music: string[];
-  lookingFor?: { roomate: boolean; friend: boolean };
-  numOfRoomates?: number;
-  religion?: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  deletedAt: Date | null;
+  id: string,
+  userId: string,
+  fullName: string,
+  aboutMe: string,
+  image: Buffer,
+  rentLocation: string,
+  age: number,
+  gender: string,
+  smoke: boolean,
+  maxBudget: number,
+  minBudget: number,
+  pet: boolean,
+  relationship?: boolean,
+  employed?: boolean,
+  numOfRoomates?: number,
+  religion?: boolean,
+  createdAt: Date,
+  updatedAt: Date | null,
+  deletedAt: Date | null,
 }

@@ -18,6 +18,11 @@ export interface UserInterface extends Document {
   deletedAt: Date | null;
 }
 
+export interface userForMatch {
+  id: string;
+  name: string;
+}
+
 const userSchema = new Schema({
   _id: {
     type: ObjectID,

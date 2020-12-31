@@ -1,26 +1,26 @@
 import { Schema, Document, model } from 'mongoose';
 import { ObjectID } from 'mongodb';
 
-export interface MatchInteface extends Document {
+export interface LikeInterface extends Document {
   _id: string;
-  like: boolean;
-  userId: string;
+  liked: boolean;
+  activeUserId: string;
   passiveUserId: string;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
 }
 
-const matchSchema = new Schema({
+const likeSchema = new Schema({
   _id: {
     type: ObjectID,
     required: true
   },
-  like: {
+  liked: {
     type: Boolean,
     required: true
   },
-  userId: {
+  activeUserId: {
     type: String,
     required: true
   },
@@ -33,7 +33,7 @@ const matchSchema = new Schema({
   deletedAt: Date
 });
 
-matchSchema.set('toJSON', {
+likeSchema.set('toJSON', {
   transform: (document: any, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -41,4 +41,4 @@ matchSchema.set('toJSON', {
   }
 });
 
-export default model<MatchInteface>('Match', matchSchema);
+export default model<LikeInterface>('Like', likeSchema);

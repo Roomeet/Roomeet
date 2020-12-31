@@ -4,44 +4,41 @@
   max-width: 100vw;
   position: relative;
   overflow-x: hidden;
+  font-family: 'Nunito', sans-serif;
 }
 
 #private-routes {
-  background-size: cover;
   min-height: 100vh;
   min-width: 100vw;
 }
 
-.cards-page{
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  overflow-y: scroll;
-}
-
-.user-data-form{
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  overflow-y: scroll;
-}
-
 .footer {
-  /* max-width: 700; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
-  height: 2.5rem;
   margin: auto;
   text-align: center;
   position: absolute;
-  bottom: 0;  
+  bottom: 0;
+  background: #293241;
+  padding-top: 10px;
 }
 
-a, a:hover, a:focus, a:active {
+.footer a {
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  background: #4a576e;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
   text-decoration: none;
   color: inherit;
 }
@@ -51,4 +48,24 @@ a, a:hover, a:focus, a:active {
   background-color: white;
   color: black;
   min-height: 100vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

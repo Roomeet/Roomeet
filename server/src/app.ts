@@ -1,11 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import path from 'path';
 
+const cors = require('cors');
 require('dotenv').config();
 
-const URI = process.env.MONGODB_URI;
-
 const app: express.Application = express();
+const URI = process.env.MONGODB_URI;
 
 let requestID = 0;
 function logger(req: Request, res: Response, next: NextFunction) {
@@ -17,9 +18,12 @@ function logger(req: Request, res: Response, next: NextFunction) {
 }
 
 app.use(logger);
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use('/', express.static('./build/'));
 app.use(express.json());
+
+app.set('view engine', 'ejs');
 
 mongoose
   .connect(URI!, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -30,10 +34,15 @@ mongoose
     console.log('error connecting to MongoDB:', error.message);
   });
 
+mongoose.set('useCreateIndex', true);
+
 app.use('/api', require('./api/index.ts'));
 
 app.use('*', (req, res) => {
-  res.sendStatus(404);
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
+// app.use('*', (req, res) => {
+//   res.sendStatus(404);
+// });
 
 export default app;

@@ -1,40 +1,33 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import PrivateRoute from '../components/PrivateRoute';
-import Roomates from '../pages/roomates/Roomates';
+import RoomatesWithAnimate from '../pages/roomates/RoomatesWithAnimate';
 import UserDataForm from '../pages/preferences-form/UserDataForm';
-import NavBar from '../components/NavBar';
-import AboutPage from '../pages/footers/AboutPage';
-import TermsConditionPage from '../pages/footers/TermsConditionPage';
-import ContactUsPage from '../pages/footers/ContactUsPage';
-import ChatBox from '../pages/chat/ChatBox';
+import MyProfile from '../pages/profile/MyProfile';
+import CitiesContextProvider from '../context/CitiesContext';
 
 const PrivateRoutesContainer: React.FC = () => (
-  <div>
-    {/* <NavBar /> */}
-      <PrivateRoute exact path="/home">
-        <div>
-          <Roomates />
-        </div>
-      </PrivateRoute>
-      <PrivateRoute exact path="/profile">
-        <div id="private-routes">
-          <UserDataForm />
-        </div>
-      </PrivateRoute>
-      <PrivateRoute exact path="/messages">
-        <div id="private-routes">
-          <ChatBox />
-        </div>
-      </PrivateRoute>
-      <Route path="/*">
-        <Redirect
-          to={{
-            pathname: '/home',
-          }}
-        />
-      </Route>
-  </div>
+  <>
+    <PrivateRoute exact path="/home">
+      <RoomatesWithAnimate />
+      {/* <Roomates /> */}
+    </PrivateRoute>
+    <PrivateRoute exact path="/myProfile">
+      <MyProfile />
+    </PrivateRoute>
+    <PrivateRoute exact path="/edit">
+      <CitiesContextProvider>
+        <UserDataForm />
+      </CitiesContextProvider>
+    </PrivateRoute>
+    <Route path="/*">
+      <Redirect
+        to={{
+          pathname: '/home',
+        }}
+      />
+    </Route>
+  </>
 );
 
 export default PrivateRoutesContainer;

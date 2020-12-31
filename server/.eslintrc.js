@@ -4,18 +4,21 @@ module.exports = {
     node: true
   },
   extends: ['airbnb-base'],
-
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module'
   },
   plugins: ['@typescript-eslint'],
+  ignorePatterns: ['out'],
   rules: {
     'no-underscore-dangle': 0,
     'no-param-reassign': 0,
     'linebreak-style': ['error', 'windows'],
     eqeqeq: ['error', 'always'],
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
+    'consistent-return': 0,
     'comma-dangle': [
       'error',
       {
@@ -25,6 +28,9 @@ module.exports = {
         exports: 'never',
         functions: 'never'
       }
-    ]
+    ],
+    'import/no-unresolved': 0,
+    'import/extensions': 0,
+    'consistent-return': 0
   }
 };
