@@ -155,23 +155,23 @@ const Roomates: React.FC = () => {
       ageRange: [16, 60],
     });
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${context.id}`
+      `/server/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
     setOverTime(false);
   };
 
   const fetchData = async () => {
-    const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
+    const { data: user } = await network.get(`/server/api/v1/users/?id=${context.id}`);
     context.name = user[0].name + ' ' + user[0].lastName;
     const { data: isExist } = await network.get(
-      `/api/v1/users/user-data/${context.id}`
+      `/server/api/v1/users/user-data/${context.id}`
     );
     if (isExist.length === 0) {
       history.push('/edit');
     }
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${context.id}`
+      `/server/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
   };

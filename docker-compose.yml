@@ -47,6 +47,26 @@ services:
       roomeet-network:
         ipv4_address: 172.28.0.11
 
+  proxy-server:
+    build:
+      context: './proxy-server'
+      dockerfile: Dockerfile
+    container_name: proxy-server
+    hostname: proxy-server
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./proxy-server:/src/app
+      - /src/app/node_modules
+    command: sh -c '/src/app/wait_for_it.sh roomeet-server:3001 && /src/app/wait_for_it.sh socket-server:3002 && npm run start'
+    environment:
+      - SERVER=roomeet-server
+      - SOCKET=socket-server
+    networks:
+      roomeet-network:
+        ipv4_address: 172.28.0.12
+
 networks:
   roomeet-network:
     driver: bridge

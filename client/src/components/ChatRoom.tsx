@@ -122,7 +122,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   const getMessages = async () => {
     try {
       const { data } = await network.get(
-        `http://localhost:3002/api/v1/messenger/messages/chatroom/${chatroom.id}`,
+        `/api/v1/messenger/messages/chatroom/${chatroom.id}`,
       );
       setMessages(data);
     } catch (err) {
@@ -132,13 +132,13 @@ const ChatRoom: React.FC<chatRoomProps> = ({
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView();
     }
   };
 
   const getProfilePicture = async () => {
     const { data } = await network.get(
-      `api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`,
+      `/server/api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`,
     );
     setImage(data);
   };
@@ -167,7 +167,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     };
   }, []);
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, open]);
 
   return (
     <div className="ChatRoom">
