@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   profilePic: {
     height: '50px',
     width: '50px',
+    border: '1px solid white',
   },
 }));
 
@@ -70,10 +71,10 @@ const InlineChatRoom: React.FC<chatRoomProps> = ({ chatroom, openChatRoom, setMe
               className={classes.profilePic}
               src={
                 image
-                  ? `data:image/jpg;base64,${getImageBase64String(
+                  && `data:image/jpg;base64,${getImageBase64String(
                     image,
                   )}`
-                  : `https://picsum.photos/seed/${chatroom.participants[0]}/150/150`
+                  // : `https://picsum.photos/seed/${chatroom.participants[0]}/150/150`
               }
             />
           </Avatar>

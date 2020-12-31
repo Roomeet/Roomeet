@@ -80,6 +80,7 @@ const UserDataForm: React.FC = () => {
       .max(120, 'max age is 120')
       .required('must contain age'),
     aboutMe: string().max(300, 'Maximum 300 characters'),
+    numOfRoomates: number().min(0, 'number of roomates cannot be neagetive '),
   });
   // @ts-ignore
   const initialValues: any = user
@@ -101,11 +102,9 @@ const UserDataForm: React.FC = () => {
       };
 
   const submit = async (values: any) => {
-    console.log(budgetRange);
     values.fullName = context.name;
     values.minBudget = budgetRange[0];
     values.maxBudget = budgetRange[1];
-    console.log(values);
     const data = new FormData();
     delete values.image;
     data.append('file', file);
@@ -135,7 +134,6 @@ const UserDataForm: React.FC = () => {
       setUser(initialValues);
     }
   };
-  console.log(user);
   React.useEffect(() => {
     fetchUserData();
   }, []);
@@ -180,9 +178,9 @@ const UserDataForm: React.FC = () => {
                     }: FieldProps) => (
                       <TextField
                         variant='outlined'
-                        style={{ margin: '5px' }}
+                        style={{ marginTop: '15px' }}
                         fullWidth
-                        label='gender'
+                        label='Gender'
                         select
                         id='gender'
                         data-test='userdata-gender'
@@ -193,9 +191,9 @@ const UserDataForm: React.FC = () => {
                         }
                         {...field}
                       >
-                        <MenuItem value='female'>female</MenuItem>
-                        <MenuItem value='male'>male</MenuItem>
-                        <MenuItem value='other'>other</MenuItem>
+                        <MenuItem value='female'>Female</MenuItem>
+                        <MenuItem value='male'>Male</MenuItem>
+                        <MenuItem value='other'>Other</MenuItem>
                       </TextField>
                     )}
                   </Field>
@@ -206,10 +204,10 @@ const UserDataForm: React.FC = () => {
                     }: FieldProps) => (
                       <TextField
                         variant='outlined'
-                        style={{ margin: '5px' }}
+                        style={{ marginTop: '15px' }}
                         fullWidth
                         id='age'
-                        label='How Old Are You?'
+                        label='How old are you?'
                         type='number'
                         data-test='userdata-age'
                         helperText={
@@ -230,9 +228,10 @@ const UserDataForm: React.FC = () => {
                         required
                         fullWidth
                         id='aboutMe'
-                        label='Please Tell Us About You:'
+                        label='Please tell us about you:'
                         type='text'
                         data-test='form-full-name'
+                        style={{ marginTop: '15px' }}
                         error={
                           (touched || value !== initialValue) && Boolean(error)
                         }
@@ -243,7 +242,7 @@ const UserDataForm: React.FC = () => {
                       />
                     )}
                   </Field>
-                  <h3>Choose Location</h3>
+                  <h4>Where are you looking to live?</h4>
                   <WrappedMap
                     loadingElement={<div style={{ height: `300px` }} />}
                     containerElement={<div style={{ height: `300px` }} />}
@@ -257,9 +256,9 @@ const UserDataForm: React.FC = () => {
                     }: FieldProps) => (
                       <TextField
                         variant='outlined'
-                        style={{ margin: '5px' }}
+                        style={{ marginTop: '15px' }}
                         fullWidth
-                        label='Do You Smoke?'
+                        label='Do you smoke?'
                         select
                         id='smoke'
                         data-test='userdata-smoke'
@@ -283,10 +282,10 @@ const UserDataForm: React.FC = () => {
                     }: FieldProps) => (
                       <TextField
                         variant='outlined'
-                        style={{ margin: '5px' }}
+                        style={{ marginTop: '15px' }}
                         fullWidth
                         id='numOfRoomates'
-                        label='Number Of Roomates You Are Looking For:'
+                        label='Number of roomates you are looking for:'
                         type='number'
                         data-test='userdata-age'
                         helperText={
@@ -296,15 +295,15 @@ const UserDataForm: React.FC = () => {
                       />
                     )}
                   </Field>
-                  <div>
-                    <Typography id="range-slider" gutterBottom>
+                  <div style={{ marginTop: '15px' }}>
+                    <Typography id='range-slider' gutterBottom>
                       What is your budget range?
                     </Typography>
                     <Slider
                       value={budgetRange}
                       onChange={handleBudjetRangeChange}
-                      valueLabelDisplay="auto"
-                      aria-labelledby="range-slider"
+                      valueLabelDisplay='auto'
+                      aria-labelledby='range-slider'
                       marks
                       min={500}
                       max={6000}

@@ -32,9 +32,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     messenger: {
       position: 'absolute',
-      maxWidth: '400px',
-      top: '50px',
-      right: '100px',
+      maxWidth: '500px',
+      minWidth: '300px',
+      top: '70px',
+      right: '3vw',
       zIndex: 10,
     },
     header: {
@@ -118,7 +119,7 @@ const Messenger: React.FC<messengerProps> = ({ messengerOpen, openChatRoom, setM
                         openChatRoom={openChatRoom}
                         setMessengerOpen={setMessengerOpen}
                       />
-                      )) : <div>No chat rooms for you buddy</div>}
+                      )) : <div>Empty</div>}
                   </List>
                 <AppBar color="primary" className={classes.appBar}>
                   <Toolbar>

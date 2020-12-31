@@ -39,9 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     messenger: {
       position: 'absolute',
-      maxWidth: '400px',
-      top: '50px',
-      right: '100px',
+      maxWidth: '500px',
+      minWidth: '300px',
+      top: '70px',
+      right: '3vw',
       zIndex: 10,
     },
     header: {
@@ -106,7 +107,7 @@ const Messenger: React.FC<notificationsProps> = ({
                     />
                   ))
                 ) : (
-                  <div>No notifications for you buddy</div>
+                  <div>No notifications</div>
                 )}
               </List>
               <AppBar color='primary' className={classes.appBar}>

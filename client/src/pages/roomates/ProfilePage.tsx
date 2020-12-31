@@ -11,6 +11,7 @@ import { ImWoman, ImMan } from 'react-icons/im';
 import { UserContext } from '../../context/UserContext';
 import { UserDataInterface } from '../../interfaces/userData';
 import network from '../../utils/network';
+import { getImageBase64String } from '../../utils/image';
 
 export type Props = {
   [key: string]: any;
@@ -24,14 +25,14 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    border: '3px solid black',
+    boxShadow: '0 2px 5px 3px rgba(0,0,0,0.7)',
     textAlign: 'center',
     height: '80%',
     overflowY: 'auto',
     minWidth: '300px',
     maxWidth: '500px',
     width: '70%',
-    marginTop: '5%',
+    marginTop: '80px',
     marginLeft: 'auto',
     marginRight: 'auto',
     color: 'black',
@@ -39,9 +40,12 @@ const useStyles = makeStyles({
   },
   rows: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
+    borderTop: '0.5px solid #b3b5c0',
+    paddingTop: '5px',
   },
   labels: {
 
@@ -55,7 +59,7 @@ const useStyles = makeStyles({
     height: '30%',
     maxWidth: '200px',
     maxHeight: '200px',
-    marginTop: '5px',
+    marginTop: '10px',
     marginLeft: 'auto',
     marginRight: 'auto',
   },
@@ -65,15 +69,14 @@ const useStyles = makeStyles({
   advancedInfoDiv: {
     display: 'flex',
     flexDirection: 'column',
-    width: '40%',
+    width: '90%',
     justifyContent: 'space-between',
-    marginTop: '10%',
   },
   basicInfoDiv: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    width: '60%',
+    width: '100%',
   },
   titleInfoDiv: {
     display: 'flex',
@@ -82,6 +85,11 @@ const useStyles = makeStyles({
   },
   aboutMe: {
     maxWidth: '90%',
+  },
+  basicInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 });
 
@@ -108,7 +116,12 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
               <img
                 alt="profilePic"
                 className={classes.profilePic}
-                src={`https://picsum.photos/seed/${userId}/150/150`}
+                src={
+                  userInformation?.image
+                  && `data:image/jpg;base64,${getImageBase64String(
+                    userInformation.image,
+                  )}`
+                }
               />
               <h1>{userInformation?.fullName}</h1>
               <div className={classes.titleInfoDiv}>
@@ -124,7 +137,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   {userInformation?.age}
                 </Typography>
               </div>
-              <p>
+              <p className={classes.basicInfo}>
                 <Typography variant="h6" className={classes.labels}>
                   Looking to rent in:
                 </Typography>
@@ -132,7 +145,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   {userInformation?.rentLocation}
                 </Typography>
               </p>
-              <p>
+              <p className={classes.basicInfo}>
                 <Typography variant="h6" className={classes.labels}>
                   About me:
                 </Typography>
@@ -140,7 +153,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   {userInformation?.aboutMe}
                 </Typography>
               </p>
-              <p>
+              <p className={classes.basicInfo}>
                 <Typography variant="h6" className={classes.labels}>
                   Range of Budget:
                 </Typography>

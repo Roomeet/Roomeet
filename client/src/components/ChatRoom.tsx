@@ -20,7 +20,6 @@ import { UserContext } from '../context/UserContext';
 import { messageI, chatRoomI } from '../interfaces/chat';
 import { getChatroomName } from '../utils/chat';
 import network from '../utils/network';
-import useDetectOutside from '../hooks/useDetectOutside';
 import { getImageBase64String } from '../utils/image';
 
 type chatRoomProps = {
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     position: 'absolute',
     maxWidth: '400px',
     top: '50px',
-    zIndex: 10,
+    zIndex: 15,
     padding: '5px',
   },
   ownMessage: {
@@ -83,8 +82,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     '&:hover': { cursor: 'pointer' },
   },
   profilePic: {
-    height: '50px',
-    width: '50px',
+    height: '100%',
+    width: '100%',
   },
 }));
 
@@ -102,12 +101,8 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const context = useContext(UserContext);
   const socket = useContext(SocketContext);
-  const wrapperRef = React.useRef(null);
-  console.log(chatroom);
-  useDetectOutside(wrapperRef, () => openChatroomOnClick(chatroom), true);
 
   const sendMessage = () => {
-    // console.log('socket....', socket, 'reffff', messageRef);
     if (socket && messageRef) {
       socket.emit('chatroomMessage', {
         chatroomId: chatroom.id,
@@ -141,17 +136,6 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (socket) {
-      socket.on(`newMessage${chatroom.id}`, (message: messageI) => {
-        if (chatroom.participants.includes(message.userId)) {
-          const newMessages = [...messages, message];
-          setMessages(newMessages);
-        }
-      });
-    }
-  }, [messages]);
-
   const getProfilePicture = async () => {
     const { data } = await network.get(`/server/api/v1/users/basic-info/picture?id=${chatroom.participants[0]}`);
     setImage(data);
@@ -160,19 +144,18 @@ const ChatRoom: React.FC<chatRoomProps> = ({
   useEffect(() => {
     getMessages();
     if (socket) {
-      // trig the enteredRoom event
       socket.emit('EnteredRoom', {
         chatroomId: chatroom.id,
       });
-      getProfilePicture();
 
-      // define the new message event
-      //   socket.on('newMessage', (message: messageI) => {
-      //     setMessages(((prev) => [...prev, message]));
-      //   });
+      socket.on(`newMessage${chatroom.id}`, (message: messageI) => {
+        if (chatroom.participants.includes(message.userId)) {
+          setMessages((prev) => [...prev, message]);
+        }
+      });
+      getProfilePicture();
     }
 
-    // trig the exitedRoom event on unmount
     return () => {
       if (socket) {
         socket.emit('exitedRoom', {
@@ -181,6 +164,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       }
     };
   }, []);
+
   useEffect(scrollToBottom, [messages]);
 
   return (
@@ -192,21 +176,13 @@ const ChatRoom: React.FC<chatRoomProps> = ({
           onClick={() => {
             openChatroomOnClick(chatroom.id);
           }}
-          style={{
-            width: '40px',
-            height: '40px',
-          }}
         >
           <Avatar>
             <img
               alt="profilePic"
               className={classes.profilePic}
               src={
-                image
-                  ? `data:image/jpg;base64,${getImageBase64String(
-                    image,
-                  )}`
-                  : `https://picsum.photos/seed/${chatroom.participants[0]}/150/150`
+                image && `data:image/jpg;base64,${getImageBase64String(image)}`
               }
             />
           </Avatar>
@@ -232,7 +208,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
       {open && (
         <React.Fragment>
           <CssBaseline />
-          <Paper square className={classes.paper} ref={wrapperRef}>
+          <Paper square className={classes.paper}>
             <Typography className={classes.header} variant="h5" gutterBottom>
               {getChatroomName(chatroom.name, context.name)}
             </Typography>
