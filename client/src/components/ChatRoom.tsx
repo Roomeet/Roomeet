@@ -165,7 +165,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     };
   }, []);
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, open]);
 
   return (
     <div className="ChatRoom">
