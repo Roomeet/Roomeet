@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     top: '50px',
     zIndex: 15,
     padding: '5px',
+    right: '1px',
   },
   ownMessage: {
     backgroundColor: 'rgb(0,132,255)',
@@ -132,7 +133,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView();
     }
   };
 
@@ -167,7 +168,7 @@ const ChatRoom: React.FC<chatRoomProps> = ({
     };
   }, []);
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, open]);
 
   return (
     <div className="ChatRoom">
