@@ -21,10 +21,10 @@ The app is dockerized and can be run with the docker-compose.
 
 
 ##### App Demo
-![app](readme-files\main-demo.gif)
+![app](./readme-files/main-demo.gif)
 
 ##### Chat Demo
-![chat](readme-files\chat-demo.gif)
+![chat](./readme-files/chat-demo.gif)
 ##### Conventions
-![conventions](readme-files\CONVENTIONS.md)
+![conventions](./readme-files/CONVENTIONS.md)
 
