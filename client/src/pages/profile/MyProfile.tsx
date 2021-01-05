@@ -45,8 +45,9 @@ const useStyles = makeStyles({
     marginTop: '15%',
   },
   textFiled: {
-    display: 'inline-block',
     margin: '5px',
+    width: '50%',
+    minWidth: '150px',
   },
   textArea: {
     display: 'inline-block',
@@ -94,7 +95,7 @@ const MyProfile: React.FC = () => {
   const classes = useStyles();
 
   const fetchData = async () => {
-    const { data } = await network.get(`/server/api/v1/users/user-data/${context.id}`);
+    const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
     setUserInformation(data[0]);
     setLoading(false);
   };
@@ -136,23 +137,21 @@ const MyProfile: React.FC = () => {
                     InputProps={{ readOnly: true }}
                     value={userInformation.fullName}
                   />
-                  <div className={classes.textArea}>
-                    <TextField
-                      disabled
-                        label='About Me:'
-                      multiline
-                      fullWidth
-                      InputProps={{ readOnly: true }}
-                      value={userInformation.aboutMe}
-                    />
-                  </div>
                   <TextField
+                    disabled
+                    label='About Me:'
+                    multiline
+                    className={classes.textFiled}
+                    InputProps={{ readOnly: true }}
+                    value={userInformation.aboutMe}
+                  />
+                  {/* <TextField
                     disabled
                     label='Rent Location:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
                     value={userInformation.rentLocation}
-                  />
+                  /> */}
                   <TextField
                     disabled
                     label='Age:'
