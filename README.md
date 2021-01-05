@@ -1,27 +1,27 @@
-# Romeet
-The Roomate matching service for you
-## find
-- [Linting](#lint)
-- [Branch naming](#Branches)
-- [Code Conventions](#Conventions)  
+## Roomeet
+An app that makes the search after the perfect roomate a fun and interective journey.
 
----
-## lint
-an eslint configuration file is provided for both the client and backend. to make it go on-save follow these [instructions](https://www.digitalocean.com/community/tutorials/workflow-auto-eslinting)
-## Branches
-Branch names should describe what the feature you are working on is.
-Good name: `dev-mock`  
-bad name: `Omri's-cool-branch`
+### About the App
+Full stack end-to-end application, written in react.ts in the frontend and node.js in the backend.
+we used Google-maps-api to manage the users location and material-ui to the UI design.
+MongoDb is used to store our data, and mongoose to manage it.
+The authentication system is based on JWT authentication and the real-time chat is implemented by Socket-io in the Backend and in the Frontend.
+The app is dockerized and can be run with the docker-compose.
+#### Technologies
 
-## Conventions
-- [Frontend](#Frontend)
-- [Backend](#Backend)
-### Frontend
-#### naming
-- All react files should be PascalCaed (every word starts with an uppercase letter)
-#### style
-- we use Material ui for style. custom css should be created using the useStyles API.
-### Backend
-#### naming
-- server file names should be camelCased
-- endpoints must be in their proper route (user data endpoint, in the [`userRoutes`](server/src/api/v1/userRoutes.ts) file)
+💻 React.ts, Node.js, Express <br>
+👽 MongoDb, Mongoose <br>
+🔥 Google Maps api <br>
+🚀 JWT <br>
+👮‍♂️ Socket-io, Socket.io-client <br>
+🛠 Material-UI <br>
+🐳 Docker <br>
+
+
+
+##### App demo
+![app]()
+
+##### Conventions
+![conventions](./readme-files/CONVENTIONS.md)
+
