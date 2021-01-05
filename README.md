@@ -16,12 +16,15 @@ The app is dockerized and can be run with the docker-compose.
 👮‍♂️ Socket-io, Socket.io-client <br>
 🛠 Material-UI <br>
 🐳 Docker <br>
+👮‍♂️ Multer <br>
 
 
 
-##### App demo
-![app]()
+##### App Demo
+![app](readme-files\main-demo.gif)
 
+##### Chat Demo
+![chat](readme-files\chat-demo.gif)
 ##### Conventions
-![conventions](./readme-files/CONVENTIONS.md)
+![conventions](readme-files\CONVENTIONS.md)
 
