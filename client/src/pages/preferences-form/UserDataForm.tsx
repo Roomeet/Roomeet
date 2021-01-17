@@ -19,7 +19,7 @@ import { string, object, number } from 'yup';
 import { UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import network from '../../utils/network';
-import WrappedMap from '../../components/Map';
+import PlacesLocation from '../../components/PlacesLocation';
 import { CitiesContext } from '../../context/CitiesContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -243,12 +243,7 @@ const UserDataForm: React.FC = () => {
                     )}
                   </Field>
                   <h4>Where are you looking to live?</h4>
-                  <WrappedMap
-                    loadingElement={<div style={{ height: `300px` }} />}
-                    containerElement={<div style={{ height: `300px` }} />}
-                    mapElement={<div style={{ height: `100%` }} />}
-                    googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_API_KEY}`}
-                  />
+                  <PlacesLocation />
                   <Field name='smoke'>
                     {({
                       field,
