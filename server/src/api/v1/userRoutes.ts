@@ -107,6 +107,7 @@ router.get(
 // update user data form
 router.post('/user-data/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
+  console.log(req.body);
   try {
     const { body: rawUserData } = req;
     const userData = new UserData({

@@ -136,7 +136,7 @@ const MyProfile: React.FC = () => {
                     InputProps={{ readOnly: true }}
                     value={userInformation.fullName}
                   />
-                  <div className={classes.textArea}>
+                  <div className={classes.textFiled}>
                     <TextField
                       disabled
                         label='About Me:'
@@ -151,7 +151,7 @@ const MyProfile: React.FC = () => {
                     label='Rent Location:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
-                    value={userInformation.rentLocation}
+                    value={userInformation.rentLocation && userInformation.rentLocation.addressName}
                   />
                   <TextField
                     disabled

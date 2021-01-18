@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -7,17 +7,21 @@ import {
   withScriptjs,
   withGoogleMap,
 } from 'react-google-maps';
+import { RentLocationType } from '../interfaces/userData';
 
-function PlacesLocation() {
-  const [address, setAddress] = useState('');
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
+type PlacesLocationProps = {
+    address: string;
+    setAddress: Dispatch<SetStateAction<string>>;
+    setCoordinates:Dispatch<SetStateAction<{
+        lat: number;
+        lng: number;
+    }>>;
+};
 
+const PlacesLocation: React.FC<PlacesLocationProps> = ({ address, setAddress, setCoordinates }) => {
   const handleSelect = async (value: string) => {
     const results = await geocodeByAddress(value);
-    const latLng: any = await getLatLng(results[0]);
+    const latLng: {lat: number, lng: number} = await getLatLng(results[0]);
     console.log(results);
     console.log(latLng);
     setAddress(value);
@@ -52,7 +56,7 @@ function PlacesLocation() {
       </PlacesAutocomplete>
     </div>
   );
-}
+};
 
 // const WrappedMap: any = withScriptjs(withGoogleMap(PlacesLocation));
 

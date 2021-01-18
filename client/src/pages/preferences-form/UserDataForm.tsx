@@ -1,5 +1,5 @@
 /*eslint-disable */
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -20,7 +20,6 @@ import { UserDataInterface } from '../../interfaces/userData';
 import { UserContext } from '../../context/UserContext';
 import network from '../../utils/network';
 import PlacesLocation from '../../components/PlacesLocation';
-import { CitiesContext } from '../../context/CitiesContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -68,11 +67,15 @@ const useStyles = makeStyles((theme) => ({
 const UserDataForm: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
-  const context = React.useContext(UserContext);
-  const citiesContext = React.useContext(CitiesContext);
-  const [user, setUser] = React.useState<UserDataInterface>();
-  const [file, setFile] = React.useState<any>();
-  const [budgetRange, setBudgetRange] = React.useState<number[]>([500, 6000]);
+  const context = useContext(UserContext);
+  const [address, setAddress] = useState('');
+  const [coordinates, setCoordinates] = useState({
+    lat: null,
+    lng: null,
+  });
+  const [user, setUser] = useState<UserDataInterface>();
+  const [file, setFile] = useState<any>();
+  const [budgetRange, setBudgetRange] = useState<number[]>([500, 6000]);
 
   const validationSchema = object({
     age: number()
@@ -105,11 +108,14 @@ const UserDataForm: React.FC = () => {
     values.fullName = context.name;
     values.minBudget = budgetRange[0];
     values.maxBudget = budgetRange[1];
+    values.rentLocation = {
+      addressName: address,
+      coordinates 
+    };
     const data = new FormData();
     delete values.image;
     data.append('file', file);
     values.fullName = context.name;
-    values.cities = citiesContext.cities;
     await network.post(`/api/v1/users/user-data/${context.id}`, values);
     await network.post(
       `/api/v1/users/user-data/profile/picture/${context.id}`,
@@ -127,7 +133,9 @@ const UserDataForm: React.FC = () => {
     );
     if (data[0]) {
       setUser(data[0]);
-      citiesContext.set({ cities: data[0].cities ? data[0].cities : [] });
+      data[0].rentLocation && 
+        setAddress(data[0].rentLocation.addressName) &&
+        setCoordinates(data[0].rentLocation.coordinates);
       data[0].minBudget &&
         setBudgetRange([data[0].minBudget, data[0].maxBudget]);
     } else {
@@ -243,7 +251,7 @@ const UserDataForm: React.FC = () => {
                     )}
                   </Field>
                   <h4>Where are you looking to live?</h4>
-                  <PlacesLocation />
+                  <PlacesLocation address={address} setAddress={setAddress} setCoordinates={setCoordinates} />
                   <Field name='smoke'>
                     {({
                       field,
