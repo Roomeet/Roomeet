@@ -255,6 +255,9 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const filters: filterInterface = req.body;
+    const { userId } = filters;
+    // eslint-disable-next-line
+    const userData: UserDataInterface[] = await UserData.find({ userId }); // eslint-disable-line
     const likes = await Like.find({ activeUserId: filters.userId });
     const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
@@ -285,6 +288,10 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
     delete filters.ageRange;
     // @ts-ignore
     delete filters.budgetRange;
+    allcards = allcards.filter((card :UserDataInterface) => {
+      const distance: number = getDistance(card.rentLocation.coordinates, userData[0].rentLocation.coordinates);
+      return distance < 10000;
+    });
     if (filters.gender) {
       allcards = allcards.filter((person) => person.gender === filters.gender);
     }
