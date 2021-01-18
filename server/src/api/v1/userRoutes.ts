@@ -230,6 +230,7 @@ router.get('/all-cards', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const { userId }: { userId: string } = req.query;
+    const userData: UserDataInterface[] = await UserData.find({ userId });
     const likes = await Like.find({ activeUserId: userId });
     const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     const allcards: UserDataInterface[] = await UserData.find({
@@ -237,7 +238,19 @@ router.get('/all-cards', async (req: Request, res: Response) => {
         $nin: [...usersLike, userId]
       }
     });
-    res.status(200).json(allcards);
+    const sortedCards: UserDataInterface[] = [];
+    allcards.forEach((card: UserDataInterface) => {
+      console.log(card);
+      if (!card.rentLocation) {
+        sortedCards.push(card);
+      } else if (card.rentLocation.addressName === userData[0].rentLocation.addressName) {
+        sortedCards.unshift(card);
+      } else {
+        sortedCards.push(card);
+      }
+    });
+    console.log('Sorted!!!!!', sortedCards);
+    res.status(200).json(sortedCards);
   } catch (error) {
     res.status(500).json({ error });
   }

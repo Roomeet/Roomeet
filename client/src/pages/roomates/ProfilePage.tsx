@@ -141,7 +141,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   Looking to rent in:
                 </Typography>
                 <Typography className={classes.infoData}>
-                  {userInformation?.rentLocation}
+                  {userInformation?.rentLocation ? userInformation?.rentLocation.addressName : ''}
                 </Typography>
               </p>
               <p className={classes.basicInfo}>

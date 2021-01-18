@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     width: '80%',
     marginRight: 'auto',
     marginLeft: 'auto',
-    height: '85vh',
+    height: '80vh',
     minWidth: '300px',
     maxWidth: '500px',
   },
