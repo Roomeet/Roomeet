@@ -12,13 +12,21 @@ export interface filterInterface {
   budgetRange: number[];
   ageRange: number[];
 }
+
+export type RentLocationType = {
+  addressName: string;
+  coordinates: {
+    lat: number,
+    lng: number,
+  };
+}
 export interface UserDataInterface extends Document {
   _id: string;
   userId: string;
   image: Buffer,
   fullName: string;
   aboutMe: string;
-  rentLocation: string;
+  rentLocation: RentLocationType;
   age: number;
   gender: string;
   smoke: string;
@@ -29,7 +37,6 @@ export interface UserDataInterface extends Document {
   employed?: boolean;
   numOfRoomates?: number;
   religion?: boolean;
-  cities?: JSON;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
@@ -48,7 +55,7 @@ const UserDataSchema = new Schema({
   fullName: { type: String, required: true },
   aboutMe: { type: String, required: true },
   // rentLocation: { type: String, required: true },
-  cities: Object,
+  rentLocation: Object,
   age: { type: Number, required: true },
   gender: { type: String, required: true },
   smoke: { type: String, required: true },

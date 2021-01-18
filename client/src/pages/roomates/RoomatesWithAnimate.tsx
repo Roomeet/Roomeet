@@ -120,6 +120,7 @@ const Roomates: React.FC = () => {
   const classes = useStyles();
 
   const firstCard = allUsersInfo[0];
+  console.log(firstCard)
 
   const handleSwipe = (liked: boolean) => {
     socket?.emit(
@@ -173,6 +174,7 @@ const Roomates: React.FC = () => {
     const { data } = await network.get(
       `/api/v1/users/all-cards?userId=${context.id}`
     );
+    console.log(data);
     setAllUsersInfo(data);
   };
   useEffect(() => {

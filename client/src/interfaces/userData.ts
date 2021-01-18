@@ -21,13 +21,20 @@ export type UserDataFormResponse = {
   religion?: boolean;
 }
 
+export type RentLocationType = {
+  addressName: string;
+  cordinates: {
+    lat: number,
+    lng: number,
+  };
+}
 export interface UserDataInterface extends Document {
   id: string,
   userId: string,
   fullName: string,
   aboutMe: string,
   image: Buffer,
-  rentLocation: string,
+  rentLocation: RentLocationType,
   age: number,
   gender: string,
   smoke: boolean,

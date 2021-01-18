@@ -5,6 +5,7 @@ import React, {
   SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { UserContext } from '../context/UserContext';
@@ -83,7 +84,7 @@ const Messenger: React.FC<notificationsProps> = ({
   setNotificationsOpen,
 }) => {
   const classes = useStyles();
-  const wrapperRef = React.useRef(null);
+  const wrapperRef = useRef(null);
 
   useDetectOutside(wrapperRef, setNotificationsOpen);
   return (
