@@ -3,19 +3,21 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
-import {
-  withScriptjs,
-  withGoogleMap,
-} from 'react-google-maps';
-import { RentLocationType } from '../interfaces/userData';
+import { TextField } from '@material-ui/core';
+
+type Coordinate = {
+  lat: number | null,
+  lng: number | null
+}
 
 type PlacesLocationProps = {
     address: string;
     setAddress: Dispatch<SetStateAction<string>>;
-    setCoordinates:Dispatch<SetStateAction<{
-        lat: number;
-        lng: number;
-    }>>;
+    setCoordinates:Dispatch<SetStateAction<Coordinate>>;
+};
+const searchOptions = {
+  input: 'Search',
+  componentRestrictions: { country: 'il' },
 };
 
 const PlacesLocation: React.FC<PlacesLocationProps> = ({ address, setAddress, setCoordinates }) => {
@@ -30,13 +32,26 @@ const PlacesLocation: React.FC<PlacesLocationProps> = ({ address, setAddress, se
 
   return (
     <div>
-      <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
+      <PlacesAutocomplete
+        value={address}
+        onChange={setAddress}
+        onSelect={handleSelect}
+        searchOptions={searchOptions}
+      >
         {({
           getInputProps, suggestions, getSuggestionItemProps, loading,
         }) => (
           <div>
-            <input {...getInputProps({ placeholder: 'Type Location' })} />
-
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="rentLocation"
+              label="Where are you looking to live?"
+              style={{ marginTop: '15px' }}
+              {...getInputProps()}
+            />
             <div>
               {loading ? <div>Loading...</div> : null}
               {console.log(suggestions)}
@@ -45,7 +60,7 @@ const PlacesLocation: React.FC<PlacesLocationProps> = ({ address, setAddress, se
                   backgroundColor: suggestion.active ? '#41b6e6' : '#fff',
                 };
                 return (
-                  <div {...getSuggestionItemProps(suggestion, { style })}>
+                  <div {...getSuggestionItemProps(suggestion, { style })} key={suggestion.placeId}>
                     {suggestion.description}
                   </div>
                 );

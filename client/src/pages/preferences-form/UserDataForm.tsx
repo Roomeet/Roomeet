@@ -69,7 +69,7 @@ const UserDataForm: React.FC = () => {
   const history = useHistory();
   const context = useContext(UserContext);
   const [address, setAddress] = useState('');
-  const [coordinates, setCoordinates] = useState({
+  const [coordinates, setCoordinates] = useState<object>({
     lat: null,
     lng: null,
   });
@@ -250,7 +250,6 @@ const UserDataForm: React.FC = () => {
                       />
                     )}
                   </Field>
-                  <h4>Where are you looking to live?</h4>
                   <PlacesLocation address={address} setAddress={setAddress} setCoordinates={setCoordinates} />
                   <Field name='smoke'>
                     {({
