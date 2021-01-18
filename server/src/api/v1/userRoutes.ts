@@ -1,8 +1,11 @@
+/* eslint-disable max-len */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-console */
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Match from '../../models/Match';
 import Like from '../../models/Like';
+import getDistance from '../../helpers/getDistance';
 
 // mongoDB models:
 import User from '../../models/user';
@@ -238,18 +241,10 @@ router.get('/all-cards', async (req: Request, res: Response) => {
         $nin: [...usersLike, userId]
       }
     });
-    const sortedCards: UserDataInterface[] = [];
-    allcards.forEach((card: UserDataInterface) => {
-      console.log(card);
-      if (!card.rentLocation) {
-        sortedCards.push(card);
-      } else if (card.rentLocation.addressName === userData[0].rentLocation.addressName) {
-        sortedCards.unshift(card);
-      } else {
-        sortedCards.push(card);
-      }
+    const sortedCards: UserDataInterface[] = allcards.filter((card :UserDataInterface) => {
+      const distance: number = getDistance(card.rentLocation.coordinates, userData[0].rentLocation.coordinates);
+      return distance < 10000;
     });
-    console.log('Sorted!!!!!', sortedCards);
     res.status(200).json(sortedCards);
   } catch (error) {
     res.status(500).json({ error });

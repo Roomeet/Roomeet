@@ -15,7 +15,7 @@ export interface filterInterface {
 
 export type RentLocationType = {
   addressName: string;
-  cordinates: {
+  coordinates: {
     lat: number,
     lng: number,
   };
