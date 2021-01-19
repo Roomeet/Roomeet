@@ -26,7 +26,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 mongoose
-  .connect(URI!, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(URI!, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => {
     console.log('connected to MongoDB!');
   })

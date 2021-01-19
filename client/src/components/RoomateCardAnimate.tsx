@@ -166,7 +166,7 @@ const RoomateCard = ({
             Searching to rent in:
           </Typography>
           <Typography variant="body2" component="p">
-            {userInfo.rentLocation}
+            {userInfo.rentLocation ? userInfo.rentLocation.addressName : ''}
           </Typography>
         </CardContent>
         <CardActions>

@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.11.2",
@@ -30,6 +30,7 @@
     "react-dom": "^17.0.1",
     "react-google-maps": "^9.4.5",
     "react-icons": "^4.1.0",
+    "react-places-autocomplete": "^7.3.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
@@ -68,6 +69,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-places-autocomplete": "^7.2.6",
     "@types/yup": "^0.29.9"
   }
 }

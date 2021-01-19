@@ -1,8 +1,11 @@
+/* eslint-disable max-len */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-console */
 import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Match from '../../models/Match';
 import Like from '../../models/Like';
+import getDistance from '../../helpers/getDistance';
 
 // mongoDB models:
 import User from '../../models/user';
@@ -107,6 +110,7 @@ router.get(
 // update user data form
 router.post('/user-data/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
+  console.log(req.body);
   try {
     const { body: rawUserData } = req;
     const userData = new UserData({
@@ -229,6 +233,7 @@ router.get('/all-cards', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const { userId }: { userId: string } = req.query;
+    const userData: UserDataInterface[] = await UserData.find({ userId });
     const likes = await Like.find({ activeUserId: userId });
     const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     const allcards: UserDataInterface[] = await UserData.find({
@@ -236,7 +241,11 @@ router.get('/all-cards', async (req: Request, res: Response) => {
         $nin: [...usersLike, userId]
       }
     });
-    res.status(200).json(allcards);
+    const sortedCards: UserDataInterface[] = allcards.filter((card :UserDataInterface) => {
+      const distance: number = getDistance(card.rentLocation.coordinates, userData[0].rentLocation.coordinates);
+      return distance < 10000;
+    });
+    res.status(200).json(sortedCards);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -246,6 +255,9 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
   try {
     // @ts-ignore
     const filters: filterInterface = req.body;
+    const { userId } = filters;
+    // eslint-disable-next-line
+    const userData: UserDataInterface[] = await UserData.find({ userId }); // eslint-disable-line
     const likes = await Like.find({ activeUserId: filters.userId });
     const usersLike: string[] = likes.map((like :any) => like.passiveUserId);
     let allcards: UserDataInterface[] = await UserData.find({
@@ -276,6 +288,10 @@ router.post('/all-cards/filtered', async (req: Request, res: Response) => {
     delete filters.ageRange;
     // @ts-ignore
     delete filters.budgetRange;
+    allcards = allcards.filter((card :UserDataInterface) => {
+      const distance: number = getDistance(card.rentLocation.coordinates, userData[0].rentLocation.coordinates);
+      return distance < 10000;
+    });
     if (filters.gender) {
       allcards = allcards.filter((person) => person.gender === filters.gender);
     }

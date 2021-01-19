@@ -14,7 +14,6 @@ import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
-import Loading from './components/Loading';
 import { UserContext } from './context/UserContext';
 import Landing from './pages/landing/Landing';
 import Footer from './components/Footer';
@@ -22,7 +21,6 @@ import AboutPage from './pages/footers/AboutPage';
 import TermsConditionPage from './pages/footers/TermsConditionPage';
 import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
-// import BGImage from './images/woodBG.jpg';
 import BGImage from './images/Pattern-Randomized.svg';
 import Animtest from './components/SwipeTest';
 import Messenger from './containers/Messenger';
@@ -48,7 +46,7 @@ function App(): JSX.Element {
   const setupSocket = () => {
     if (!socket && context.id) {
       try {
-        const newSocket = io('http://localhost:3002', {
+        const newSocket = io({
           query: {
             userId: context.id,
           },
@@ -97,7 +95,7 @@ function App(): JSX.Element {
   const fetchAllNotifications = async () => {
     try {
       const { data } = await network.get(
-        `http://localhost:3002/api/v1/notifications/userId/${context.id}`
+        `/api/v1/notifications/userId/${context.id}`
       );
 
       setAllNotifications(data);
@@ -110,7 +108,7 @@ function App(): JSX.Element {
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
-        const { data } = await network.get('api/v1/auth/validateToken');
+        const { data } = await network.get('/server/api/v1/auth/validateToken');
         const id = Cookies.get('id');
         const dataCookie = {
           id,
@@ -133,7 +131,6 @@ function App(): JSX.Element {
   useEffect(() => {
     setupSocket();
     fetchAllNotifications();
-    // socket?.emit('relateToUser', context.id);
   }, [context]);
 
   // checks if a user is logged
@@ -168,6 +165,7 @@ function App(): JSX.Element {
                     closeChatRoom={closeChatRoom}
                     setNotificationsOpen={setNotificationsOpen}
                     unseenNotificationsLength={unseenNotificationsLength}
+                    fetchAllNotifications={fetchAllNotifications}
                   />
                   <Messenger
                     messengerOpen={messengerOpen}
@@ -200,9 +198,6 @@ function App(): JSX.Element {
               <Switch>
                 <Route exact path='/ala'>
                   <Animtest />
-                </Route>
-                <Route exact path='/loading'>
-                  <Loading />
                 </Route>
                 <Route exact path='/signup'>
                   <SignUpForm />

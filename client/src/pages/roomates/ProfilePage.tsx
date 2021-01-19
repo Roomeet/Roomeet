@@ -1,14 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import DoneOutlineOutlinedIcon from '@material-ui/icons/DoneOutlineOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import SmokingRoomsOutlinedIcon from '@material-ui/icons/SmokingRoomsOutlined';
 import PetsOutlinedIcon from '@material-ui/icons/PetsOutlined';
-import SmokeFreeOutlinedIcon from '@material-ui/icons/SmokeFreeOutlined';
 import { ImWoman, ImMan } from 'react-icons/im';
-import { UserContext } from '../../context/UserContext';
 import { UserDataInterface } from '../../interfaces/userData';
 import network from '../../utils/network';
 import { getImageBase64String } from '../../utils/image';
@@ -99,7 +96,6 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
 
   const fetchData = async () => {
     const { data } = await network.get(`/server/api/v1/users/user-data/${userId}`);
-    console.log(data[0]);
     setUserInformation(data[0]);
   };
 
@@ -142,7 +138,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
                   Looking to rent in:
                 </Typography>
                 <Typography className={classes.infoData}>
-                  {userInformation?.rentLocation}
+                  {userInformation?.rentLocation ? userInformation?.rentLocation.addressName : ''}
                 </Typography>
               </p>
               <p className={classes.basicInfo}>

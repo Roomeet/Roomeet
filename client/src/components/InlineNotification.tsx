@@ -21,7 +21,7 @@ const InlineNotification: React.FC<chatRoomProps> = ({
 
   const seeNotification = async (notificationToSee: NotificationI) => {
     if (!notificationToSee.seen) {
-      await network.put(`http://localhost:3002/api/v1/notifications/${notificationToSee.id}/seen`);
+      await network.put(`/api/v1/notifications/${notificationToSee.id}/seen`);
       setSeen(true);
       setUnseenNotificationsLength((prev) => {
         if (prev > 0) {
@@ -33,19 +33,18 @@ const InlineNotification: React.FC<chatRoomProps> = ({
   };
 
   return (
-    <React.Fragment key={notification.id}>
-      <ListItem
-        button
-        onClick={() => { seeNotification(notification); }}
-        style={{ backgroundColor: !seen ? 'rgba(157,168,233,0.4)' : 'white' }}
-      >
-        <ListItemText
-          primary={!seen ? `new ${notification.topic}!` : `${notification.topic}`}
-          secondary={notification.content}
-        />
-        { !seen && <Badge color="primary" badgeContent="" variant="dot" />}
-      </ListItem>
-    </React.Fragment>
+    <ListItem
+      key={notification.id}
+      button
+      onClick={() => { seeNotification(notification); }}
+      style={{ backgroundColor: !seen ? 'rgba(157,168,233,0.4)' : 'white' }}
+    >
+      <ListItemText
+        primary={!seen ? `new ${notification.topic}!` : `${notification.topic}`}
+        secondary={notification.content}
+      />
+      { !seen && <Badge color="primary" badgeContent="" variant="dot" />}
+    </ListItem>
   );
 };
 

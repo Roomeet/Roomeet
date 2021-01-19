@@ -17,7 +17,7 @@ network.interceptors.response.use(
     const originalRequest = error.config;
 
     if (status === 408) {
-      await network.post('/api/v1/auth/token', {
+      await network.post('/server/api/v1/auth/token', {
         token: Cookies.get('refreshToken'),
       });
       const data = await network(originalRequest);

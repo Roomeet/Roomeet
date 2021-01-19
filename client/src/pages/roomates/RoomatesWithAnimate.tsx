@@ -1,12 +1,11 @@
 /*eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Drawer, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Drawer, Button, Typography } from '@material-ui/core';
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
-// import RoomateCard from '../../components/cardnomui';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { UserContext } from '../../context/UserContext';
 import SocketContext from '../../context/socketContext';
 import { useHistory } from 'react-router-dom';
@@ -155,23 +154,23 @@ const Roomates: React.FC = () => {
       ageRange: [16, 60],
     });
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${context.id}`
+      `/server/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
     setOverTime(false);
   };
 
   const fetchData = async () => {
-    const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
+    const { data: user } = await network.get(`/server/api/v1/users/?id=${context.id}`);
     context.name = user[0].name + ' ' + user[0].lastName;
     const { data: isExist } = await network.get(
-      `/api/v1/users/user-data/${context.id}`
+      `/server/api/v1/users/user-data/${context.id}`
     );
     if (isExist.length === 0) {
       history.push('/edit');
     }
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${context.id}`
+      `/server/api/v1/users/all-cards?userId=${context.id}`
     );
     setAllUsersInfo(data);
   };
@@ -183,7 +182,7 @@ const Roomates: React.FC = () => {
     setTimeout(() => {
       if (allUsersInfo.length === 0) setOverTime(true);
       clearTimeout();
-    }, 7000);
+    }, 10000);
   }, [allUsersInfo]);
 
   function closeMenu() {

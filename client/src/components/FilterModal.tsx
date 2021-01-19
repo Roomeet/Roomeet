@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
@@ -124,7 +124,7 @@ const FilterModal: React.FC<Props> = ({
       ageRange: [16, 60],
     });
     const { data } = await network.get(
-      `/api/v1/users/all-cards?userId=${userId}`,
+      `/server/api/v1/users/all-cards?userId=${userId}`,
     );
     setAllUsersInfo(data);
     SetOpenFilter((prev: boolean) => !prev);
@@ -139,7 +139,7 @@ const FilterModal: React.FC<Props> = ({
     const filteredSearchObj = Object.fromEntries(objEntries.filter((filter) => filter[1] === true || typeof filter[1] !== 'boolean'));
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
-    const { data } = await network.post('/api/v1/users/all-cards/filtered', filteredSearchObj);
+    const { data } = await network.post('/server/api/v1/users/all-cards/filtered', filteredSearchObj);
     setAllUsersInfo(data);
     SetOpenFilter((prev: boolean) => !prev);
   };

@@ -3,18 +3,12 @@
 import React, {
   Dispatch,
   SetStateAction,
-  useContext,
-  useEffect,
-  useState,
+  useRef,
 } from 'react';
-import { UserContext } from '../context/UserContext';
-import network from '../utils/network';
 import {
   AppBar,
-  Avatar,
   createStyles,
   CssBaseline,
-  Fab,
   IconButton,
   List,
   makeStyles,
@@ -83,7 +77,7 @@ const Messenger: React.FC<notificationsProps> = ({
   setNotificationsOpen,
 }) => {
   const classes = useStyles();
-  const wrapperRef = React.useRef(null);
+  const wrapperRef = useRef(null);
 
   useDetectOutside(wrapperRef, setNotificationsOpen);
   return (

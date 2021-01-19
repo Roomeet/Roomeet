@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     width: '80%',
     marginRight: 'auto',
     marginLeft: 'auto',
-    height: '85vh',
+    height: '80vh',
     minWidth: '300px',
     maxWidth: '500px',
   },
@@ -95,7 +95,7 @@ const MyProfile: React.FC = () => {
   const classes = useStyles();
 
   const fetchData = async () => {
-    const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
+    const { data } = await network.get(`/server/api/v1/users/user-data/${context.id}`);
     setUserInformation(data[0]);
     setLoading(false);
   };
@@ -137,6 +137,16 @@ const MyProfile: React.FC = () => {
                     InputProps={{ readOnly: true }}
                     value={userInformation.fullName}
                   />
+                  <div className={classes.textFiled}>
+                    <TextField
+                      disabled
+                        label='About Me:'
+                      multiline
+                      fullWidth
+                      InputProps={{ readOnly: true }}
+                      value={userInformation.aboutMe}
+                    />
+                  </div>
                   <TextField
                     disabled
                     label='About Me:'
@@ -150,8 +160,8 @@ const MyProfile: React.FC = () => {
                     label='Rent Location:'
                     className={classes.textFiled}
                     InputProps={{ readOnly: true }}
-                    value={userInformation.rentLocation}
-                  /> */}
+                    value={userInformation.rentLocation && userInformation.rentLocation.addressName}
+                  />
                   <TextField
                     disabled
                     label='Age:'
