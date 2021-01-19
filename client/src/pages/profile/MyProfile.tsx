@@ -45,9 +45,8 @@ const useStyles = makeStyles({
     marginTop: '15%',
   },
   textFiled: {
+    display: 'inline-block',
     margin: '5px',
-    width: '50%',
-    minWidth: '150px',
   },
   textArea: {
     display: 'inline-block',
@@ -148,14 +147,6 @@ const MyProfile: React.FC = () => {
                     />
                   </div>
                   <TextField
-                    disabled
-                    label='About Me:'
-                    multiline
-                    className={classes.textFiled}
-                    InputProps={{ readOnly: true }}
-                    value={userInformation.aboutMe}
-                  />
-                  {/* <TextField
                     disabled
                     label='Rent Location:'
                     className={classes.textFiled}
