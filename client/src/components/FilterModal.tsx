@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';

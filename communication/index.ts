@@ -1,7 +1,6 @@
 import app from './app';
 import { ObjectId } from 'mongodb';
 import Message from './models/Message';
-import { MatchInterface } from './models/Match';
 import { LikeInterface } from './models/Like';
 import { userForMatch } from './models/User';
 const matchControllers = require("./controllers/matchControllers");

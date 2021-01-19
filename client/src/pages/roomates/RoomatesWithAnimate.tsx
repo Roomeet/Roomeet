@@ -1,12 +1,11 @@
 /*eslint-disable */
 import React, { useEffect, useState, useContext } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Drawer, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Drawer, Button, Typography } from '@material-ui/core';
 import network from '../../utils/network';
 import { UserDataInterface } from '../../interfaces/userData';
 import RoomateCard from '../../components/RoomateCardAnimate';
-// import RoomateCard from '../../components/cardnomui';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { UserContext } from '../../context/UserContext';
 import SocketContext from '../../context/socketContext';
 import { useHistory } from 'react-router-dom';
@@ -120,7 +119,6 @@ const Roomates: React.FC = () => {
   const classes = useStyles();
 
   const firstCard = allUsersInfo[0];
-  console.log(firstCard)
 
   const handleSwipe = (liked: boolean) => {
     socket?.emit(
@@ -174,7 +172,6 @@ const Roomates: React.FC = () => {
     const { data } = await network.get(
       `/server/api/v1/users/all-cards?userId=${context.id}`
     );
-    console.log(data);
     setAllUsersInfo(data);
   };
   useEffect(() => {

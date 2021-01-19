@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Typography, Button } from '@material-ui/core';
-import Slider from '@material-ui/core/Slider';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import { 
+  Typography,
+  Button,
+  Slider,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem
+} from '@material-ui/core';
 import network from '../utils/network';
-import FilterModal from './FilterModal';
 
 export type Props = {
     [key: string]: any;

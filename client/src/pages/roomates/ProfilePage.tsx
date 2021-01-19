@@ -1,14 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import DoneOutlineOutlinedIcon from '@material-ui/icons/DoneOutlineOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import SmokingRoomsOutlinedIcon from '@material-ui/icons/SmokingRoomsOutlined';
 import PetsOutlinedIcon from '@material-ui/icons/PetsOutlined';
-import SmokeFreeOutlinedIcon from '@material-ui/icons/SmokeFreeOutlined';
 import { ImWoman, ImMan } from 'react-icons/im';
-import { UserContext } from '../../context/UserContext';
 import { UserDataInterface } from '../../interfaces/userData';
 import network from '../../utils/network';
 import { getImageBase64String } from '../../utils/image';

@@ -1,8 +1,6 @@
 import React, {
   Dispatch,
   SetStateAction,
-  useContext,
-  useEffect,
   useState,
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -12,12 +10,14 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Badge,
+  MenuItem,
+  Menu,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -29,9 +29,6 @@ import { logout } from '../utils/authUtils';
 import { UserContext } from '../context/UserContext';
 import LogoutModal from './LogoutModal';
 import { chatRoomI } from '../interfaces/chat';
-import { NotificationI } from '../interfaces/notification';
-import SocketContext from '../context/socketContext';
-import network from '../utils/network';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   grow: {
@@ -103,6 +100,7 @@ type navbarProps = {
   closeChatRoom: (roomId: chatRoomI) => void;
   setNotificationsOpen: Dispatch<SetStateAction<boolean>>;
   unseenNotificationsLength: number | undefined;
+  fetchAllNotifications: () => void;
 };
 
 const NavBar: React.FC<navbarProps> = ({
@@ -111,6 +109,7 @@ const NavBar: React.FC<navbarProps> = ({
   closeChatRoom,
   setNotificationsOpen,
   unseenNotificationsLength,
+  fetchAllNotifications,
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -147,6 +146,12 @@ const NavBar: React.FC<navbarProps> = ({
 
   const handleNotificationClick = () => {
     handleMenuClose();
+    fetchAllNotifications();
+    setNotificationsOpen((prev) => !prev);
+  };
+
+  const handleDesktopNotificationClick = () => {
+    fetchAllNotifications();
     setNotificationsOpen((prev) => !prev);
   };
 
@@ -293,7 +298,7 @@ const NavBar: React.FC<navbarProps> = ({
             <IconButton
               aria-label="show notifications"
               color="inherit"
-              onClick={() => { setNotificationsOpen((prev) => !prev); }}
+              onClick={handleDesktopNotificationClick}
             >
               <Badge badgeContent={unseenNotificationsLength} color="secondary">
                 <NotificationsIcon />

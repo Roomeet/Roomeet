@@ -14,7 +14,6 @@ import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
 import PrivateRoutesContainer from './containers/PrivateRoutesContainer';
 import network from './utils/network';
-import Loading from './components/Loading';
 import { UserContext } from './context/UserContext';
 import Landing from './pages/landing/Landing';
 import Footer from './components/Footer';
@@ -22,7 +21,6 @@ import AboutPage from './pages/footers/AboutPage';
 import TermsConditionPage from './pages/footers/TermsConditionPage';
 import ContactUsPage from './pages/footers/ContactUsPage';
 import NavBar from './components/NavBar';
-// import BGImage from './images/woodBG.jpg';
 import BGImage from './images/Pattern-Randomized.svg';
 import Animtest from './components/SwipeTest';
 import Messenger from './containers/Messenger';
@@ -52,8 +50,6 @@ function App(): JSX.Element {
           query: {
             userId: context.id,
           },
-          // path: '/socket',
-          // transports: ['websocket'],
         });
 
         newSocket.on('disconnect', () => {
@@ -135,7 +131,6 @@ function App(): JSX.Element {
   useEffect(() => {
     setupSocket();
     fetchAllNotifications();
-    // socket?.emit('relateToUser', context.id);
   }, [context]);
 
   // checks if a user is logged
@@ -170,6 +165,7 @@ function App(): JSX.Element {
                     closeChatRoom={closeChatRoom}
                     setNotificationsOpen={setNotificationsOpen}
                     unseenNotificationsLength={unseenNotificationsLength}
+                    fetchAllNotifications={fetchAllNotifications}
                   />
                   <Messenger
                     messengerOpen={messengerOpen}
@@ -202,9 +198,6 @@ function App(): JSX.Element {
               <Switch>
                 <Route exact path='/ala'>
                   <Animtest />
-                </Route>
-                <Route exact path='/loading'>
-                  <Loading />
                 </Route>
                 <Route exact path='/signup'>
                   <SignUpForm />

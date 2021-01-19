@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const screenWidth = window.screen.availWidth;
 function Card({ name, remove }:{name:string, remove:(word:string)=>void}):JSX.Element {

@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
+import { 
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Paper,
+  Avatar,
+  Box,
+  Typography,
+  Grow
+} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import {
   Formik, Form, Field, FieldProps,
 } from 'formik';
 import { string, object, ref } from 'yup';
-import { Grow } from '@material-ui/core';
 import BGImage from '../../images/BGSignUpForm.jpg';
 import network from '../../utils/network';
 import { SignUpUserData } from '../../interfaces/authentication';

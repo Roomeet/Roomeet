@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -24,8 +24,6 @@ const PlacesLocation: React.FC<PlacesLocationProps> = ({ address, setAddress, se
   const handleSelect = async (value: string) => {
     const results = await geocodeByAddress(value);
     const latLng: {lat: number, lng: number} = await getLatLng(results[0]);
-    console.log(results);
-    console.log(latLng);
     setAddress(value);
     setCoordinates(latLng);
   };
@@ -54,7 +52,6 @@ const PlacesLocation: React.FC<PlacesLocationProps> = ({ address, setAddress, se
             />
             <div>
               {loading ? <div>Loading...</div> : null}
-              {console.log(suggestions)}
               {suggestions.map((suggestion) => {
                 const style = {
                   backgroundColor: suggestion.active ? '#41b6e6' : '#fff',

@@ -33,19 +33,18 @@ const InlineNotification: React.FC<chatRoomProps> = ({
   };
 
   return (
-    <React.Fragment key={notification.id}>
-      <ListItem
-        button
-        onClick={() => { seeNotification(notification); }}
-        style={{ backgroundColor: !seen ? 'rgba(157,168,233,0.4)' : 'white' }}
-      >
-        <ListItemText
-          primary={!seen ? `new ${notification.topic}!` : `${notification.topic}`}
-          secondary={notification.content}
-        />
-        { !seen && <Badge color="primary" badgeContent="" variant="dot" />}
-      </ListItem>
-    </React.Fragment>
+    <ListItem
+      key={notification.id}
+      button
+      onClick={() => { seeNotification(notification); }}
+      style={{ backgroundColor: !seen ? 'rgba(157,168,233,0.4)' : 'white' }}
+    >
+      <ListItemText
+        primary={!seen ? `new ${notification.topic}!` : `${notification.topic}`}
+        secondary={notification.content}
+      />
+      { !seen && <Badge color="primary" badgeContent="" variant="dot" />}
+    </ListItem>
   );
 };
 

@@ -1,9 +1,7 @@
 /*eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BGLanding from '../../images/Page-Turner.svg'
-import BGLogin from '../../images/BGLogin.jpg'
-import BGSignup from '../../images/BGSignup.jpg'
 import { CssBaseline } from '@material-ui/core';
 import LandingHeader from '../../containers/LandingHeader';
 import LandingConnectionSection from '../../containers/LandingConnectionSection';

@@ -3,19 +3,12 @@
 import React, {
   Dispatch,
   SetStateAction,
-  useContext,
-  useEffect,
   useRef,
-  useState,
 } from 'react';
-import { UserContext } from '../context/UserContext';
-import network from '../utils/network';
 import {
   AppBar,
-  Avatar,
   createStyles,
   CssBaseline,
-  Fab,
   IconButton,
   List,
   makeStyles,

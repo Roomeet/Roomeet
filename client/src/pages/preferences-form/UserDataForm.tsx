@@ -135,9 +135,10 @@ const UserDataForm: React.FC = () => {
     );
     if (data[0]) {
       setUser(data[0]);
-      data[0].rentLocation && 
-        setAddress(data[0].rentLocation.addressName) &&
+      if (data[0].rentLocation !== null) {
+        setAddress(data[0].rentLocation.addressName);
         setCoordinates(data[0].rentLocation.coordinates);
+      }
       data[0].minBudget &&
         setBudgetRange([data[0].minBudget, data[0].maxBudget]);
     } else {
