@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { 
+import {
   Typography,
   Button,
   Slider,
@@ -10,7 +10,7 @@ import {
   Select,
   FormControl,
   InputLabel,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core';
 import network from '../utils/network';
 
