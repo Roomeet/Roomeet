@@ -15,7 +15,7 @@ const PrivateRoutesContainer: React.FC = () => (
       <MyProfile />
     </PrivateRoute>
     <PrivateRoute exact path="/edit">
-        <UserDataForm />
+      <UserDataForm />
     </PrivateRoute>
     <Route path="/*">
       <Redirect
