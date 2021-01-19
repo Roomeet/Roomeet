@@ -38,9 +38,9 @@ mongoose.set('useCreateIndex', true);
 
 app.use('/api', require('./api/index.ts'));
 
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
-});
+// app.use('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../build', 'index.html'));
+// });
 // app.use('*', (req, res) => {
 //   res.sendStatus(404);
 // });

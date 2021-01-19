@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ac7c5819.chunk.css",
+    "main.js": "/static/js/main.d2dbca32.chunk.js",
+    "main.js.map": "/static/js/main.d2dbca32.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.1e16fee3.js",
+    "runtime-main.js.map": "/static/js/runtime-main.1e16fee3.js.map",
+    "static/js/2.eb535e76.chunk.js": "/static/js/2.eb535e76.chunk.js",
+    "static/js/2.eb535e76.chunk.js.map": "/static/js/2.eb535e76.chunk.js.map",
+    "static/js/3.ad6bdb34.chunk.js": "/static/js/3.ad6bdb34.chunk.js",
+    "static/js/3.ad6bdb34.chunk.js.map": "/static/js/3.ad6bdb34.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.ac7c5819.chunk.css.map": "/static/css/main.ac7c5819.chunk.css.map",
+    "static/js/2.eb535e76.chunk.js.LICENSE.txt": "/static/js/2.eb535e76.chunk.js.LICENSE.txt",
+    "static/media/BGLogin.0e4ec947.jpg": "/static/media/BGLogin.0e4ec947.jpg",
+    "static/media/BGSignUpForm.7cb7062d.jpg": "/static/media/BGSignUpForm.7cb7062d.jpg",
+    "static/media/BGSignin.d959453f.jpg": "/static/media/BGSignin.d959453f.jpg",
+    "static/media/BGSignup.2df2902d.jpg": "/static/media/BGSignup.2df2902d.jpg",
+    "static/media/Page-Turner.84fa6aaf.svg": "/static/media/Page-Turner.84fa6aaf.svg",
+    "static/media/Pattern-Randomized.80b2a951.svg": "/static/media/Pattern-Randomized.80b2a951.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1e16fee3.js",
+    "static/js/2.eb535e76.chunk.js",
+    "static/css/main.ac7c5819.chunk.css",
+    "static/js/main.d2dbca32.chunk.js"
+  ]
+}
