@@ -16,6 +16,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
+  useFindAndModify: false,
 });
 
 mongoose.connection.on("error", (err: { message: string; }) => {

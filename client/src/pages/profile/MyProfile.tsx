@@ -94,7 +94,7 @@ const MyProfile: React.FC = () => {
   const classes = useStyles();
 
   const fetchData = async () => {
-    const { data } = await network.get(`/api/v1/users/user-data/${context.id}`);
+    const { data } = await network.get(`/server/api/v1/users/user-data/${context.id}`);
     setUserInformation(data[0]);
     setLoading(false);
   };

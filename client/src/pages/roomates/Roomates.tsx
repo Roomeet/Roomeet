@@ -95,17 +95,17 @@ const Roomates: React.FC = () => {
  };
 
  const fetchData = async () => {
-  const { data: user } = await network.get(`api/v1/users/?id=${context.id}`);
+  const { data: user } = await network.get(`/server/api/v1/users/?id=${context.id}`);
   context.name = user[0].name + " " + user[0].lastName;
   const { data: isExist } = await network.get(
-   `/api/v1/users/user-data/${context.id}`
+   `/server/api/v1/users/user-data/${context.id}`
   );
   if (isExist.length === 0) {
     console.log('dadsadas',isExist)
    history.push("/edit");
   }
   const { data } = await network.get(
-   `/api/v1/users/all-cards?userId=${context.id}`
+   `/server/api/v1/users/all-cards?userId=${context.id}`
   );
   setAllUsersInfo(data);
  };
