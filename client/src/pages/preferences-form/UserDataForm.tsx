@@ -82,9 +82,11 @@ const UserDataForm: React.FC = () => {
       .positive('age cannot be negative')
       .max(120, 'max age is 120')
       .required('must contain age'),
-    aboutMe: string().max(300, 'Maximum 300 characters'),
+    aboutMe: string()
+      .max(300, 'Maximum 300 characters')
+      .matches(/^[aA-zZ0-9!@#$%^&*()_+\-=[\]{};:\\|,./?\s]+$/, 'Character not allowed'),
     numOfRoomates: number().min(0, 'number of roomates cannot be neagetive '),
-  });
+   });
   // @ts-ignore
   const initialValues: any = user
     ? user
