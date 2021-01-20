@@ -26,8 +26,12 @@ const validationSchema = object({
   name: string().required('First Name is required'),
   lastName: string().required('Last Name is required'),
   password: string()
-    .min(4, 'Password must contain at least 4 characters')
-    .required('Enter your password'),
+    .min(6, 'Password must contain at least 6 characters')
+    .required('Enter your password')
+    .matches(
+      /^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/,
+      'Need one special character',
+    ),
   confirmPassword: string()
     .required('Confirm your password')
     .oneOf([ref('password')], 'Password does not match'),

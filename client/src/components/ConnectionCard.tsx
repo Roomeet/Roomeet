@@ -1,17 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
-    width: 445,
     background: 'rgba(0,0,0,0.5)',
     margin: '20px',
     '&:hover': { width: 455, height: 395 },
+    width: '100vw',
+    [theme.breakpoints.up('sm')]: {
+      width: '40vw',
+    },
   },
   media: {
     height: 240,
@@ -27,7 +30,7 @@ const useStyles = makeStyles({
     fontSize: '1.1rem',
     color: '#ddd',
   },
-});
+}));
 
 type Props = {
   image: string;
