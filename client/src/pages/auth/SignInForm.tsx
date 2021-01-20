@@ -26,8 +26,9 @@ import makeToast from '../../utils/Toaster';
 const validationSchema = object({
   email: string().email().required('email is required'),
   password: string()
-    .min(4, 'Password must contain at least 4 characters')
-    .required('Enter your password'),
+    .min(6, 'Password must contain at least 6 characters')
+    .required('Enter your password')
+    .matches(/^[aA-zZ0-9!@#$%^&*()_+\-=[\]{};:\\|,./?\s]+$/, 'Character not allowed'),
 });
 
 const useStyles = makeStyles((theme) => ({

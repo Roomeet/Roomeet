@@ -23,18 +23,20 @@ import { SignUpUserData } from '../../interfaces/authentication';
 import { UserContext } from '../../context/UserContext';
 
 const validationSchema = object({
-  name: string().required('First Name is required'),
-  lastName: string().required('Last Name is required'),
+  name: string()
+    .required('First Name is required')
+    .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field'),
+  lastName: string()
+    .required('Last Name is required')
+    .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field'),
   password: string()
     .min(6, 'Password must contain at least 6 characters')
     .required('Enter your password')
-    .matches(
-      /^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/,
-      'Need one special character',
-    ),
+    .matches(/^[aA-zZ0-9!@#$%^&*()_+\-=[\]{};:\\|,./?\s]+$/, 'Character not allowed'),
   confirmPassword: string()
     .required('Confirm your password')
-    .oneOf([ref('password')], 'Password does not match'),
+    .oneOf([ref('password')], 'Password does not match')
+    .matches(/^[aA-zZ0-9!@#$%^&*()_+\-=[\]{};:\\|,./?\s]+$/, 'Character not allowed'),
   email: string().email().required('Enter your email'),
 
 });
