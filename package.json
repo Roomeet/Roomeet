@@ -2,6 +2,9 @@
   "name": "roomeet",
   "version": "1.0.0",
   "description": "An app that makes the search after the perfect roomate a fun and interective journey.",
+  "engines": {
+    "node": "14.7.0"
+  },
   "main": "index.js",
   "scripts": {
     "build": "cd client && npm run build",
