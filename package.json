@@ -8,9 +8,11 @@
   "main": "index.js",
   "scripts": {
     "build": "cd client && npm run build",
-    "install": "cd client && npm install && cd ../server && npm install",
+    "install": "cd client && npm install && cd ../server && npm install && cd ../proxy-server && npm install && cd ../communication && npm install",
     "server": "cd server && npm start",
     "client": "cd client && npm start",
+    "communication": "cd communication && npm start",
+    "proxy-server": "cd proxy-server && npm start",
     "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
