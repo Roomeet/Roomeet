@@ -108,7 +108,7 @@ function App(): JSX.Element {
   const isLoggedIn = async (): Promise<void> => {
     if (Cookies.get('accessToken')) {
       try {
-        const { data } = await network.get('/server/api/v1/auth/validateToken');
+        const { data } = await network.get('/api/v1/auth/validateToken');
         const id = Cookies.get('id');
         const dataCookie = {
           id,

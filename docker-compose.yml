@@ -24,29 +24,6 @@ services:
       roomeet-network:
         ipv4_address: 172.28.0.10
 
-  socket-server:
-    build:
-      context: './communication'
-      dockerfile: Dockerfile
-    container_name: socket-server
-    hostname: socket-server
-    restart: unless-stopped
-    ports:
-      - '3002:3002'
-    volumes:
-      - ./communication:/src/app
-      - /communication/node_modules
-    environment:
-      - MONGODB_URI=${MONGODB_URI}
-      - PORT=3002
-      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
-      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
-    command: sh -c 'npm run start'
-
-    networks:
-      roomeet-network:
-        ipv4_address: 172.28.0.11
-
 networks:
   roomeet-network:
     driver: bridge

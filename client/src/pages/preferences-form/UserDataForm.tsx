@@ -117,11 +117,11 @@ const UserDataForm: React.FC = () => {
     const data = new FormData();
     delete values.image;
     values.fullName = context.name;
-    await network.post(`/server/api/v1/users/user-data/${context.id}`, values);
+    await network.post(`/api/v1/users/user-data/${context.id}`, values);
     if (file) {
       data.append('file', file);
       await network.post(
-        `/server/api/v1/users/user-data/profile/picture/${context.id}`,
+        `/api/v1/users/user-data/profile/picture/${context.id}`,
         data
       );
     }
@@ -133,7 +133,7 @@ const UserDataForm: React.FC = () => {
 
   const fetchUserData = async () => {
     const { data } = await network.get(
-      `/server/api/v1/users/basic-info?id=${context.id}`
+      `/api/v1/users/basic-info?id=${context.id}`
     );
     if (data[0]) {
       setUser(data[0]);

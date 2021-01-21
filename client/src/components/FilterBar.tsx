@@ -104,7 +104,7 @@ const FilterBar: React.FC<Props> = ({
       ageRange: [16, 60],
     });
     const { data } = await network.get(
-      `/server/api/v1/users/all-cards?userId=${userId}`,
+      `/api/v1/users/all-cards?userId=${userId}`,
     );
     setAllUsersInfo(data);
     closeMenu();
@@ -124,7 +124,7 @@ const FilterBar: React.FC<Props> = ({
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
     const { data } = await network.post(
-      '/server/api/v1/users/all-cards/filtered',
+      '/api/v1/users/all-cards/filtered',
       filteredSearchObj,
     );
     setAllUsersInfo(data);

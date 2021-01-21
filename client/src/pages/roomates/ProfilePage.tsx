@@ -95,7 +95,7 @@ const ProfilePage: React.FC<Props> = ({ open, handleClose, userId }) => {
   const classes = useStyles();
 
   const fetchData = async () => {
-    const { data } = await network.get(`/server/api/v1/users/user-data/${userId}`);
+    const { data } = await network.get(`/api/v1/users/user-data/${userId}`);
     setUserInformation(data[0]);
   };
 

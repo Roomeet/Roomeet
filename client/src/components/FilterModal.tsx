@@ -124,7 +124,7 @@ const FilterModal: React.FC<Props> = ({
       ageRange: [16, 60],
     });
     const { data } = await network.get(
-      `/server/api/v1/users/all-cards?userId=${userId}`,
+      `/api/v1/users/all-cards?userId=${userId}`,
     );
     setAllUsersInfo(data);
     SetOpenFilter((prev: boolean) => !prev);
@@ -139,7 +139,7 @@ const FilterModal: React.FC<Props> = ({
     const filteredSearchObj = Object.fromEntries(objEntries.filter((filter) => filter[1] === true || typeof filter[1] !== 'boolean'));
     if (filteredSearchObj.gender === '') delete filteredSearchObj.gender;
     filteredSearchObj.userId = userId;
-    const { data } = await network.post('/server/api/v1/users/all-cards/filtered', filteredSearchObj);
+    const { data } = await network.post('/api/v1/users/all-cards/filtered', filteredSearchObj);
     setAllUsersInfo(data);
     SetOpenFilter((prev: boolean) => !prev);
   };

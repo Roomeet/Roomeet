@@ -13,7 +13,7 @@
     "client": "cd client && npm start",
     "communication": "cd communication && npm start",
     "proxy-server": "cd proxy-server && npm start",
-    "start": "concurrently \"npm run server\" \"npm run client\" \"npm run proxy-server\" \"npm run communication\""
+    "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",

@@ -1,37 +1,35 @@
+/* eslint-disable no-throw-literal */
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import Match from '../models/Match';
 
 exports.createMatch = async (users: string[]) => {
-  try{  
+  try {
     const matchExists = await Match.findOne({ users });
-  
-    if (matchExists) throw "Match for those users already exists!";
-  
+    if (matchExists) throw 'Match for those users already exists!';
     const match = new Match({
-      _id: new ObjectId,
-      users,
+      _id: new ObjectId(),
+      users
     });
-  
-    return await match.save();
 
-  } catch(error) {
-    console.log(error)
+    return await match.save();
+  } catch (error) {
+    console.log(error);
   }
 };
 
 exports.cancelMatch = async (req: Request, res: Response) => {
-  try{
-    const { users } = req.body;  
-  
+  try {
+    const { users } = req.body;
+
     const updatedMatch = await Match.findOneAndUpdate({ users }, { cancel: true });
-      
+
     res.json({
-      message: "match created!",
-      updatedMatch,
+      message: 'match created!',
+      updatedMatch
     });
-  } catch(error) {
-    res.json({ error })
+  } catch (error) {
+    res.json({ error });
   }
 };
 
@@ -39,17 +37,17 @@ exports.getAllMatches = async (req: Request, res: Response) => {
   try {
     const matches = await Match.find({});
     res.json(matches);
-  } catch(error) {
-    res.json({ error })
+  } catch (error) {
+    res.json({ error });
   }
 };
 
 exports.getAllMatchesByUserId = async (req: Request, res: Response) => {
   try {
-    const matches = await Match.find({users: req.params.userId});
-    res.json({matches})
-  } catch(error) {
-    res.json(error)
+    const matches = await Match.find({ users: req.params.userId });
+    res.json({ matches });
+  } catch (error) {
+    res.json(error);
   }
 };
 
@@ -57,7 +55,7 @@ exports.deleteAllMatches = async (req: Request, res: Response) => {
   try {
     await Match.deleteMany({});
     res.json('delete');
-  } catch(error) {
+  } catch (error) {
     res.json({ error });
   }
 };

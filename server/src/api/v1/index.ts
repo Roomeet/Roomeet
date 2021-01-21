@@ -14,5 +14,9 @@ const router = Router();
 router.use('/auth', authRoutes);
 // router.use("/chatroom", /*authenticateToken, */ chatRoutes(io));
 router.use('/users', userRoutes);
+router.use('/messenger', require('./messengerRoutes'));
+router.use('/matches', require('./matchRoutes'));
+router.use('/likes', require('./likeRoutes'));
+router.use('/notifications', require('./notificationRoutes'));
 
 export default router;
