@@ -47,6 +47,29 @@ services:
       roomeet-network:
         ipv4_address: 172.28.0.11
 
+roomeet-proxy-server:
+    build:
+      context: './proxy-server'
+      dockerfile: Dockerfile
+    container_name: roomeet-proxy-server
+    hostname: proxy-server
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./proxy-server:/src/index
+      - /src/app/node_modules
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - PORT=3001
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+    command: sh -c 'npm run start'
+
+    networks:
+      roomeet-network:
+        ipv4_address: 172.28.0.12
+
 networks:
   roomeet-network:
     driver: bridge
