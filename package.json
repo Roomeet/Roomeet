@@ -4,7 +4,7 @@
   "description": "An app that makes the search after the perfect roomate a fun and interective journey.",
   "main": "index.js",
   "scripts": {
-    "build": "cd server && npm run build",
+    "build": "cd client && npm run build",
     "install": "cd client && npm install && cd ../server && npm install",
     "server": "cd server && npm start",
     "client": "cd client && npm start",
