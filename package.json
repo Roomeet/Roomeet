@@ -1,0 +1,24 @@
+{
+  "name": "roomeet",
+  "version": "1.0.0",
+  "description": "An app that makes the search after the perfect roomate a fun and interective journey.",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roomeet/Roomeet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Roomeet/Roomeet/issues"
+  },
+  "homepage": "https://github.com/Roomeet/Roomeet#readme",
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}

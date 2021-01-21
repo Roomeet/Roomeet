@@ -8,7 +8,6 @@ export default function useOutsideAlerter(ref, setter, chat = false) {
         if (setter) setter(() => false);
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
