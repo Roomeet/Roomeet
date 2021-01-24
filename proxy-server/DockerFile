@@ -4,10 +4,10 @@ RUN mkdir -p /src/index
 
 WORKDIR /src/index
 
-COPY package.json /src/index/package.json
+COPY package.json /src/app/package.json
 
 RUN npm i --silent
 
 EXPOSE 8080
 
-COPY . /src/index
+COPY . /src/app

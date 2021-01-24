@@ -7,10 +7,12 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "cd client && npm run build",
+    "build": "cd client && npm install && npm run build && npm start",
     "install": "cd client && npm install && cd ../proxy-server && npm install",
-    "proxy-server": "cd proxy-server && npm start",
-    "start": "concurrently \"npm run client\" \"npm run proxy-server\""
+    "proxy-server": "cd proxy-server && npm install && npm start",
+    "communication": "cd communication && npm install && npm start",
+    "server": "cd server && npm install && npm start",
+    "start": "concurrently \"npm run build\" \"npm run proxy-server\" \"npm run communication\" \"npm run server\""
   },
   "repository": {
     "type": "git",
