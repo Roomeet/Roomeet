@@ -9,7 +9,7 @@ import RefreshToken, {
 import { authenticateToken } from '../../helpers/authenticate';
 
 const router = Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // types:
@@ -67,7 +67,7 @@ router.post('/register', async (req: Request, res: Response) => {
   try {
     const { body: userRegisterationData } = req;
 
-    userRegisterationData.password = await bcrypt.hash(
+    userRegisterationData.password = await bcrypt.hashSync(
       userRegisterationData.password,
       10
     );
@@ -100,7 +100,7 @@ router.post('/login', async (req: Request, res: Response) => {
     return res.status(404).json('cannot find user');
   }
   try {
-    await bcrypt.compare(
+    await bcrypt.compareSync(
       loginData.password,
       user.password,
       (err: Error, result: boolean) => {
