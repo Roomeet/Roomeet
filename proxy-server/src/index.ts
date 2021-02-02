@@ -4,9 +4,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const path = require('path'); 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../', '..', 'client', 'build')));
 
- 
 app.use('/api', createProxyMiddleware({
     target: 'http://localhost:3002',
     changeOrigin: true,
@@ -23,7 +22,7 @@ app.use('/server', createProxyMiddleware({
 }));
 
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', '..', 'client', 'build', 'index.html'));
   });
   
-app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 80);
