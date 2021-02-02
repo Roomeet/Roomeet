@@ -4,7 +4,7 @@ import Message from './models/Message';
 import { LikeInterface } from './models/Like';
 import { userForMatch } from './models/User';
 const matchControllers = require("./controllers/matchControllers");
-const chatroomController = require("./controllers/chatroomControllers");
+const chatroomController = require("./controllers/chatRoomControllers");
 const notificationControllers = require("./controllers/notificationControllers");
 const likeControllers = require("./controllers/likeControllers");
 require("dotenv").config();

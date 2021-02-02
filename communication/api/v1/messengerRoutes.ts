@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 const router = require("express").Router();
-const chatroomController = require("../../controllers/chatroomControllers");
+const chatroomController = require("../../controllers/chatRoomControllers");
 
 
 // Chatroom routes
