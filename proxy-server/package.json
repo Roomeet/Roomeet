@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.ts",
+    "start": "nodemon src/index.ts -L",
     "publishheroku": "npm install && cd ../ && git subtree push --prefix proxy-server heroku-app-proxy-server main || true"
   },
   "keywords": [],

@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.ts",
+    "start": "nodemon src/index.ts -L",
     "publishheroku": "npm install && cd ../ && git subtree push --prefix server heroku-app-server main || true",
     "lint": "eslint src/** --ext .ts, --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
