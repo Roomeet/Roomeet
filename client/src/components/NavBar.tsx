@@ -264,14 +264,6 @@ const NavBar: React.FC<navbarProps> = ({
     <div className={classes.grow}>
       <AppBar position="static" className={classes.background}>
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
           <Link to="/home">
             <h1 className={classes.appBarTitle}>
               <span className={classes.colorTextRoo}>Roo</span>

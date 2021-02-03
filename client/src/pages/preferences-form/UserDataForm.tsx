@@ -13,6 +13,7 @@ import {
   Button,
   Slider,
   Typography,
+  Input,
 } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import { string, object, number } from 'yup';
@@ -58,10 +59,16 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: '100%',
   },
   range_root: {
     width: 150,
   },
+  upload: {
+    display: 'none',
+    cursor: 'pointer',
+    width: '100%',
+  }
 }));
 
 const UserDataForm: React.FC = () => {
@@ -159,10 +166,10 @@ const UserDataForm: React.FC = () => {
           <div className={classes.paper}>
             <div className={classes.logo}>Let Us Know More About You</div>
             <div className={classes.pic}>
-              <label htmlFor='file'>Profile picture</label>
+              <label htmlFor='file'>
               <input
                 type='file'
-                className='image'
+                style={{ display: "none" }}
                 accept='.jpg'
                 onChange={(event) => {
                   if (event.target.files) {
@@ -171,6 +178,7 @@ const UserDataForm: React.FC = () => {
                   }
                 }}
               />
+              </label>
             </div>
             <Formik
               // @ts-ignore

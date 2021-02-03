@@ -142,7 +142,7 @@ const SignUpForm: React.FC = () => {
                         required
                         fullWidth
                         id="name"
-                        label="name"
+                        label="First Name"
                         type="text"
                         autoFocus
                         data-test="signup-name"
@@ -227,7 +227,7 @@ const SignUpForm: React.FC = () => {
                         required
                         fullWidth
                         id="email"
-                        label="email"
+                        label="Email"
                         type="email"
                         data-test="signup-email"
                         error={(touched || value !== initialValue) && Boolean(error)}

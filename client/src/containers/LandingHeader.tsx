@@ -79,9 +79,6 @@ const LandingHeader: React.FC = () => {
             </span>
             .
           </h1>
-          <IconButton className={classes.icon}>
-            <SortIcon />
-          </IconButton>
         </Toolbar>
       </AppBar>
       <Collapse in={checked} {... (checked ? { timeout: 1000 } : {})} collapsedHeight={50}>
