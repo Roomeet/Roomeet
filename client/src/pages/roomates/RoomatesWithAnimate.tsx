@@ -182,7 +182,7 @@ const Roomates: React.FC = () => {
     setTimeout(() => {
       if (allUsersInfo.length === 0) setOverTime(true);
       clearTimeout();
-    }, 10000);
+    }, 15000);
   }, [allUsersInfo]);
 
   function closeMenu() {

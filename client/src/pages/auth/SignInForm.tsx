@@ -136,7 +136,7 @@ const SignInForm: React.FC<any> = () => {
                           margin="normal"
                           fullWidth
                           id="email"
-                          label="email"
+                          label="Email"
                           type="text"
                           autoFocus
                           data-test="signin-email"
